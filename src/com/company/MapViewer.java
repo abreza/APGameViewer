@@ -60,7 +60,7 @@ public class MapViewer extends BasicGameState {
                 System.out.println(intersectedView.getName());
             }
             try {
-                send("ok\n");
+                System.out.println(send("ok\n"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -117,7 +117,6 @@ public class MapViewer extends BasicGameState {
                 out.write(message);
                 out.flush();
                 res[0] = in.readLine();
-                System.out.println(res[0]);
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
