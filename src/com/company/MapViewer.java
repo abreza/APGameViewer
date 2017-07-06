@@ -1,5 +1,6 @@
 package com.company;
 
+import javafx.application.Platform;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -11,6 +12,7 @@ import java.util.List;
 
 
 public class MapViewer extends BasicGameState {
+    public static int PLAYER_SPEED = 2;
     public TiledMap map;
     private String TMXName;
     public List<ObjectView> objectViews;
@@ -57,9 +59,9 @@ public class MapViewer extends BasicGameState {
             playerDirection = Direction.UP;
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (GameState.app.getHeight() / 8 > GameState.player.getPosition().y) {
-                    GameState.firstY -= 6;
+                    GameState.firstY -= PLAYER_SPEED;
                 } else {
-                    GameState.player.getPosition().y -= 6;
+                    GameState.player.getPosition().y -= PLAYER_SPEED;
                 }
             }
         }
@@ -67,9 +69,9 @@ public class MapViewer extends BasicGameState {
             playerDirection = Direction.DOWN;
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().y) {
-                    GameState.firstY += 6;
+                    GameState.firstY += PLAYER_SPEED;
                 } else {
-                    GameState.player.getPosition().y += 6;
+                    GameState.player.getPosition().y += PLAYER_SPEED;
                 }
             }
         }
@@ -77,9 +79,9 @@ public class MapViewer extends BasicGameState {
             playerDirection = Direction.LEFT;
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (GameState.app.getWidth() / 8 > GameState.player.getPosition().x) {
-                    GameState.firstX -= 6;
+                    GameState.firstX -= PLAYER_SPEED;
                 } else {
-                    GameState.player.getPosition().x -= 6;
+                    GameState.player.getPosition().x -= PLAYER_SPEED;
                 }
             }
         }
@@ -87,9 +89,9 @@ public class MapViewer extends BasicGameState {
             playerDirection = Direction.RIGHT;
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (7 * GameState.app.getWidth() / 8 < GameState.player.getPosition().x) {
-                    GameState.firstX += 6;
+                    GameState.firstX += PLAYER_SPEED;
                 } else {
-                    GameState.player.getPosition().x += 6;
+                    GameState.player.getPosition().x += PLAYER_SPEED;
                 }
             }
         }
