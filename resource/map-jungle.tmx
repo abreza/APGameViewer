@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="terrain_atlas" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
+  <image source="Terrain_Sprites/terrain_atlas.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="1025" name="terrain" tilewidth="32" tileheight="32" tilecount="483" columns="21">
+  <image source="Terrain_Sprites/terrain.png" width="672" height="736"/>
+ </tileset>
+ <tileset firstgid="1508" name="tileset_water_animated" tilewidth="32" tileheight="32" tilecount="540" columns="18">
+  <image source="Terrain_Sprites/MapStuff/tileset_water_animated.png" width="576" height="976"/>
+ </tileset>
+ <tileset firstgid="2048" name="fish" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="Terrain_Sprites/fish.png" width="96" height="96"/>
+ </tileset>
+ <tileset firstgid="2057" name="tree trunk" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="Terrain_Sprites/Object Set/tree trunk.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2061" name="big fish" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="Terrain_Sprites/Object Set/big fish.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2065" name="Cut Tree1" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="Terrain_Sprites/Object Set/Cut Tree1.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2069" name="Cut Tree" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="Terrain_Sprites/Object Set/Cut Tree.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2073" name="Cut Tree2" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="Terrain_Sprites/Object Set/Cut Tree2.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2077" name="Cut Tree3" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="Terrain_Sprites/Object Set/Cut Tree3.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2081" name="branch1" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/branch1.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2082" name="rock" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/rock.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2083" name="tree" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="Terrain_Sprites/Object Set/tree.png" width="97" height="134"/>
+ </tileset>
+ <tileset firstgid="2095" name="tree2" tilewidth="32" tileheight="32" tilecount="10" columns="2">
+  <image source="Terrain_Sprites/Object Set/tree2.png" width="64" height="160"/>
+ </tileset>
+ <layer name="ground" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC5WUwW6DQAxEcyC9939Tvhci8Q20UbOS+3hj6MECll2vPTOeZbrd1ncsJV7fT7zXqGsL/tl57q97VqzXqPetss79q7xbfta04h7iwZ6t9lXyEr+am/0s4YwFe+N+9rxOxz5SXeTTajb8O57rncYJtWT9WL+szXA03hbkpY55v+ks4WO5qKukGe5JmkpckEebU+PaODaNs6eEkXFuvpFwZR1pVjruTQPErNOS6ZL7yaHVnPgxvq1G5re5MN80DZn+DfPkn4lvwz7N4xmH1tMV/JJOLJfhnOaf+Q1T1mw4pfk6mwPz7G7+0gxZnuRlVhdxYl7DjPtNY8SF79TNFS8lBxamBeJzNufmJYZx0vIz5DHf6Oo3PA0D5rI6zC+Sb9hsLLKPa918mh7TDCX8k18an+YLV3Bj/clnOQdJK8a5+cp/tGTYE0ObBePI5s366+bU/CNhRh7O5o8ewf7Zg+nafDP9S76UeEizSszSt2k6earVxn+Jv+Rf5qudDyf9Ja0l7zZemXudjhzYbBgmtm46NT9NPsya2E/ybPPcpPukdfPYjm/jzbzFNJ7muMOSOky6sdkxnNL5NPtpLrszfBKX7ps9Jq6S5ybuGOa53G8zkXwvaTzNo9XDszbz5pemNe5Nft7phfx2/tF5LrFmXfQI0495Avu4WrPx0d195u0J005fyduS7xmWrHm73277O7Z3fH4cn68Ye3bEJjH2jxw71muumr/eU2vg3q/pN+afeLzfX89dcm6oc5fcr7PjDPePu3i+1lSfNay38Xwg76hhno741r4f4K3WzBpYL7ndkIPfxJH3GNejzv3+tz/iV//PhcuRby45Rr7BR71j1Gg8kO/U/+DDatxLT3PR2thf7645WJetz9DsPDmeCevECfutvHAu2PcXeiCmnc45499Y+LYRABkAAA==
+  </data>
+ </layer>
+ <layer name="second" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2X227CMAyGy9aN3jI2dmAHNhg7sBNjwN7/GfZA+y9aKYqq9K/jtAH1k6y24Dp2EttpknR0xM9Dxul9Qu+L1G2DJXz7Jvy7V4yhypY5tyvc/wjGZtfHlzXG2RBjnUFnVNOnAfRP8nemuM4gjw4bpn7BFs+/xLjn0Lmo6d8Q+qf5O3NcnyDPDhumvgvNvVbwApuvkEWkufgGv94hH5H6t4vcYC5vleezLMek3MHORNk/NsdsXDkXIh99YGqhq++G7g1MLWT7ro3GWjC1UNp3NWBqIdt3CzTOYa4ebq+Lq+9e4vcr6z/pfjCR9PAyxrBxbdlpcz8w1N0PTcOew6pgapdmfZOcWyVI65rvntfs5yGQ9nMb3zhDnwG04qxLU9+JHfvBXxq3RAlyrAc5qMo1Vq8lDuFXCjkK4V9LsQeNKUKOEWcfkjniZXQ0MdfgHwChFJwAGQAA
+  </data>
+ </layer>
+ <layer name="cave door" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OsQkAMAwDQaXOINl/w+Aq4AkMuYMv1ClJ9kpOXrUnqT+9Sab/AwAAAACA31xA1xzQABkAAA==
+  </data>
+ </layer>
+ <layer name="wall" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3YwQ1AQBRF0dGANkY0QjRCNEIddEInNOLvJBLx4yUzm3uStzCru7D6MYSw2Mri3mrfMcGq8K22bY+33dYkWOvo6176+gQbHH2j7Xi8nbYpwWZHn+cfyIk+DX0a+jT0aejT0KehT0Ofhj4NfRr6NPRp6NN4bkg5eW5IOXluSADwxwUWQENJABkAAA==
+  </data>
+ </layer>
+ <layer name="tree1" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OuQ2AQBAEwTUvD/43//CYAPA5pCqp/a7qz9CqxjS1r0/ezfla0trp35avPR2d/p35utLd6R8AAAAAAP/3AIty33oAGQAA
+  </data>
+ </layer>
+ <layer name="tree2" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OOQGAMAwAwIx1w1da/CsjBlhYmuFOwUXwx9Yi9rZ68e3I21n4d+WtF/7deRuFfzNvT+EfAAAAAMBqL+FgIY0AGQAA
+  </data>
+ </layer>
+ <layer name="tree3" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OKQ6AUBQEwSe5B/t6/+MxEoEk4YuqpH1XAU99VzWksfv75N2Urzktjf6t+drS3ujfka8zXY3+AQAAAADfuAEphGPtABkAAA==
+  </data>
+ </layer>
+ <layer name="tree4" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OuQ2EAAwAQYfuBjje/ivDklsgsHQzyaYbAfCdJSPW7E601dcvuxPt9XVkd6Kzvq7sTnTX15NdAAAAAP7bC4bf+JMAGQAA
+  </data>
+ </layer>
+ <layer name="tree5" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3QywmAMBQF0bdMH4qiKP5iYv+VeRsQXOldzKlgmAgAAN5rUkSb/q541qmtN+4b1DYa901qm4373C16txr/29S2G/cdasvGfafainFfVdtl3AcAAAAAX7sBlqROFQAZAAA=
+  </data>
+ </layer>
+ <layer name="tree6" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3SuQ2AUAxEQYe/D+6z//JwAWQIYaQZafMXbAQAAPBnXYvoc0P7uuTemF1Tbi7at2TXmtuK9u3ZdeTOon3+94z/AQC85wKwQddKABkAAA==
+  </data>
+ </layer>
+ <layer name="tree7" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OOQGAMAwAwIx1w1da/CsjBpgYmuFOwUUAAAAAq2wtYm+rF9+OvJ2Ff1feeuHfnbdR+Dfz9hT+AcAfL/+wTKwAGQAA
+  </data>
+ </layer>
+ <layer name="tree8" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OSxWAMAwAsB7nht/Y8K+MGuBMeSQKEgEAAADAHy0tYm1vL55tedsL/4689cK/M2+j8G/m7Sr8A77vBrM4zgcAGQAA
+  </data>
+ </layer>
+</map>
