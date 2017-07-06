@@ -10,12 +10,12 @@ public class ObjectView {
     private Position door;
     public enum Type{BUILDING, BUILDING_ITEM, ITEM, PLAYER}
     private Type type;
-    String id;
+    private String name;
 
-    public ObjectView(Position position, Image image, String id, Type type) {
+    public ObjectView(Position position, Image image, String name, Type type) {
         this.door = new Position(position.x + (position.width / 2 - 10), position.y + position.height, 1, 1);
         this.type = type;
-        this.id = id;
+        this.name = name;
         this.position = position;
         this.image = image;
     }
@@ -52,11 +52,11 @@ public class ObjectView {
         this.type = type;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 }

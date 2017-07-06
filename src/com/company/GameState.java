@@ -41,20 +41,20 @@ public class GameState extends StateBasedGame{
         this.getState(0).init(gameContainer, this);
         this.getState(1).init(gameContainer, this);
         List<ObjectView> objectViews = new ArrayList<>();
-        objectViews.add(new ObjectView(new Position(0, 0, 50, 40 * 32), null, "0", ObjectView.Type.ITEM));
-        objectViews.add(new ObjectView(new Position(60 * 32 - 70, 0, 70, 40 * 32), null, "0", ObjectView.Type.ITEM));
-        objectViews.add(new ObjectView(new Position(0, 0, 23 * 32, 50), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 50, 40 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(60 * 32 - 70, 0, 70, 40 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 23 * 32, 50), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(27 * 32 + 10, 0, 60 * 32 - (28 * 32 + 10), 50), null, "0", ObjectView.Type.ITEM));
-        objectViews.add(new ObjectView(new Position(0, 37 * 32 + 10, 22 * 32, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 37 * 32 + 10, 22 * 32, 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(28 * 32, 37 * 32 + 10, 60 * 32 - (28 * 32), 32), null, "0", ObjectView.Type.ITEM));
-        objectViews.add(new ObjectView(new Position(28 * 32 + 10, 50, 64, 64), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32 + 10, 50, 64, 64), null, Names.WALL.name(), ObjectView.Type.ITEM));
 
-        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 32, 5 * 32, 4 * 32), null,"0", ObjectView.Type.BUILDING));
-        objectViews.add(new ObjectView(new Position(23 * 32 + 10, 0, 4 * 32, 20), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 32, 5 * 32, 4 * 32), null, Names.HOME.name(), ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(23 * 32 + 10, 0, 4 * 32, 20), null, Names.VIllage.name(), ObjectView.Type.BUILDING));
         objectViews.get(objectViews.size() - 1).setDoor(new Position(23 * 32 + 10, 0, 4 * 32, 20));
-        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 32, 7 * 32, 4 * 32), null, "0", ObjectView.Type.BUILDING));
-        objectViews.add(new ObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null, "0", ObjectView.Type.BUILDING));
-        objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 32, 7 * 32, 4 * 32), null, Names.BARN.name(), ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null, Names.GREEN_HOUSE.name(), ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, Names.POND.name(), ObjectView.Type.BUILDING));
 
 
         mapViews.get(1).objectViews = objectViews;
@@ -68,14 +68,14 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(0, 18 * 32 - 10, 40 * 32, 32), null, "0", ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(38 * 32, 0, 32, 20 * 32), null, "0", ObjectView.Type.ITEM));
 
-        objectViews.add(new ObjectView(new Position(2 * 32, 1 * 32 + 10, 3 * 32 + 15, 2 * 32 + 10), null, "0", ObjectView.Type.BUILDING));
-        objectViews.add(new ObjectView(new Position(12 * 32, 1 * 32 - 10, 3 * 32 + 5, 3 * 32 + 10), null, "0", ObjectView.Type.BUILDING));
-        objectViews.add(new ObjectView(new Position(21 * 32 + 10, 1 * 32, 3 * 32 + 10, 3 * 32 + 5), null, "0", ObjectView.Type.BUILDING));
-        objectViews.add(new ObjectView(new Position(31 * 32, 2 * 32 + 15, 2 * 32 + 10, 3 * 32 - 5), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(2 * 32, 1 * 32 + 10, 3 * 32 + 15, 2 * 32 + 10), null,  Names.GYM.name(), ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(12 * 32, 1 * 32 - 10, 3 * 32 + 5, 3 * 32 + 10), null,  Names.LABORATORY.name(), ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(21 * 32 + 10, 1 * 32, 3 * 32 + 10, 3 * 32 + 5), null,  Names.MARKET.name(), ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(31 * 32, 2 * 32 + 15, 2 * 32 + 10, 3 * 32 - 5), null,  Names.CAFE.name(), ObjectView.Type.BUILDING));
 
-        objectViews.add(new ObjectView(new Position(2 * 32 + 5, 12 * 32 + 10, 3 * 32, 2 * 32 + 15), null, "0", ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(12 * 32, 12 * 32 + 15, 3 * 32 + 10, 3 * 32 - 15), null, "0", ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(31 * 32 + 5, 12 * 32 + 5, 2 * 32 + 20, 3 * 32 - 5), null, "0", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(2 * 32 + 5, 12 * 32 + 10, 3 * 32, 2 * 32 + 15), null,  Names.WORKSHOP.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(12 * 32, 12 * 32 + 15, 3 * 32 + 10, 3 * 32 - 15), null,  Names.CLINIC.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(31 * 32 + 5, 12 * 32 + 5, 2 * 32 + 20, 3 * 32 - 5), null,  Names.RANCH.name(), ObjectView.Type.BUILDING_ITEM));
 
         objectViews.add(new ObjectView(new Position(0, 5 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(5 * 32, 5 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
