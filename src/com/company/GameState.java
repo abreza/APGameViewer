@@ -61,6 +61,7 @@ public class GameState extends StateBasedGame{
 
 
         objectViews = new ArrayList<>();
+        objectViews.add(new ObjectView(new Position(-32, -32, 32, 8 * 32), null, "0", ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, 0, 20, 7 * 32 - 15), null, "0", ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, 11 * 32 - 15, 20, 8 * 32), null, "0", ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, 0, 40 * 32, 10), null, "0", ObjectView.Type.ITEM));
@@ -75,6 +76,33 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(2 * 32 + 5, 12 * 32 + 10, 3 * 32, 2 * 32 + 15), null, "0", ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(12 * 32, 12 * 32 + 15, 3 * 32 + 10, 3 * 32 - 15), null, "0", ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(31 * 32 + 5, 12 * 32 + 5, 2 * 32 + 20, 3 * 32 - 5), null, "0", ObjectView.Type.BUILDING_ITEM));
+
+        objectViews.add(new ObjectView(new Position(0, 5 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(5 * 32, 5 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(11 * 32, 5 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(15 * 32, 5 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(20 * 32, 4 * 32 - 20, 32 + 15, 116), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(20 * 32, 20, 32 + 15, 76), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(24 * 32, 4 * 32 - 20, 32 + 15, 116), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(24 * 32, 20, 32 + 15, 76), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(30 * 32, 5 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 10 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(5 * 32, 10 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(11 * 32, 10 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(15 * 32, 10 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(18 * 32, 10 * 32 - 20, 64 + 30, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(25 * 32, 10 * 32 - 20, 64 + 30, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(30 * 32, 10 * 32 - 20, 32 + 15, 84), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(32, 32 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(36 * 32, 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(35 * 32, 6 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(35 * 32, 11 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(34 * 32, 15 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32, 15 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(21 * 32, 15 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(14 * 32, 15 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(7 * 32, 15 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
+
 
         mapViews.get(0).objectViews = objectViews;
     }

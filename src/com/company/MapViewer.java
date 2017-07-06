@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class MapViewer extends BasicGameState {
-    public static int PLAYER_SPEED = 2;
+    public static int PLAYER_SPEED = 1;
     public TiledMap map;
     private String TMXName;
     public List<ObjectView> objectViews;

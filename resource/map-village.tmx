@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="TileA4" tilewidth="32" tileheight="32" tilecount="240" columns="16">
   <image source="Terrain_Sprites/MapStuff/TileA4.png" width="512" height="480"/>
  </tileset>
@@ -49,7 +49,7 @@
  </layer>
  <layer name="Trees-up" width="40" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Wxw7DMAxDDeRr2x46Dt17j3Tv8bF9H2ALMKoiLmoCvFCOzCQUIGPCQjUxpgbrSdZO7Bjhawwniv4a9GrClkLPHT328KDob0qvGZwH+k+O+DrBc6D+/gWaOf4GYo4jskScj8/gOx85zuVhwfN9ypyvOJ4popeUvo+060hZ6aL1HB7a6B1LrY82gEMP79KuI2VlhZY67lmgLy21NdoGbj38SbuOlJUb2t1xzwX9aqk90J7wFehs/CreGmhTvIAMAAA=
+   H4sIAAAAAAAAC+2W2QrCMBBFA/1a9cHloe77rnVvtS4f6/mAZCBUcJRcuC93UnJSZmCM0aU4MqaJW9G3SeyawjXDc6V8R7hO+KyUL+h/1abnOrirtPcWcC3xSinfBa4UZ0r5goopzEcx+c5HiXNlXPF8T53zDcc3VfLah/6PtOtIvTIgGzoYeuR9S21ENsYTD3Zp15F6ZUuWOO5Zk28stR3ZHh88+KRdR+qVnOzuuOdKfrPUHmRP/FI6G7+qN/MPITuADAAA
   </data>
  </layer>
  <layer name="Status" width="40" height="20">
