@@ -5,8 +5,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
@@ -19,6 +19,7 @@ public class MapViewer extends BasicGameState {
     public enum Direction{LEFT, RIGHT, UP, DOWN}
     private Direction playerDirection = Direction.RIGHT;
     private int id;
+    private Socket socket;
 
     public MapViewer(String TMXName, int id) {
         this.id= id;
@@ -58,7 +59,11 @@ public class MapViewer extends BasicGameState {
             if (intersectedView != null){
                 System.out.println(intersectedView.getName());
             }
-//            send("ok");
+            try {
+                send("ok\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         if(input.isKeyDown(Input.KEY_UP)){
             playerDirection = Direction.UP;
@@ -102,20 +107,25 @@ public class MapViewer extends BasicGameState {
         }
     }
 
-    private void send(final String message) {
+    private String send(final String message) throws IOException {
+        final String[] res = new String[1];
+        socket = new Socket("localhost", 1377);
         new Thread(() -> {
-            Socket socket;
             try {
-                socket = new Socket("localhost", 1377);
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.write(message);
                 out.flush();
+                res[0] = in.readLine();
+                System.out.println(res[0]);
                 socket.close();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
+        return res[0];
     }
+
     public boolean playerIntersect(Position position){
         int x = GameState.player.getPosition().x;
         int y = GameState.player.getPosition().y;
