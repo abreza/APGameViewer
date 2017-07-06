@@ -53,7 +53,12 @@ public class MapViewer extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input  = gameContainer.getInput();
         if(input.isKeyPressed(Input.KEY_ENTER)){
-            send("ok");
+            ObjectView intersectedView =
+                    getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
+            if (intersectedView != null){
+                System.out.println(intersectedView.getName());
+            }
+//            send("ok");
         }
         if(input.isKeyDown(Input.KEY_UP)){
             playerDirection = Direction.UP;
@@ -126,6 +131,16 @@ public class MapViewer extends BasicGameState {
         }
         return false;
     }
+
+    private ObjectView getIntersectedView(List<ObjectView> objectViews){
+        for (ObjectView objectView: objectViews){
+            if (playerIntersect(objectView.getPosition())){
+                return objectView;
+            }
+        }
+        return null;
+    }
+
 
     private boolean playerIntersect(List<ObjectView> objectViews) {
         for (ObjectView objectView:objectViews) {
