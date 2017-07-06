@@ -8,6 +8,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,6 +21,7 @@ public class MapViewer extends BasicGameState {
     private Direction playerDirection = Direction.RIGHT;
     private int id;
     private Socket socket;
+    private List<String> serverMessages;
 
     public MapViewer(String TMXName, int id) {
         this.id= id;
@@ -60,7 +62,8 @@ public class MapViewer extends BasicGameState {
                 System.out.println(intersectedView.getName());
             }
             try {
-                System.out.println(send("ok\n"));
+                send("ok\n");
+                System.out.println(serverMessages);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -109,20 +112,32 @@ public class MapViewer extends BasicGameState {
 
     private String send(final String message) throws IOException {
         final String[] res = new String[1];
+        res[0] = new String();
         socket = new Socket("localhost", 1377);
         new Thread(() -> {
             try {
+                serverMessages = new ArrayList<>();
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.write(message);
                 out.flush();
-                res[0] = in.readLine();
+                for (int i = 0; i < 100; i++) {
+                    read(in);
+                    if(serverMessages.get(serverMessages.size() - 1).equals("___")){
+                        serverMessages.remove(serverMessages.size() - 1);
+                        break;
+                    }
+                }
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
         return res[0];
+    }
+
+    private void read(BufferedReader in) throws IOException {
+        serverMessages.add(in.readLine());
     }
 
     public boolean playerIntersect(Position position){
