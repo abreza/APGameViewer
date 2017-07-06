@@ -23,6 +23,7 @@ public class GameState extends StateBasedGame{
         super("map-village");
         addMapView("map-village", 0);
         addMapView("map-farm", 1);
+        addMapView("map-barn", 2);
         this.enterState(1);
     }
     public static void run() throws SlickException {
@@ -50,9 +51,13 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(28 * 32 + 10, 50, 64, 64), null, Names.WALL.name(), ObjectView.Type.ITEM));
 
         objectViews.add(new ObjectView(new Position(4 * 32 + 10, 32, 5 * 32, 4 * 32), null, Names.HOME.name(), ObjectView.Type.BUILDING));
-        objectViews.add(new ObjectView(new Position(23 * 32 + 10, 0, 4 * 32, 20), null, Names.VIllage.name(), ObjectView.Type.BUILDING));
-        objectViews.get(objectViews.size() - 1).setDoor(new Position(23 * 32 + 10, 0, 4 * 32, 20));
-        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 32, 7 * 32, 4 * 32), null, Names.BARN.name(), ObjectView.Type.BUILDING));
+        objectViews.add(new BuildingObjectView(new Position(23 * 32 + 10, 0, 4 * 32, 20), null,
+                new Position(23 * 32 + 10, 0, 4 * 32, 20), Names.VIllage.name(), ObjectView.Type.BUILDING, 0));
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(20, 300);
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 0);
+        objectViews.add(new BuildingObjectView(new Position(13 * 32 + 10, 32, 7 * 32, 4 * 32), null,
+                new Position(16 * 32, 4 * 32, 32, 2 * 32), Names.BARN.name(), ObjectView.Type.BUILDING, 2));
+        ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setPlayerXAndY(20, 700);
         objectViews.add(new ObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null, Names.GREEN_HOUSE.name(), ObjectView.Type.BUILDING));
         objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, Names.POND.name(), ObjectView.Type.BUILDING));
 
@@ -103,7 +108,15 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(14 * 32, 15 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(7 * 32, 15 * 32 + 20 , 32 + 15, 32), null, "0", ObjectView.Type.ITEM));
 
+        objectViews.add(new BuildingObjectView(new Position(-32, 7 * 32, 32 - 15, 10 * 32), null,
+                new Position(-32, 7 * 32, 32 - 15, 10 * 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(220, 100);
+        ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setFirstXAndY(18 * 32, -50);
+
+
 
         mapViews.get(0).objectViews = objectViews;
+
+        mapViews.get(2).objectViews = new ArrayList<>();
     }
 }

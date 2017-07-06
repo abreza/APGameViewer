@@ -170,11 +170,12 @@ public class MapViewer extends BasicGameState {
         for (ObjectView objectView:objectViews) {
             if(playerIntersect(objectView.getPosition())){
                 if(objectView.getType() == ObjectView.Type.BUILDING && playerIntersect(objectView.getDoor())){
-                    GameState.gameState.enterState(0);
-                    GameState.player.getPosition().x = 20;
-                    GameState.player.getPosition().y = 300;
-                    GameState.firstX = 0;
-                    GameState.firstY = 0;
+                    BuildingObjectView building = (BuildingObjectView) objectView;
+                    GameState.gameState.enterState(building.getStateId());
+                    GameState.player.getPosition().x = building.getFirstPlayerX();
+                    GameState.player.getPosition().y = building.getFirstPlayerY();
+                    GameState.firstX = building.getFirstX();
+                    GameState.firstY = building.getFirstY();
                 }
                 return true;
             }
