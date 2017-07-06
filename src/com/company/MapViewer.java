@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MapViewer extends BasicGameState {
@@ -60,12 +61,17 @@ public class MapViewer extends BasicGameState {
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null){
                 System.out.println(intersectedView.getName());
-            }
-            try {
-                send("ok\n");
-                System.out.println(serverMessages);
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    send("inspect " + intersectedView.getName() + "\n");
+                    TimeUnit.MILLISECONDS.sleep(500);
+                    System.out.println(serverMessages);
+                    if (serverMessages.size() >= 1)
+                        showMenu(serverMessages);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         if(input.isKeyDown(Input.KEY_UP)){
@@ -110,6 +116,10 @@ public class MapViewer extends BasicGameState {
         }
     }
 
+    private void showMenu(List<String> serverMessages) {
+
+    }
+
     private String send(final String message) throws IOException {
         final String[] res = new String[1];
         res[0] = new String();
@@ -123,6 +133,8 @@ public class MapViewer extends BasicGameState {
                 out.flush();
                 for (int i = 0; i < 100; i++) {
                     read(in);
+                    if (serverMessages == null || serverMessages.get(serverMessages.size() - 1) == null )
+                        break;
                     if(serverMessages.get(serverMessages.size() - 1).equals("___")){
                         serverMessages.remove(serverMessages.size() - 1);
                         break;
