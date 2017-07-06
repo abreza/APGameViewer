@@ -51,7 +51,7 @@ public class MapViewer extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input  = gameContainer.getInput();
         if(input.isKeyPressed(Input.KEY_ENTER)){
-            
+            send("ok");
         }
         if(input.isKeyDown(Input.KEY_UP)){
             playerDirection = Direction.UP;
