@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="TileA4" tilewidth="32" tileheight="32" tilecount="240" columns="16">
+  <image source="Terrain_Sprites/MapStuff/TileA4.png" width="512" height="480"/>
+ </tileset>
+ <tileset firstgid="241" name="Inside_A5" tilewidth="32" tileheight="32" tilecount="128" columns="8">
+  <image source="Terrain_Sprites/MapStuff/Inside_A5.png" width="256" height="512"/>
+ </tileset>
+ <tileset firstgid="369" name="lpc-hanging-signs" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="Terrain_Sprites/lpc-hanging-signs.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="385" name="Market" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="Terrain_Sprites/MapStuff/Market.png" width="96" height="128"/>
+ </tileset>
+ <tileset firstgid="397" name="machine" tilewidth="32" tileheight="32" tilecount="380" columns="20">
+  <image source="Terrain_Sprites/Object Set/machine.png" width="667" height="618"/>
+ </tileset>
+ <tileset firstgid="777" name="Buildings" tilewidth="32" tileheight="32" tilecount="80" columns="8">
+  <image source="Terrain_Sprites/MapStuff/Buildings.png" width="265" height="321"/>
+ </tileset>
+ <tileset firstgid="857" name="lpc-hanging-signs" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="Terrain_Sprites/lpc-hanging-signs.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="873" name="Trees-2" tilewidth="32" tileheight="32" tilecount="52" columns="13">
+  <image source="Terrain_Sprites/MapStuff/Trees-2.png" width="416" height="128"/>
+ </tileset>
+ <tileset firstgid="925" name="Dungeon_B" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="Terrain_Sprites/MapStuff/Dungeon_B.png" width="512" height="512"/>
+ </tileset>
+ <layer name="Ground and wall" width="40" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+NhYGDgGeSYb5DiUfdRx31CjBCMDGBi9MT43KeGhvGZQ4w6cswadR/13YfuroHEo+4bee5DLv+Q1VKaP4jFo+4bfO6jZj1IivsGGg/V9stAu4OQ+wYzBgB7n8HxgAwAAA==
+  </data>
+ </layer>
+ <layer name="Trees-down" width="40" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OsQ0AIBDDwEjsDPTwPTAxGSOFT3JvSepNGm66RMtf21Xo3/HXdS/0DwAAAEjxAbKVs+GADAAA
+  </data>
+ </layer>
+ <layer name="Buildings" width="40" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3Vt1JCQRSA4QUqA0kxkDFQGFAEMYABQ2NoDC+EiqjwQgKvIPgKiq8AWPI3dOxeix3T7Jn5qj2z96/2CmFGxww5hBjGCEbhdAzee7YLUUUNdbv8voJNiBvc2vT0eekZwzh8mJD0vdDUQBOvir47uoq419TnpyeAIEIIS/reaHpHCx+KvhJdD3hU9B3wjUMc4Vjyvf7McD6LOcwjLtlv09RBF5+Kvie6yqgo+k74xinOcG7R9xNzQdMlrnD9C/vMmDHzt8fFu+KG5wvvywo7q0gqdhc4W8QSljW8WZPcMYVpi7sSnG9gE1uK3TXOUkhjXUNfhDuiiFncleF8D/vIK3a3Ocsih51vfPN3zf/lX04PhJ5SFIAMAAA=
+  </data>
+ </layer>
+ <layer name="Cues" width="40" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWjYHCBYkbCasqIUAMCRUSqG8wglnmgXTAKRsEoGAWjABuIIaF8TiBCbfxoeT8KRggAAKt9Qr2ADAAA
+  </data>
+ </layer>
+ <layer name="Trees-up" width="40" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2Wxw7DMAxDDeRr2x46Dt17j3Tv8bF9H2ALMKoiLmoCvFCOzCQUIGPCQjUxpgbrSdZO7Bjhawwniv4a9GrClkLPHT328KDob0qvGZwH+k+O+DrBc6D+/gWaOf4GYo4jskScj8/gOx85zuVhwfN9ypyvOJ4popeUvo+060hZ6aL1HB7a6B1LrY82gEMP79KuI2VlhZY67lmgLy21NdoGbj38SbuOlJUb2t1xzwX9aqk90J7wFehs/CreGmhTvIAMAAA=
+  </data>
+ </layer>
+ <layer name="Status" width="40" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWDDYixoPLFWbCrGyighuYe9UHmvsEOHFjw80kFtlj0S+EwE13cDos6Yt2HTS824ItFnRYOvejifljUBbDg5+PTOwpGHqBW/pAGsmVw6MMmR+/8oQ1k6+DQh01uNH+MglEwCgYSAABMivuzgAwAAA==
+  </data>
+ </layer>
+</map>

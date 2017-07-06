@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" nextobjectid="12">
+ <tileset firstgid="1" name="terrain_atlas" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
+  <image source="Terrain_Sprites/terrain_atlas.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="1025" name="House" tilewidth="32" tileheight="32" tilecount="20" columns="5">
+  <image source="Terrain_Sprites/Object Set/House.png" width="160" height="128"/>
+ </tileset>
+ <tileset firstgid="1045" name="Barn" tilewidth="32" tileheight="32" tilecount="28" columns="7">
+  <image source="Terrain_Sprites/Object Set/Barn.png" width="224" height="128"/>
+ </tileset>
+ <tileset firstgid="1073" name="greenhouse" tilewidth="32" tileheight="32" tilecount="35" columns="7">
+  <image source="Terrain_Sprites/Object Set/greenhouse.png" width="224" height="160"/>
+ </tileset>
+ <layer name="Ground" width="60" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3DQQ0AAAwDofNvqPamYX9IWDVVVVVVVVVVVVXfD9vn4X6AJQAA
+  </data>
+ </layer>
+ <layer name="Ground skin" width="60" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+2YDUrEQAyFi3ub1ZOoJ1Gv3Z5DBcVlNt/Ly7SzLqWB4EKnnXx5+QHPD9P0OMCfvpzsPOhOJ6bfu1829lfB+zzgvsxb3veN/UPwvg24L/OWd+928O7bDt5928G7bzt4/2w+TdPy4/OFX1r0fGnO3JMp3oij5XVyQrYE7y6n628uiUcxUrxr9Y3ucvVt320ZKf7orMrFGt6WhWJzjPRVutEzylMbr8OrenM+XburL2lEXConEXOU+4w3+had6enf6I5qL0d5uHSXl/IdxazuULwqXjWDSPfovMs72pS2NDuIS9X5vfDSbFL7xenv3nl1C15Vx4o769kefZ1ZRLVW4XVmrjOH6fmWvNRfjqkZrOZ0xqvma2X/RrOXas4xZ89QnWd93bOPKNdRzO2dFd5Mt2xvqfz09i9pR/ugl5d2TvRXnad6dHhVrTozUfG6M1bto+x3Dy+9T3G6vNSfaieR1lT7Lu9oo3qMtKVaU/VR1fdWvDR7sxkcncnq8V54s/lb2b+9+lJO1ZnKvFI9mPWyM6eieJ3/X7XfIo2ohhxe+u3OaurvXn3pfWdHk6k4sxntzqsefdtvkkbVelb7iGqTtKXnFV6HhTSp8Lo71a3tXl66I8rJmv5VWlHdZnO8Zx/Rt6pnyKiOHd2c2qj27x6t5R3h6u7/8G/eT/smMYCAJQAA
+  </data>
+ </layer>
+ <layer name="Buildings" width="60" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3SV0rEUBiG4UyMvffee+8z9t57WYS6EscrdRXqlboJwSt1R76CFyFzgiEoI+F74WHgTE5OfhLL+ruuY8HWotKjYTbTWrqLOZZlIwMOMp3UaypZq0I1alCLOtS7rn0zzPa1doNbz3+j7BvDOCYwiTgShrN/uyzOyEYOcpFnOLOBtUY0oRktaEVbgOd7YtZnz7xT7JvGDGYxh3ksGO53xt5zHxchvp98zihAIYpQbDiznbUOdKIL3ehBb4B533mmD89zLbJvCctYwSrWsG643yV7X5H8/nW7CjFvCWeUogzlqDCc2cdaPwYwiCEMYyTk97fBvk1sYRs72MXeD/O+uGZN2OHmTUf7zHWAQxzhGCc49Zk3bqe+27Dv97/nnjfpEcV575jp3sdDBOdVSimllFJKKaWUUkoppZRSSqkgfQIcdPPegCUAAA==
+  </data>
+ </layer>
+ <layer name="flowers" width="60" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3PMQ4AEBREQcm//704CW5BSaLVMNNtss1LCYCbcuy7xPn3ijb76tLYH+8FAAAAAAAA4G8DSChXKIAlAAA=
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,81 @@
+package com.company;
+
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class GameState extends StateBasedGame{
+
+    public static int firstX = 0, firstY = 0;
+    public static AppGameContainer app;
+    public static int width = 700;
+    public static int height = 700;
+    public static Map<Integer, MapViewer> mapViews = new HashMap<>();
+    public static GameState gameState;
+    public static ObjectView player;
+
+    public GameState() throws SlickException {
+        super("map-village");
+        addMapView("map-village", 0);
+        addMapView("map-farm", 1);
+        this.enterState(1);
+    }
+    public static void run() throws SlickException {
+        app = new AppGameContainer(gameState = new GameState());
+        app.setDisplayMode(width, height, false);
+        app.start();
+    }
+    public void addMapView(String TXMName, int id){
+        MapViewer mapViewer = new MapViewer(TXMName, id);
+        mapViews.put(id, mapViewer);
+        this.addState(mapViewer);
+    }
+    @Override
+    public void initStatesList(GameContainer gameContainer) throws SlickException {
+        player = new ObjectView(new Position(GameState.width / 8,GameState.height / 8,40,50), null, "0", ObjectView.Type.PLAYER);
+        this.getState(0).init(gameContainer, this);
+        this.getState(1).init(gameContainer, this);
+        List<ObjectView> objectViews = new ArrayList<>();
+        objectViews.add(new ObjectView(new Position(0, 0, 50, 40 * 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(60 * 32 - 70, 0, 70, 40 * 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 23 * 32, 50), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(27 * 32 + 10, 0, 60 * 32 - (28 * 32 + 10), 50), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 37 * 32 + 10, 22 * 32, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32, 37 * 32 + 10, 60 * 32 - (28 * 32), 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32 + 10, 50, 64, 64), null, "0", ObjectView.Type.ITEM));
+
+        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 32, 5 * 32, 4 * 32), null,"0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(23 * 32 + 10, 0, 4 * 32, 20), null, "0", ObjectView.Type.BUILDING));
+        objectViews.get(objectViews.size() - 1).setDoor(new Position(23 * 32 + 10, 0, 4 * 32, 20));
+        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 32, 7 * 32, 4 * 32), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, "0", ObjectView.Type.BUILDING));
+
+
+        mapViews.get(1).objectViews = objectViews;
+
+
+        objectViews = new ArrayList<>();
+        objectViews.add(new ObjectView(new Position(0, 0, 20, 7 * 32 - 15), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 11 * 32 - 15, 20, 8 * 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 40 * 32, 10), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 18 * 32 - 10, 40 * 32, 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(38 * 32, 0, 32, 20 * 32), null, "0", ObjectView.Type.ITEM));
+
+        objectViews.add(new ObjectView(new Position(2 * 32, 1 * 32 + 10, 3 * 32 + 15, 2 * 32 + 10), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(12 * 32, 1 * 32 - 10, 3 * 32 + 5, 3 * 32 + 10), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(21 * 32 + 10, 1 * 32, 3 * 32 + 10, 3 * 32 + 5), null, "0", ObjectView.Type.BUILDING));
+        objectViews.add(new ObjectView(new Position(31 * 32, 2 * 32 + 15, 2 * 32 + 10, 3 * 32 - 5), null, "0", ObjectView.Type.BUILDING));
+
+        objectViews.add(new ObjectView(new Position(2 * 32 + 5, 12 * 32 + 10, 3 * 32, 2 * 32 + 15), null, "0", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(12 * 32, 12 * 32 + 15, 3 * 32 + 10, 3 * 32 - 15), null, "0", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(31 * 32 + 5, 12 * 32 + 5, 2 * 32 + 20, 3 * 32 - 5), null, "0", ObjectView.Type.BUILDING_ITEM));
+
+        mapViews.get(0).objectViews = objectViews;
+    }
+}

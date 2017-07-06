@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="terrain_atlas" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
+  <image source="Terrain_Sprites/terrain_atlas.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="1025" name="stone-wall" tilewidth="32" tileheight="32" tilecount="238" columns="17">
+  <image source="Terrain_Sprites/stone-wall.png" width="560" height="448"/>
+ </tileset>
+ <tileset firstgid="1263" name="PathAndObjects" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="Terrain_Sprites/PathAndObjects.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="1519" name="machine" tilewidth="32" tileheight="32" tilecount="380" columns="20">
+  <image source="Terrain_Sprites/Object Set/machine.png" width="667" height="618"/>
+ </tileset>
+ <layer name="Ground" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3DAQkAAAwDoMH791jMBbmCvaSqqqq+O3b7pzAQDgAA
+  </data>
+ </layer>
+ <layer name="Ground skin" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+WW7Q2CMBCGm6BxDBWcQFBH8GsEv2ZVN5ARFObwNUqCl3Jtr1h+eMkTTcj16ZVry7mn1DUwF3ADw4FSIzAGMUgAF5P+N66Rf7wpPBmYgTlYBPIu4VmBNdiAbSDvDp49OIAjOAXy0nFMZB15u6q3LW89ikipMnr/Vv9f1IPzliSvGsfkpXkSb32MQpPPeemcXeulmLzUZ6o3Y9a5ENbbxvvV5TfVa5qv7Tq79pWuJ229tJ+4en33ryucNwYJk+vznPNOQcqM6/O863XW9QXdhy595bN/pftI6tWdGZJ9VDL5v7iPdPmu91FTHve9IT2vbNbJ5pzk5s2dk7Z9pbuPJO/XJrh6beIfvXcB1Oua/wBPHRdWWBAOAAA=
+  </data>
+ </layer>
+</map>

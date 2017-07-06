@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="TileA4" tilewidth="32" tileheight="32" tilecount="240" columns="16">
+  <image source="Terrain_Sprites/MapStuff/TileA4.png" width="512" height="480"/>
+ </tileset>
+ <tileset firstgid="241" name="wall vert5" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/wall vert5.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="242" name="wall vertical" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/wall vertical.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="243" name="wall vert4" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/wall vert4.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="244" name="fence vertical" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/fence vertical.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="245" name="fence" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/fence.png" width="33" height="32"/>
+ </tileset>
+ <tileset firstgid="246" name="fence end right" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/fence end right.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="247" name="fence end left1" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/fence end left1.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="248" name="fence end top" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/fence end top.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="249" name="fence end bot" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/fence end bot.png" width="33" height="32"/>
+ </tileset>
+ <tileset firstgid="250" name="machine" tilewidth="32" tileheight="32" tilecount="380" columns="20">
+  <image source="Terrain_Sprites/Object Set/machine.png" width="667" height="618"/>
+ </tileset>
+ <tileset firstgid="630" name="hay" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="Terrain_Sprites/Object Set/hay.png" width="96" height="128"/>
+ </tileset>
+ <tileset firstgid="642" name="hay1" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="Terrain_Sprites/Object Set/hay1.png" width="33" height="32"/>
+ </tileset>
+ <layer name="Ground" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3DAQ0AAAzDoGqcfzEXckhYNVVVVd89umIf3xAOAAA=
+  </data>
+ </layer>
+ <layer name="Wall" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC/vEwMDwaQDwZwbywBcy9YHAx1F7R+0dtXdE2vtzgOylBIzaS197v5KAv6GZ8Z1E/V8ZBt6/o/YOPnt/EODTyl70cpmccnrU3lF7R+2ljr3k9KmQAbn9MgCHRx/LEA4AAA==
+  </data>
+ </layer>
+ <layer name="Objects" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2UTQ4BURCEe96hcAacAWdA/P8vcIbhBgQ3ILgBB1KbF73ppN+bESH9JZWprqR6JrNoou/RcURdqOfCstiep495AA1dWBbb84wwj6GJC8tie54p5hk0d2FZbM8w/hnprki5pq/pSndFyjV9TVe6K1Ku6Wu60l3R3ptfuVULp3sahmHkRSEhKkKl5J0t4VfQOpF7WSljdwWqsnek8Btoy7Id/D7H76hhVx1qsJ0H+CN0YtkZ/sLmrPe5iV0tqM12XuFv0J1lD/jnB/+7hhc1EGpyEA4AAA==
+  </data>
+ </layer>
+</map>
