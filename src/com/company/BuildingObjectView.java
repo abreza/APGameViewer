@@ -2,14 +2,12 @@ package com.company;
 
 import org.newdawn.slick.Image;
 
-/**
- * Created by Amin on 7/6/2017.
- */
 public class BuildingObjectView extends ObjectView {
     private int stateId = 0, firstPlayerX, firstPlayerY, firstX, firstY;
 
     public BuildingObjectView(Position position, Image image, Position door, String name, Type type, int stateId) {
         super(position, image, name, type);
+        this.setDoor(door);
         this.stateId = stateId;
     }
 

@@ -4,6 +4,8 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+
+import javax.xml.soap.Name;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,9 +57,10 @@ public class GameState extends StateBasedGame{
                 new Position(23 * 32 + 10, 0, 4 * 32, 20), Names.VIllage.name(), ObjectView.Type.BUILDING, 0));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(20, 300);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 0);
-        objectViews.add(new BuildingObjectView(new Position(13 * 32 + 10, 32, 7 * 32, 4 * 32), null,
-                new Position(16 * 32, 4 * 32, 32, 2 * 32), Names.BARN.name(), ObjectView.Type.BUILDING, 2));
-        ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setPlayerXAndY(20, 700);
+        objectViews.add(new BuildingObjectView(new Position(13 * 32 + 10, 42, 7 * 32, 4 * 32), null,
+                new Position(16 * 32, 4 * 32, 42, 2 * 32), Names.BARN.name(), ObjectView.Type.BUILDING, 2));
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(6 * 32, 6 * 32 - 15);
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(8 * 32, 22 * 32);
         objectViews.add(new ObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null, Names.GREEN_HOUSE.name(), ObjectView.Type.BUILDING));
         objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, Names.POND.name(), ObjectView.Type.BUILDING));
 
@@ -114,9 +117,13 @@ public class GameState extends StateBasedGame{
         ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setFirstXAndY(18 * 32, -50);
 
 
-
         mapViews.get(0).objectViews = objectViews;
 
-        mapViews.get(2).objectViews = new ArrayList<>();
+        objectViews = new ArrayList<>();
+        objectViews.add(new BuildingObjectView(new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), null,
+                new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 0);
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(16 * 32, 6 * 32);
+        mapViews.get(2).objectViews = objectViews;
     }
 }
