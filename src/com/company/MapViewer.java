@@ -62,8 +62,6 @@ public class MapViewer extends BasicGameState {
             ObjectView intersectedView =
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null){
-                System.out.println(intersectedView.getName());
-                System.out.println(STATE_ID);
                 if (STATE_ID == 0)
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
                 else
