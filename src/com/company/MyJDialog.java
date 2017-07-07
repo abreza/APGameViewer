@@ -30,13 +30,21 @@ public class MyJDialog extends JDialog {
         messagePane.add(messageLabel);
         getContentPane().add(messagePane, BorderLayout.PAGE_START);
 
-        buttonPane = new JPanel();
+        setButtonPane();
         makeQuitButton();
 
         JButton buttonYes = new JButton("Yes");
         JButton buttonNo = new JButton("No");
         buttonYes.addActionListener(new ButtonListener("Y/N/y"));
         buttonNo.addActionListener(new ButtonListener("Y/N/n"));
+        buttonYes.setFont(new Font("Arial", Font.PLAIN, 20));
+        buttonYes.setOpaque(false);
+        buttonYes.setContentAreaFilled(false);
+        buttonYes.setBorderPainted(false);
+        buttonNo.setFont(new Font("Arial", Font.PLAIN, 20));
+        buttonNo.setOpaque(false);
+        buttonNo.setContentAreaFilled(false);
+        buttonNo.setBorderPainted(false);
         buttonPane.add(buttonYes);
         buttonPane.add(buttonNo);
         jButtons.add(buttonYes);
@@ -50,6 +58,19 @@ public class MyJDialog extends JDialog {
 
     }
 
+    private void setButtonPane() {
+        buttonPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(new ImageIcon(System.getProperty("user.dir") +
+                        "\\resource\\wooden-texture.jpg").getImage(), 0, 0, null);
+            }
+        };
+        System.out.println(System.getProperty("user.dir") + "\\resource\\wooden-texture.jpg");
+        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.Y_AXIS));
+    }
+
     public MyJDialog(JFrame parent, String title, String message, MapViewer viewer){
         super(parent, title);
         setModalityType(ModalityType.APPLICATION_MODAL);
@@ -59,10 +80,11 @@ public class MyJDialog extends JDialog {
 
         JPanel messagePane = new JPanel();
         JLabel messageLabel = new JLabel(message);
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         messagePane.add(messageLabel);
         getContentPane().add(messagePane, BorderLayout.PAGE_START);
 
-        buttonPane = new JPanel();
+        setButtonPane();
         makeQuitButton();
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
@@ -79,7 +101,7 @@ public class MyJDialog extends JDialog {
         setLocation(p.x, p.y);
         this.mapViewer = viewer;
 
-        buttonPane = new JPanel();
+        setButtonPane();
         for (int i = 0; i < messages.length; i++) {
             addButton(messages[i]);
         }
@@ -97,14 +119,22 @@ public class MyJDialog extends JDialog {
 
     private void makeQuitButton() {
         JButton button = new JButton("Quit");
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.addActionListener(new QuitListener());
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
         buttonPane.add(button);
         jButtons.add(button);
-        button.addActionListener(new QuitListener());
     }
 
     public void addButton(String message) {
         JButton button = new JButton(message);
         button.addActionListener(new ButtonListener(button));
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
         buttonPane.add(button);
         jButtons.add(button);
     }
