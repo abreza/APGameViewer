@@ -6,6 +6,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -61,17 +62,7 @@ public class MapViewer extends BasicGameState {
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null){
                 System.out.println(intersectedView.getName());
-                try {
-                    send("inspect " + intersectedView.getName() + "\n");
-                    TimeUnit.MILLISECONDS.sleep(500);
-                    System.out.println(serverMessages);
-                    if (serverMessages.size() >= 1)
-                        showMenu(serverMessages);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
             }
         }
         if(input.isKeyDown(Input.KEY_UP)){
@@ -116,8 +107,34 @@ public class MapViewer extends BasicGameState {
         }
     }
 
-    private void showMenu(List<String> serverMessages) {
+    public void sendAndGetResponse(String message) {
+        try {
+            send(message);
+            TimeUnit.MILLISECONDS.sleep(500);
+            System.out.println(serverMessages);
+            if (serverMessages.size() >= 1) {
+                showMenu(serverMessages);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void showMenu(List<String> serverMessages) {
+        if (serverMessages.size() == 1){
+            MyJDialog dialog = new MyJDialog(new JFrame(), "Message", serverMessages.get(0), this);
+            dialog.setSize(500, 300);
+        }
+        else {
+            String[] messages = new String[serverMessages.size() - 1];
+            for (int i = 0; i < messages.length; i++) {
+                messages[i] = serverMessages.get(i + 1);
+            }
+            MyJDialog dialog = new MyJDialog(new JFrame(), serverMessages.get(0), this, messages);
+            dialog.setSize(500, 300);
+        }
     }
 
     private String send(final String message) throws IOException {
