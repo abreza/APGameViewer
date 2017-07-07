@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MapViewer extends BasicGameState {
     public static int PLAYER_SPEED = 1;
+    public static int STATE_ID = 1;
     public TiledMap map;
     private String TMXName;
     public List<ObjectView> objectViews;
@@ -62,7 +63,11 @@ public class MapViewer extends BasicGameState {
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null){
                 System.out.println(intersectedView.getName());
-                sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
+                System.out.println(STATE_ID);
+                if (STATE_ID == 0)
+                    sendAndGetResponse("goto " + intersectedView.getName() + "\n");
+                else
+                    sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
             }
         }
         if(input.isKeyDown(Input.KEY_UP)){
@@ -113,13 +118,21 @@ public class MapViewer extends BasicGameState {
             TimeUnit.MILLISECONDS.sleep(500);
             System.out.println(serverMessages);
             if (serverMessages.size() >= 1) {
-                showMenu(serverMessages);
+                if (serverMessages.get(0).equalsIgnoreCase("Y/N"))
+                    showYesNoMenu(serverMessages);
+                else
+                    showMenu(serverMessages);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showYesNoMenu(List<String> serverMessages) {
+        MyJDialog dialog = new MyJDialog(new JFrame(), "yes no question", serverMessages.get(1), this, true);
+        dialog.setSize(500, 300);
     }
 
     private void showMenu(List<String> serverMessages) {
@@ -200,16 +213,26 @@ public class MapViewer extends BasicGameState {
             if(playerIntersect(objectView.getPosition())){
                 if(objectView.getType() == ObjectView.Type.BUILDING && playerIntersect(objectView.getDoor())){
                     BuildingObjectView building = (BuildingObjectView) objectView;
-                    GameState.gameState.enterState(building.getStateId());
-                    GameState.player.getPosition().x = building.getFirstPlayerX();
-                    GameState.player.getPosition().y = building.getFirstPlayerY();
-                    GameState.firstX = building.getFirstX();
-                    GameState.firstY = building.getFirstY();
+                    goTo(building);
                 }
                 return true;
             }
         }
         return false;
+    }
+
+    private void goTo(BuildingObjectView building) {
+        try {
+            send("goto " + building.getName() + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        GameState.gameState.enterState(building.getStateId());
+        STATE_ID = building.getStateId();
+        GameState.player.getPosition().x = building.getFirstPlayerX();
+        GameState.player.getPosition().y = building.getFirstPlayerY();
+        GameState.firstX = building.getFirstX();
+        GameState.firstY = building.getFirstY();
     }
 
     public static boolean pointIntersect(int x, int y, Position position){

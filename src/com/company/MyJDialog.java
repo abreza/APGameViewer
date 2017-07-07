@@ -1,5 +1,6 @@
 package com.company;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,36 @@ public class MyJDialog extends JDialog {
     private MapViewer mapViewer;
     private JPanel buttonPane;
     private static final long serialVersionUID = 1L;
+
+    public MyJDialog(JFrame parent, String title, String message, MapViewer viewer, boolean isYesNo){
+        super(parent, title);
+        setModalityType(ModalityType.APPLICATION_MODAL);
+        Point p = new Point(800, 500);
+        setLocation(p.x, p.y);
+        this.mapViewer = viewer;
+
+        JPanel messagePane = new JPanel();
+        JLabel messageLabel = new JLabel(message);
+        messagePane.add(messageLabel);
+        getContentPane().add(messagePane, BorderLayout.PAGE_START);
+
+        buttonPane = new JPanel();
+        JButton button = new JButton("Quit");
+        buttonPane.add(button);
+        button.addActionListener(new QuitListener());
+
+        JButton buttonYes = new JButton("Yes");
+        JButton buttonNo = new JButton("No");
+        buttonYes.addActionListener(new ButtonListener("Y/N/y"));
+        buttonNo.addActionListener(new ButtonListener("Y/N/n"));
+        buttonPane.add(buttonYes);
+        buttonPane.add(buttonNo);
+        getContentPane().add(buttonPane, BorderLayout.PAGE_END);
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        pack();
+        setVisible(true);
+    }
 
     public MyJDialog(JFrame parent, String title, String message, MapViewer viewer){
         super(parent, title);
@@ -82,7 +113,12 @@ public class MyJDialog extends JDialog {
 
     class ButtonListener implements ActionListener {
 
-        private JButton button;
+        private JButton button = null;
+        private String message;
+
+        public ButtonListener(String message){
+            this.message = message;
+        }
 
         public ButtonListener(JButton button) {
             this.button = button;
@@ -90,19 +126,24 @@ public class MyJDialog extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            mapViewer.sendAndGetResponse("inspect " + button.getText() + "\n");
             setVisible(false);
             dispose();
+            if (button != null)
+                mapViewer.sendAndGetResponse("inspect " + button.getText() + "\n");
+            else {
+                mapViewer.sendAndGetResponse(message + "\n");
+            }
         }
     }
 
     class QuitListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            mapViewer.sendAndGetResponse("back\n");
             setVisible(false);
             dispose();
+            mapViewer.sendAndGetResponse("back\n");
         }
     }
+
 
 }
