@@ -2,10 +2,7 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 
 public class NumberDialog extends MyJDialog {
 
@@ -37,6 +34,63 @@ public class NumberDialog extends MyJDialog {
         setVisible(true);
         jButtons.get(focusedButtonId).requestFocus();
 
+    }
+
+    @Override
+    public JRootPane createRootPane() {
+        JRootPane rootPane = new JRootPane();
+        KeyStroke strokeDown = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+        Action actionDown = new AbstractAction() {
+
+            private static final long serialVersionUID = 1L;
+
+            public void actionPerformed(ActionEvent e) {
+                if (focusedButtonId == 2)
+                    focusedButtonId = 0;
+                else
+                    focusedButtonId++;
+                if (focusedButtonId == 1)
+                    numberField.requestFocus();
+                else if (focusedButtonId == 0)
+                    jButtons.get(0).requestFocus();
+                else
+                    jButtons.get(1).requestFocus();
+            }
+        };
+        KeyStroke strokeUp = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
+        Action actionUp = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (focusedButtonId == 0)
+                    focusedButtonId = 2;
+                else
+                    focusedButtonId--;
+                if (focusedButtonId == 1)
+                    numberField.requestFocus();
+                else if (focusedButtonId == 0)
+                    jButtons.get(0).requestFocus();
+                else
+                    jButtons.get(1).requestFocus();
+            }
+        };
+        KeyStroke strokeEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+        Action actionEnter = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (focusedButtonId == 0)
+                    jButtons.get(0).doClick();
+                if (focusedButtonId == 2)
+                    jButtons.get(1).doClick();
+            }
+        };
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(strokeDown, "DOWN");
+        inputMap.put(strokeUp, "UP");
+        inputMap.put(strokeEnter, "ENTER");
+        rootPane.getActionMap().put("UP", actionUp);
+        rootPane.getActionMap().put("DOWN", actionDown);
+        rootPane.getActionMap().put("ENTER", actionEnter);
+        return rootPane;
     }
 
     class HintTextField extends JTextField implements FocusListener {
