@@ -118,6 +118,10 @@ public class MapViewer extends BasicGameState {
             if (serverMessages.size() >= 1) {
                 if (serverMessages.get(0).equalsIgnoreCase("Y/N"))
                     showYesNoMenu(serverMessages);
+                else if (serverMessages.get(0).equalsIgnoreCase("Number/"))
+                    showNumberMenu(serverMessages);
+                else if (serverMessages.get(0).equalsIgnoreCase("Backpack/"))
+                    showBackPackMenu(serverMessages);
                 else
                     showMenu(serverMessages);
             }
@@ -128,8 +132,22 @@ public class MapViewer extends BasicGameState {
         }
     }
 
+    private void showBackPackMenu(List<String> serverMessages) {
+        String[] messages = new String[serverMessages.size() - 2];
+        for (int i = 0; i < messages.length; i++) {
+            messages[i] = serverMessages.get(i + 2);
+        }
+        BackPackDialog dialog = new BackPackDialog(new JFrame(), serverMessages.get(1), this, messages);
+        dialog.setSize(500, 300);
+    }
+
+    private void showNumberMenu(List<String> serverMessages) {
+        NumberDialog dialog = new NumberDialog(new JFrame(), "number question", serverMessages.get(1), this);
+        dialog.setSize(500, 300);
+    }
+
     private void showYesNoMenu(List<String> serverMessages) {
-        MyJDialog dialog = new MyJDialog(new JFrame(), "yes no question", serverMessages.get(1), this, true);
+        YesNoDialog dialog = new YesNoDialog(new JFrame(), "yes no question", serverMessages.get(1), this);
         dialog.setSize(500, 300);
     }
 
@@ -151,7 +169,7 @@ public class MapViewer extends BasicGameState {
     private String send(final String message) throws IOException {
         final String[] res = new String[1];
         res[0] = new String();
-        socket = new Socket("localhost", 1377);
+        socket = new Socket("localhost", 1378);
         new Thread(() -> {
             try {
                 serverMessages = new ArrayList<>();

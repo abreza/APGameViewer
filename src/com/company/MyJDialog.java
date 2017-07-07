@@ -13,65 +13,12 @@ import java.util.ArrayList;
 public class MyJDialog extends JDialog {
 
     int focusedButtonId = 0;
-    private MapViewer mapViewer;
-    private JPanel buttonPane;
-    private ArrayList<JButton> jButtons = new ArrayList<>();
+    protected MapViewer mapViewer;
+    protected JPanel buttonPane;
+    protected ArrayList<JButton> jButtons = new ArrayList<>();
     private static final long serialVersionUID = 1L;
 
-    public MyJDialog(JFrame parent, String title, String message, MapViewer viewer, boolean isYesNo){
-        super(parent, title);
-        setModalityType(ModalityType.APPLICATION_MODAL);
-        Point p = new Point(800, 500);
-        setLocation(p.x, p.y);
-        this.mapViewer = viewer;
-
-        JPanel messagePane = new JPanel();
-        JLabel messageLabel = new JLabel(message);
-        messagePane.add(messageLabel);
-        getContentPane().add(messagePane, BorderLayout.PAGE_START);
-
-        setButtonPane();
-        makeQuitButton();
-
-        JButton buttonYes = new JButton("Yes");
-        JButton buttonNo = new JButton("No");
-        buttonYes.addActionListener(new ButtonListener("Y/N/y"));
-        buttonNo.addActionListener(new ButtonListener("Y/N/n"));
-        buttonYes.setFont(new Font("Arial", Font.PLAIN, 20));
-        buttonYes.setOpaque(false);
-        buttonYes.setContentAreaFilled(false);
-        buttonYes.setBorderPainted(false);
-        buttonNo.setFont(new Font("Arial", Font.PLAIN, 20));
-        buttonNo.setOpaque(false);
-        buttonNo.setContentAreaFilled(false);
-        buttonNo.setBorderPainted(false);
-        buttonPane.add(buttonYes);
-        buttonPane.add(buttonNo);
-        jButtons.add(buttonYes);
-        jButtons.add(buttonNo);
-        getContentPane().add(buttonPane, BorderLayout.PAGE_END);
-
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        pack();
-        setVisible(true);
-        jButtons.get(focusedButtonId).requestFocus();
-
-    }
-
-    private void setButtonPane() {
-        buttonPane = new JPanel(){
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(new ImageIcon(System.getProperty("user.dir") +
-                        "\\resource\\wooden-texture.jpg").getImage(), 0, 0, null);
-            }
-        };
-        System.out.println(System.getProperty("user.dir") + "\\resource\\wooden-texture.jpg");
-        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.Y_AXIS));
-    }
-
-    public MyJDialog(JFrame parent, String title, String message, MapViewer viewer){
+    public MyJDialog(JFrame parent, String title, String message, MapViewer viewer, boolean firstConstructor) {
         super(parent, title);
         setModalityType(ModalityType.APPLICATION_MODAL);
         Point p = new Point(800, 500);
@@ -86,6 +33,24 @@ public class MyJDialog extends JDialog {
 
         setButtonPane();
         makeQuitButton();
+    }
+
+    private void setButtonPane() {
+        buttonPane = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(new ImageIcon(System.getProperty("user.dir") +
+                        "\\resource\\wooden-texture.jpg").getImage(), 0, 0, null);
+            }
+        };
+        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.Y_AXIS));
+    }
+
+
+
+    public MyJDialog(JFrame parent, String title, String message, MapViewer viewer){
+        this(parent, title, message, viewer, true);
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -94,7 +59,7 @@ public class MyJDialog extends JDialog {
         jButtons.get(focusedButtonId).requestFocus();
     }
 
-    public MyJDialog(JFrame parent, String title, MapViewer viewer, String... messages) {
+    public MyJDialog(JFrame parent, String title, MapViewer viewer, boolean isFirst, String... messages) {
         super(parent, title);
         setModalityType(ModalityType.APPLICATION_MODAL);
         Point p = new Point(800, 500);
@@ -108,6 +73,11 @@ public class MyJDialog extends JDialog {
 
         makeQuitButton();
 
+
+    }
+
+    public MyJDialog(JFrame parent, String title, MapViewer viewer, String... messages) {
+        this(parent, title, viewer, true, messages);
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
