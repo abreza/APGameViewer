@@ -1,15 +1,21 @@
 package com.company;
 
 
+import javafx.scene.input.KeyCode;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class MyJDialog extends JDialog {
 
+    int focusedButtonId = 0;
     private MapViewer mapViewer;
     private JPanel buttonPane;
+    private ArrayList<JButton> jButtons = new ArrayList<>();
     private static final long serialVersionUID = 1L;
 
     public MyJDialog(JFrame parent, String title, String message, MapViewer viewer, boolean isYesNo){
@@ -25,9 +31,7 @@ public class MyJDialog extends JDialog {
         getContentPane().add(messagePane, BorderLayout.PAGE_START);
 
         buttonPane = new JPanel();
-        JButton button = new JButton("Quit");
-        buttonPane.add(button);
-        button.addActionListener(new QuitListener());
+        makeQuitButton();
 
         JButton buttonYes = new JButton("Yes");
         JButton buttonNo = new JButton("No");
@@ -35,11 +39,15 @@ public class MyJDialog extends JDialog {
         buttonNo.addActionListener(new ButtonListener("Y/N/n"));
         buttonPane.add(buttonYes);
         buttonPane.add(buttonNo);
+        jButtons.add(buttonYes);
+        jButtons.add(buttonNo);
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
+        jButtons.get(focusedButtonId).requestFocus();
+
     }
 
     public MyJDialog(JFrame parent, String title, String message, MapViewer viewer){
@@ -55,14 +63,13 @@ public class MyJDialog extends JDialog {
         getContentPane().add(messagePane, BorderLayout.PAGE_START);
 
         buttonPane = new JPanel();
-        JButton button = new JButton("Quit");
-        buttonPane.add(button);
-        button.addActionListener(new QuitListener());
+        makeQuitButton();
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
+        jButtons.get(focusedButtonId).requestFocus();
     }
 
     public MyJDialog(JFrame parent, String title, MapViewer viewer, String... messages) {
@@ -76,38 +83,68 @@ public class MyJDialog extends JDialog {
         for (int i = 0; i < messages.length; i++) {
             addButton(messages[i]);
         }
-        JButton button = new JButton("Quit");
-        buttonPane.add(button);
-        button.addActionListener(new QuitListener());
+
+        makeQuitButton();
+
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
+        jButtons.get(focusedButtonId).requestFocus();
+
+    }
+
+    private void makeQuitButton() {
+        JButton button = new JButton("Quit");
+        buttonPane.add(button);
+        jButtons.add(button);
+        button.addActionListener(new QuitListener());
     }
 
     public void addButton(String message) {
         JButton button = new JButton(message);
         button.addActionListener(new ButtonListener(button));
         buttonPane.add(button);
+        jButtons.add(button);
     }
 
     public JRootPane createRootPane() {
         JRootPane rootPane = new JRootPane();
-        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
-        Action action = new AbstractAction() {
+        KeyStroke strokeDown = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+        Action actionDown = new AbstractAction() {
 
             private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent e) {
-                System.out.println("escaping..");
-                setVisible(false);
-                dispose();
+                if (focusedButtonId == jButtons.size() - 1)
+                    focusedButtonId = -1;
+                jButtons.get(++focusedButtonId).requestFocus();
+            }
+        };
+        KeyStroke strokeUp = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
+        Action actionUp = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (focusedButtonId == 0)
+                    focusedButtonId = jButtons.size();
+                jButtons.get(--focusedButtonId).requestFocus();
+            }
+        };
+        KeyStroke strokeEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+        Action actionEnter = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtons.get(focusedButtonId).doClick();
             }
         };
         InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        inputMap.put(stroke, "ESCAPE");
-        rootPane.getActionMap().put("ESCAPE", action);
+        inputMap.put(strokeDown, "DOWN");
+        inputMap.put(strokeUp, "UP");
+        inputMap.put(strokeEnter, "ENTER");
+        rootPane.getActionMap().put("UP", actionUp);
+        rootPane.getActionMap().put("DOWN", actionDown);
+        rootPane.getActionMap().put("ENTER", actionEnter);
         return rootPane;
     }
 
