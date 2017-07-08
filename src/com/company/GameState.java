@@ -5,6 +5,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import javax.naming.Name;
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -134,10 +136,20 @@ public class GameState extends StateBasedGame{
         mapViews.get(2).objectViews = objectViews;
 
         objectViews = new ArrayList<>();
-        objectViews.add(new BuildingObjectView(new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), null,
-                new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
+        objectViews.add(new BuildingObjectView(new Position(12 * 32 - 15, 28 * 32, 4 * 32 + 30, 2 * 32), null,
+                new Position(12 * 32 - 15, 28 * 32, 4 * 32, 2 * 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(20 * 32, 0);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(16 * 32, 6 * 32);
+        objectViews.add(new ObjectView(new Position(3 * 32 + 15, 6 * 32 + 15, 6 * 32, 7 * 32), null, "Field No.0", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(19 * 32 + 15, 6 * 32 + 15, 6 * 32, 7 * 32), null, "Field No.1", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(3 * 32 + 15, 17 * 32 + 15, 6 * 32, 7 * 32), null, "Field No.2", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(19 * 32 + 15, 17 * 32 + 15, 6 * 32, 7 * 32), null, "Field No.3", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(30, -1 * 32 + 15, 5 * 32 - 15, 4 * 32), null, Names.WEATHERMACHINE.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, -15, 2, 32 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, -15, 32 * 32, 2), null, Names.WALL.name(), ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(29 * 32, -15, 2, 32 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(0, 29 * 32 - 45, 13 * 32, 2), null, Names.WALL.name(), ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(17 * 32 , 29 * 32 - 45, 13 * 32, 2), null, Names.WALL.name(), ObjectView.Type.ITEM));
         mapViews.get(3).objectViews = objectViews;
 
         objectViews = new ArrayList<>();

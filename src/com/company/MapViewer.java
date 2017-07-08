@@ -148,7 +148,6 @@ public class MapViewer extends BasicGameState {
     private void repairGreenHouse() {
         try {
             send("goto " + Names.GREENHOUSE.name() + "\n");
-            System.out.println("sent");
         } catch (IOException e) {
             e.printStackTrace();
         }
