@@ -32,7 +32,7 @@ public class NumberDialog extends MyJDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
-        jButtons.get(focusedButtonId).requestFocus();
+        jButtons.get(0).requestFocus();
 
     }
 

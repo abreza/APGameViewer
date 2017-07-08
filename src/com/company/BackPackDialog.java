@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BackPackDialog extends MyJDialog {
+
+    private JLabel message;
+
     public BackPackDialog(JFrame parent, String title, MapViewer viewer, String... messages) {
         super(parent, title, viewer, true, messages);
 
@@ -13,6 +16,12 @@ public class BackPackDialog extends MyJDialog {
             button.removeActionListener(button.getActionListeners()[0]);
             button.addActionListener(new BackPackButtonListener(button));
         }
+
+        JPanel messagePane = new JPanel();
+        JLabel messageLabel = new JLabel(title);
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        messagePane.add(messageLabel);
+        getContentPane().add(messagePane, BorderLayout.PAGE_START);
 
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
