@@ -6,6 +6,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
+import javax.naming.Name;
+import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
@@ -120,6 +122,17 @@ public class MapViewer extends BasicGameState {
                     showYesNoMenu(serverMessages);
                 else if (serverMessages.get(0).equalsIgnoreCase("Number/"))
                     showNumberMenu(serverMessages);
+                else if (serverMessages.get(0).equalsIgnoreCase("greenhouse/broken"))
+                    repairGreenHouse();
+                else if (serverMessages.get(0).equalsIgnoreCase("greenhouse/repaired")) {
+                    for (ObjectView objectView:objectViews) {
+                        if(objectView.getType() == ObjectView.Type.BUILDING &&
+                                objectView.getName().equalsIgnoreCase(Names.GREENHOUSE.name())) {
+                            BuildingObjectView building = (BuildingObjectView) objectView;
+                            goTo(building);
+                        }
+                    }
+                }
                 else if (serverMessages.get(0).equalsIgnoreCase("Backpack/"))
                     showBackPackMenu(serverMessages);
                 else
@@ -130,6 +143,16 @@ public class MapViewer extends BasicGameState {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void repairGreenHouse() {
+        try {
+            send("goto " + Names.GREENHOUSE.name() + "\n");
+            System.out.println("sent");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sendAndGetResponse("inspect repair greenhouse\n");
     }
 
     private void showBackPackMenu(List<String> serverMessages) {
@@ -169,7 +192,7 @@ public class MapViewer extends BasicGameState {
     private String send(final String message) throws IOException {
         final String[] res = new String[1];
         res[0] = new String();
-        socket = new Socket("localhost", 1378);
+        socket = new Socket("localhost", 1377);
         new Thread(() -> {
             try {
                 serverMessages = new ArrayList<>();
@@ -229,7 +252,12 @@ public class MapViewer extends BasicGameState {
             if(playerIntersect(objectView.getPosition())){
                 if(objectView.getType() == ObjectView.Type.BUILDING && playerIntersect(objectView.getDoor())){
                     BuildingObjectView building = (BuildingObjectView) objectView;
-                    goTo(building);
+                    if (building.getStateId() == 3){
+                        sendAndGetResponse("greenhouse/repair\n");
+                    }
+                    else {
+                        goTo(building);
+                    }
                 }
                 return true;
             }

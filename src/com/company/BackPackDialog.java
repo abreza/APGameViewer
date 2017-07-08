@@ -13,6 +13,8 @@ public class BackPackDialog extends MyJDialog {
         super(parent, title, viewer, true, messages);
 
         for (JButton button: jButtons) {
+            if (button.getActionListeners()[0] instanceof QuitListener)
+                continue;
             button.removeActionListener(button.getActionListeners()[0]);
             button.addActionListener(new BackPackButtonListener(button));
         }
