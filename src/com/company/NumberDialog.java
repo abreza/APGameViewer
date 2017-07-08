@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class NumberDialog extends MyJDialog {
 
-    private JTextField numberField = new HintTextField("type number here");
+    private JTextField numberField = new HintTextField("type here");
     private JButton enterButton = new JButton("Enter");
 
     public NumberDialog(JFrame parent, String title, String message, MapViewer viewer) {

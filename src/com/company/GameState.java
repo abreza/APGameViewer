@@ -5,7 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import javax.xml.soap.Name;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +63,7 @@ public class GameState extends StateBasedGame{
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(6 * 32, 6 * 32 - 15);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(8 * 32, 22 * 32);
         objectViews.add(new BuildingObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null,
-                new Position(35 * 32 + 10, 5 * 32, 3 * 32, 32), Names.GREEN_HOUSE.name(), ObjectView.Type.BUILDING, 3));
+                new Position(35 * 32 + 10, 5 * 32, 3 * 32, 32), Names.GREENHOUSE.name(), ObjectView.Type.BUILDING, 3));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(6 * 32, 6 * 32 - 15);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(8 * 32, 22 * 32);
         objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, Names.POND.name(), ObjectView.Type.BUILDING));
