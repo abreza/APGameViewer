@@ -2,9 +2,11 @@ package com.company;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+
+import javax.naming.Name;
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +35,6 @@ public class GameState extends StateBasedGame{
         addMapView("map-greenhouse", 3);
         addMapView("map-jungle", 4);
         this.enterState(1);
-
     }
     public static void run() throws SlickException {
         app = new AppGameContainer(gameState = new GameState());
@@ -87,7 +88,7 @@ public class GameState extends StateBasedGame{
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(6 * 32, 6 * 32 - 15);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(8 * 32, 22 * 32);
         objectViews.add(new BuildingObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null,
-                new Position(35 * 32 + 10, 5 * 32, 3 * 32, 32), Names.GREEN_HOUSE.name(), ObjectView.Type.BUILDING, 3));
+                new Position(35 * 32 + 10, 5 * 32, 3 * 32, 32), Names.GREENHOUSE.name(), ObjectView.Type.BUILDING, 3));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(6 * 32, 6 * 32 - 15);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(8 * 32, 22 * 32);
         objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, Names.POND.name(), ObjectView.Type.BUILDING));
@@ -155,6 +156,27 @@ public class GameState extends StateBasedGame{
                 new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 0);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(16 * 32, 6 * 32);
+        objectViews.add(new ObjectView(new Position(32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
         mapViews.get(2).objectViews = objectViews;
 
         objectViews = new ArrayList<>();
