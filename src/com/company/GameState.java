@@ -5,8 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import javax.naming.Name;
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,6 +131,27 @@ public class GameState extends StateBasedGame{
                 new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 0);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(16 * 32, 6 * 32);
+        objectViews.add(new ObjectView(new Position(32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(0, 0, 0, 0), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
         mapViews.get(2).objectViews = objectViews;
 
         objectViews = new ArrayList<>();

@@ -66,8 +66,10 @@ public class MapViewer extends BasicGameState {
             if (intersectedView != null){
                 if (STATE_ID == 0)
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
-                else
+                else {
+                    checkForBarn(intersectedView);
                     sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
+                }
             }
         }
         if(input.isKeyDown(Input.KEY_UP)){
@@ -112,6 +114,19 @@ public class MapViewer extends BasicGameState {
         }
     }
 
+    private void checkForBarn(ObjectView intersectedView) {
+        try {
+            if (intersectedView.getName().startsWith("cow") && !intersectedView.getName().endsWith("empty"))
+                send("inspect " + "cows" + "\n");
+            if (intersectedView.getName().startsWith("chicken") && !intersectedView.getName().endsWith("empty"))
+                send("inspect " + "chickens" + "\n");
+            if (intersectedView.getName().startsWith("sheep") && !intersectedView.getName().endsWith("empty"))
+                send("inspect " + "sheeps" + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendAndGetResponse(String message) {
         try {
             send(message);
@@ -133,6 +148,9 @@ public class MapViewer extends BasicGameState {
                         }
                     }
                 }
+                else if (serverMessages.get(0).equalsIgnoreCase("barnNames")){
+                    setBarnNames(serverMessages);
+                }
                 else if (serverMessages.get(0).equalsIgnoreCase("Backpack/"))
                     showBackPackMenu(serverMessages);
                 else
@@ -142,6 +160,32 @@ public class MapViewer extends BasicGameState {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void setBarnNames(List<String> serverMessages) {
+        List<ObjectView> cowObjectViews = new ArrayList<>();
+        List<ObjectView> chickenObjectViews = new ArrayList<>();
+        List<ObjectView> sheepObjectViews = new ArrayList<>();
+        System.out.println(objectViews.size());
+        for (ObjectView objectView: GameState.mapViews.get(2).objectViews) {
+            if (objectView.getName().toLowerCase().startsWith("cow")){
+                cowObjectViews.add(objectView);
+            }
+            if (objectView.getName().toLowerCase().startsWith("sheep")){
+                sheepObjectViews.add(objectView);
+            }
+            if (objectView.getName().toLowerCase().startsWith("chicken")){
+                chickenObjectViews.add(objectView);
+            }
+        }
+        for (int i = 1; i < serverMessages.size(); i++) {
+            if (i >= 1 && i <= 5)
+                cowObjectViews.get(i - 1).setName(serverMessages.get(i));
+            if (i >= 6 && i <= 15)
+                chickenObjectViews.get(i - 6).setName(serverMessages.get(i));
+            if (i >= 16)
+                sheepObjectViews.get(i - 16).setName(serverMessages.get(i));
         }
     }
 
@@ -266,7 +310,8 @@ public class MapViewer extends BasicGameState {
 
     private void goTo(BuildingObjectView building) {
         try {
-            send("goto " + building.getName() + "\n");
+            if (building.getStateId() != 2)
+                send("goto " + building.getName() + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -276,6 +321,10 @@ public class MapViewer extends BasicGameState {
         GameState.player.getPosition().y = building.getFirstPlayerY();
         GameState.firstX = building.getFirstX();
         GameState.firstY = building.getFirstY();
+        if (building.getStateId() == 2) {
+            sendAndGetResponse("goto " + building.getName() + "\n");
+        }
+
     }
 
     public static boolean pointIntersect(int x, int y, Position position){
