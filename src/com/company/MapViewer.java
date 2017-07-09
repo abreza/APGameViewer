@@ -1,13 +1,11 @@
 package com.company;
 
-import javafx.application.Platform;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
-import javax.naming.Name;
-import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
@@ -27,6 +25,8 @@ public class MapViewer extends BasicGameState {
     private int id;
     private Socket socket;
     private List<String> serverMessages;
+    private int Y = 0, X = 0;
+
 
     public MapViewer(String TMXName, int id) {
         this.id= id;
@@ -45,10 +45,67 @@ public class MapViewer extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        String fileName = playerDirection.name().toLowerCase();
-        GameState.player.setImage(new Image("resource/person/person-" + fileName + ".png")
-                .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
         map.render(-GameState.firstX, -GameState.firstY);
+        if (Y < 0) {
+            playerDirection = Direction.UP;
+            GameState.player.setImage(GameState.playerUp.get(GameState.upNumber)
+                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
+            GameState.upNumber = (GameState.upNumber + 1) % 3;
+            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+                if (GameState.app.getHeight() / 8 > GameState.player.getPosition().y) {
+                    GameState.firstY -= 1;
+                } else {
+                    GameState.player.getPosition().y -= 1;
+                }
+            }
+            Y++;
+        }
+        if (Y > 0) {
+            playerDirection = Direction.DOWN;
+            GameState.player.setImage(GameState.playerDown.get(GameState.downNumber)
+                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
+            GameState.downNumber = (GameState.downNumber + 1) % 3;
+            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+                if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+                    if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().y) {
+                        GameState.firstY += 1;
+                    } else {
+                        GameState.player.getPosition().y += 1;
+                    }
+                }
+            }
+            Y--;
+        }
+        if (X < 0) {
+            playerDirection = Direction.LEFT;
+            GameState.player.setImage(GameState.playerLeft.get(GameState.leftNumber)
+                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
+            GameState.leftNumber = (GameState.leftNumber + 1) % 3;
+            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+                if (GameState.app.getHeight() / 8 > GameState.player.getPosition().x) {
+                    GameState.firstX -= 1;
+                } else {
+                    GameState.player.getPosition().x -= 1;
+                }
+            }
+            X++;
+        }
+        if (X > 0) {
+            playerDirection = Direction.RIGHT;
+            GameState.player.setImage(GameState.playerRight.get(GameState.rightNumber)
+                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
+            GameState.rightNumber = (GameState.rightNumber + 1) % 3;
+            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+                if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+                    if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().x) {
+                        GameState.firstX += 1;
+                    } else {
+                        GameState.player.getPosition().x += 1;
+                    }
+                }
+            }
+            X--;
+        }
         graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
         for (ObjectView objectView : objectViews) {
             if(objectView.getImage() != null){
@@ -71,44 +128,16 @@ public class MapViewer extends BasicGameState {
             }
         }
         if(input.isKeyDown(Input.KEY_UP)){
-            playerDirection = Direction.UP;
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (GameState.app.getHeight() / 8 > GameState.player.getPosition().y) {
-                    GameState.firstY -= PLAYER_SPEED;
-                } else {
-                    GameState.player.getPosition().y -= PLAYER_SPEED;
-                }
-            }
+            Y -= PLAYER_SPEED;
         }
         if(input.isKeyDown(Input.KEY_DOWN)){
-            playerDirection = Direction.DOWN;
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().y) {
-                    GameState.firstY += PLAYER_SPEED;
-                } else {
-                    GameState.player.getPosition().y += PLAYER_SPEED;
-                }
-            }
+            Y += PLAYER_SPEED;
         }
         if(input.isKeyDown(Input.KEY_LEFT)){
-            playerDirection = Direction.LEFT;
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (GameState.app.getWidth() / 8 > GameState.player.getPosition().x) {
-                    GameState.firstX -= PLAYER_SPEED;
-                } else {
-                    GameState.player.getPosition().x -= PLAYER_SPEED;
-                }
-            }
+            X -= PLAYER_SPEED;
         }
         if(input.isKeyDown(Input.KEY_RIGHT)){
-            playerDirection = Direction.RIGHT;
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (7 * GameState.app.getWidth() / 8 < GameState.player.getPosition().x) {
-                    GameState.firstX += PLAYER_SPEED;
-                } else {
-                    GameState.player.getPosition().x += PLAYER_SPEED;
-                }
-            }
+            X += PLAYER_SPEED;
         }
     }
 

@@ -2,11 +2,9 @@ package com.company;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-
-import javax.naming.Name;
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +19,11 @@ public class GameState extends StateBasedGame{
     public static Map<Integer, MapViewer> mapViews = new HashMap<>();
     public static GameState gameState;
     public static ObjectView player;
+    public static List<Image> playerUp = new ArrayList<>();
+    public static List<Image> playerDown = new ArrayList<>();
+    public static List<Image> playerRight = new ArrayList<>();
+    public static List<Image> playerLeft = new ArrayList<>();
+    public static int upNumber = 0, downNumber = 0, leftNumber = 0, rightNumber = 0;
 
     public GameState() throws SlickException {
         super("map-village");
@@ -30,6 +33,7 @@ public class GameState extends StateBasedGame{
         addMapView("map-greenhouse", 3);
         addMapView("map-jungle", 4);
         this.enterState(1);
+
     }
     public static void run() throws SlickException {
         app = new AppGameContainer(gameState = new GameState());
@@ -43,7 +47,25 @@ public class GameState extends StateBasedGame{
     }
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
+        playerUp.add(new Image("/resource/person/person_up_0.png"));
+        playerUp.add(new Image("/resource/person/person_up_1.png"));
+        playerUp.add(new Image("/resource/person/person_up_2.png"));
+
+        playerDown.add(new Image("/resource/person/person_down_0.png"));
+        playerDown.add(new Image("/resource/person/person_down_1.png"));
+        playerDown.add(new Image("/resource/person/person_down_2.png"));
+
+        playerLeft.add(new Image("/resource/person/person_left_0.png"));
+        playerLeft.add(new Image("/resource/person/person_left_1.png"));
+        playerLeft.add(new Image("/resource/person/person_left_2.png"));
+
+        playerRight.add(new Image("/resource/person/person_right_0.png"));
+        playerRight.add(new Image("/resource/person/person_right_1.png"));
+        playerRight.add(new Image("/resource/person/person_right_2.png"));
+
+
         player = new ObjectView(new Position(GameState.width / 8,GameState.height / 8,40,50), null, "0", ObjectView.Type.PLAYER);
+        player.setImage(new Image("/resource/person/person_right_0.png"));
         this.getState(0).init(gameContainer, this);
         this.getState(1).init(gameContainer, this);
         List<ObjectView> objectViews = new ArrayList<>();
@@ -65,7 +87,7 @@ public class GameState extends StateBasedGame{
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(6 * 32, 6 * 32 - 15);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(8 * 32, 22 * 32);
         objectViews.add(new BuildingObjectView(new Position(33 * 32 + 10, 32, 7 * 32, 5 * 32), null,
-                new Position(35 * 32 + 10, 5 * 32, 3 * 32, 32), Names.GREENHOUSE.name(), ObjectView.Type.BUILDING, 3));
+                new Position(35 * 32 + 10, 5 * 32, 3 * 32, 32), Names.GREEN_HOUSE.name(), ObjectView.Type.BUILDING, 3));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(6 * 32, 6 * 32 - 15);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(8 * 32, 22 * 32);
         objectViews.add(new ObjectView(new Position(44 * 32 + 15, 2 * 32, 8 * 32 - 10, 5 * 32), null, Names.POND.name(), ObjectView.Type.BUILDING));
