@@ -65,7 +65,7 @@ public class GameState extends StateBasedGame{
 
 
         player = new ObjectView(new Position(GameState.width / 8,GameState.height / 8,40,50), null, "0", ObjectView.Type.PLAYER);
-        player.setImage(new Image("/resource/person/person_right_0.png"));
+        player.setImage(new Image("/resource/person/person_right_0.png").getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
         this.getState(0).init(gameContainer, this);
         this.getState(1).init(gameContainer, this);
         List<ObjectView> objectViews = new ArrayList<>();

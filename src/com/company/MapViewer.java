@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MapViewer extends BasicGameState {
     public static int PLAYER_SPEED = 1;
+    public static int Animation_SPEED = 10;
     public static int STATE_ID = 1;
     public TiledMap map;
     private String TMXName;
@@ -48,9 +49,9 @@ public class MapViewer extends BasicGameState {
         map.render(-GameState.firstX, -GameState.firstY);
         if (Y < 0) {
             playerDirection = Direction.UP;
-            GameState.player.setImage(GameState.playerUp.get(GameState.upNumber)
+            GameState.player.setImage(GameState.playerUp.get(GameState.upNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.upNumber = (GameState.upNumber + 1) % 3;
+            GameState.upNumber = (GameState.upNumber + 1) % (3 * Animation_SPEED);
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (GameState.app.getHeight() / 8 > GameState.player.getPosition().y) {
                     GameState.firstY -= 1;
@@ -62,9 +63,9 @@ public class MapViewer extends BasicGameState {
         }
         if (Y > 0) {
             playerDirection = Direction.DOWN;
-            GameState.player.setImage(GameState.playerDown.get(GameState.downNumber)
+            GameState.player.setImage(GameState.playerDown.get(GameState.downNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.downNumber = (GameState.downNumber + 1) % 3;
+            GameState.downNumber = (GameState.downNumber + 1) % (3 * Animation_SPEED);
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                     if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().y) {
@@ -78,9 +79,9 @@ public class MapViewer extends BasicGameState {
         }
         if (X < 0) {
             playerDirection = Direction.LEFT;
-            GameState.player.setImage(GameState.playerLeft.get(GameState.leftNumber)
+            GameState.player.setImage(GameState.playerLeft.get(GameState.leftNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.leftNumber = (GameState.leftNumber + 1) % 3;
+            GameState.leftNumber = (GameState.leftNumber + 1) % (3 * Animation_SPEED);
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (GameState.app.getHeight() / 8 > GameState.player.getPosition().x) {
                     GameState.firstX -= 1;
@@ -92,9 +93,9 @@ public class MapViewer extends BasicGameState {
         }
         if (X > 0) {
             playerDirection = Direction.RIGHT;
-            GameState.player.setImage(GameState.playerRight.get(GameState.rightNumber)
+            GameState.player.setImage(GameState.playerRight.get(GameState.rightNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.rightNumber = (GameState.rightNumber + 1) % 3;
+            GameState.rightNumber = (GameState.rightNumber + 1) % (3 * Animation_SPEED);
             if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                     if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().x) {
