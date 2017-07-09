@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="TileA4" tilewidth="32" tileheight="32" tilecount="240" columns="16">
   <image source="Terrain_Sprites/MapStuff/TileA4.png" width="512" height="480"/>
  </tileset>
@@ -27,34 +27,35 @@
  <tileset firstgid="925" name="Dungeon_B" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="Terrain_Sprites/MapStuff/Dungeon_B.png" width="512" height="512"/>
  </tileset>
+ <tileset firstgid="1181" source="untitled2.tsx"/>
  <layer name="Ground and wall" width="40" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+NhYGDgGeSYb5DiUfdRx31CjBCMDGBi9MT43KeGhvGZQ4w6cswadR/13YfuroHEo+4bee5DLv+Q1VKaP4jFo+4bfO6jZj1IivsGGg/V9stAu4OQ+wYzBgB7n8HxgAwAAA==
+   H4sIAAAAAAAAA+NhYGDgGeSYb5DiUfdRx31CjBCshoSFBgBTy33EqCPHrFH3Ud99aoyDB4+6b+S5j1b5g1g86r7B5z5kQE/3DTQequ2XgXYHIfcNZgwAhP18qoAMAAA=
   </data>
  </layer>
  <layer name="Trees-down" width="40" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OsQ0AIBDDwEjsDPTwPTAxGSOFT3JvSepNGm66RMtf21Xo3/HXdS/0DwAAAEjxAbKVs+GADAAA
+   H4sIAAAAAAAAA+3OsQ0AIBDDwEjsDPTwPTAxGSOFT3JvSepNGm66RMtf21Xo3/HXdS/0DwAAAEjxAbKVs+GADAAA
   </data>
  </layer>
  <layer name="Buildings" width="40" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3Vt1JCQRSA4QUqA0kxkDFQGFAEMYABQ2NoDC+EiqjwQgKvIPgKiq8AWPI3dOxeix3T7Jn5qj2z96/2CmFGxww5hBjGCEbhdAzee7YLUUUNdbv8voJNiBvc2vT0eekZwzh8mJD0vdDUQBOvir47uoq419TnpyeAIEIIS/reaHpHCx+KvhJdD3hU9B3wjUMc4Vjyvf7McD6LOcwjLtlv09RBF5+Kvie6yqgo+k74xinOcG7R9xNzQdMlrnD9C/vMmDHzt8fFu+KG5wvvywo7q0gqdhc4W8QSljW8WZPcMYVpi7sSnG9gE1uK3TXOUkhjXUNfhDuiiFncleF8D/vIK3a3Ocsih51vfPN3zf/lX04PhJ5SFIAMAAA=
+   H4sIAAAAAAAAA+3UOVJCQRRG4QuPRCYVEBHngQCEQNFAwEW4JOdxMWIESCBEahXIFlC34BB6QgP6dQddaNB/1Ze9upwiaBE3G5vwRMKIIIqYN/q7ZlCkhXu0g+p7hwGRIxwH7PRN05NAEinMKPp6NPXxgoFP3wldpzjT9N2GROq4C/l/N0dPFvNYwKKib0jTK97w7tN3TtcFLjV9DbqaaGn6VulZwzo2kFP0fdD0iS98+/Rd0XWNG03fA10ddDV9f7ED/oNHup7w/A/73Nzc7M30Lbe5OG/MJKYU7+3vmbzlee4UsImiwU3d0tyYRUZzq+SZveVbfLeNMnYs9C1xYxkrmlu7hm/5Ht9VUEXNQp/p9sf4W27j2w/ihtv+gAwAAA==
   </data>
  </layer>
  <layer name="Cues" width="40" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgGAWjYHCBYkbCasqIUAMCRUSqG8wglnmgXTAKRsEoGAWjABuIIaF8TiBCbfxoeT8KRggAAKt9Qr2ADAAA
+   H4sIAAAAAAAAA2NgGAWjYHCBYkbCasqIUAMCRUSqG8wglnmgXTAKRsEoGAWjABuIIaF8TiBCbfxoeT8KRggAAKt9Qr2ADAAA
   </data>
  </layer>
  <layer name="Trees-up" width="40" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2W2QrCMBBFA/1a9cHloe77rnVvtS4f6/mAZCBUcJRcuC93UnJSZmCM0aU4MqaJW9G3SeyawjXDc6V8R7hO+KyUL+h/1abnOrirtPcWcC3xSinfBa4UZ0r5goopzEcx+c5HiXNlXPF8T53zDcc3VfLah/6PtOtIvTIgGzoYeuR9S21ENsYTD3Zp15F6ZUuWOO5Zk28stR3ZHh88+KRdR+qVnOzuuOdKfrPUHmRP/FI6G7+qN/MPITuADAAA
+   H4sIAAAAAAAAA+2W2QrCMBBFA/1a9cHloe77rnVvtS4f6/mAZCBUcJRcuC93UnJSZmCM0aU4MqaJW9G3SeyawjXDc6V8R7hO+KyUL+h/1abnOrirtPcWcC3xSinfBa4UZ0r5goopzEcx+c5HiXNlXPF8T53zDcc3VfLah/6PtOtIvTIgGzoYeuR9S21ENsYTD3Zp15F6ZUuWOO5Zk28stR3ZHh88+KRdR+qVnOzuuOdKfrPUHmRP/FI6G7+qN/MPITuADAAA
   </data>
  </layer>
  <layer name="Status" width="40" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgGAWDDYixoPLFWbCrGyighuYe9UHmvsEOHFjw80kFtlj0S+EwE13cDos6Yt2HTS824ItFnRYOvejifljUBbDg5+PTOwpGHqBW/pAGsmVw6MMmR+/8oQ1k6+DQh01uNH+MglEwCgYSAABMivuzgAwAAA==
+   H4sIAAAAAAAAA2NgGAWDDYixoPLFWbCrGyighuYe9UHmvsEOHFjw80kFtlj0S+EwE13cDos6Yt2HTS824ItFnRYOvejifljUBbDg5+PTOwpGHqBW/pAGsmVw6MMmR+/8oQ1k6+DQh01uNH+MglEwCgYSAABMivuzgAwAAA==
   </data>
  </layer>
 </map>
