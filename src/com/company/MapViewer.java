@@ -122,7 +122,7 @@ public class MapViewer extends BasicGameState {
             ObjectView intersectedView =
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null){
-                if (STATE_ID == 0)
+                if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
                 else {
                     checkForBarn(intersectedView);
@@ -183,6 +183,8 @@ public class MapViewer extends BasicGameState {
                 }
                 else if (serverMessages.get(0).equalsIgnoreCase("Backpack/"))
                     showBackPackMenu(serverMessages);
+                else if (serverMessages.get(0).toLowerCase().startsWith("farm:"))
+                    return;
                 else
                     showMenu(serverMessages);
             }
