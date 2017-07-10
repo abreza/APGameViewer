@@ -102,6 +102,15 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(13 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.POMEGRANATE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(4 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.APPLE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(13 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.ORANGE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.0", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(38 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.1", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(48 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.2", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32 + 10, 21 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.3", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(38 * 32 + 10, 21 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.4", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(48 * 32 + 10, 21 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.5", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32 + 10, 31 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.6", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(38 * 32 + 10, 31 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.7", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(48 * 32 + 10, 31 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.8", ObjectView.Type.BUILDING_ITEM));
         mapViews.get(1).objectViews = objectViews;
 
 

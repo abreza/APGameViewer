@@ -128,6 +128,7 @@ public class MapViewer extends BasicGameState {
                 else {
                     checkForBarn(intersectedView);
                     checkForGarden(intersectedView);
+                    checkForField(intersectedView);
                     sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
                 }
             }
@@ -143,6 +144,16 @@ public class MapViewer extends BasicGameState {
         }
         if(input.isKeyDown(Input.KEY_RIGHT)){
             X += PLAYER_SPEED;
+        }
+    }
+
+    private void checkForField(ObjectView intersectedView) {
+        try{
+            if (intersectedView.getName().toLowerCase().startsWith("field")){
+                send("inspect " + "Field" + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -198,6 +209,8 @@ public class MapViewer extends BasicGameState {
                 else if (serverMessages.get(0).toLowerCase().startsWith("farm:") ||
                         serverMessages.get(0).toLowerCase().startsWith("garden:"))
                     return;
+                else if (serverMessages.get(0).toLowerCase().startsWith("field:"))
+                    send("back\n");
                 else
                     showMenu(serverMessages);
             }
