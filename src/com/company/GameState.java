@@ -6,7 +6,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -221,10 +220,16 @@ public class GameState extends StateBasedGame{
         mapViews.get(3).objectViews = objectViews;
 
         objectViews = new ArrayList<>();
-        objectViews.add(new BuildingObjectView(new Position(31 * 32, 0, 5 * 32, 32), null,
-                new Position(31 * 32, 0, 5 * 32, 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
+        objectViews.add(new BuildingObjectView(new Position(31 * 32, 0, 7 * 32, 32), null,
+                new Position(31 * 32, 0, 7 * 32, 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(220, 100);
         ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setFirstXAndY(18 * 32, 37 * 32 - 50);
+        objectViews.add(new ObjectView(new Position(30 * 32 - 15, 4 * 32 - 15, 32, 32), null, Names.WOOD_NAMES[0], ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(34 * 32 - 15, 5 * 32 - 15, 32, 32), null, Names.ROCK_NAMES[0], ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(30 * 32 - 15, 6 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[2], ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(32 * 32 - 15, 12 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[1], ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(11 * 32 - 15, 12 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[3], ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(-15, 33 * 32 - 30, 40 * 32, 7 * 32), null, Names.RIVER.name(), ObjectView.Type.BUILDING_ITEM));
         mapViews.get(4).objectViews = objectViews;
     }
 }

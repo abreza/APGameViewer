@@ -6,6 +6,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
+import javax.naming.Name;
+import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
@@ -129,6 +131,7 @@ public class MapViewer extends BasicGameState {
                     checkForBarn(intersectedView);
                     checkForGarden(intersectedView);
                     checkForField(intersectedView);
+                    checkForForest(intersectedView);
                     sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
                 }
             }
@@ -144,6 +147,25 @@ public class MapViewer extends BasicGameState {
         }
         if(input.isKeyDown(Input.KEY_RIGHT)){
             X += PLAYER_SPEED;
+        }
+    }
+
+    private void checkForForest(ObjectView intersectedView) {
+        try{
+            for (int i = 0; i < Names.WOOD_NAMES.length; i++) {
+                if (intersectedView.getName().equalsIgnoreCase(Names.WOOD_NAMES[i])) {
+                    send("inspect " + "woods" + "\n");
+                    break;
+                }
+            }
+            for (int i = 0; i < Names.ROCK_NAMES.length; i++) {
+                if (intersectedView.getName().equalsIgnoreCase(Names.ROCK_NAMES[i])) {
+                    send("inspect " + "rocks" + "\n");
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -209,7 +231,9 @@ public class MapViewer extends BasicGameState {
                 else if (serverMessages.get(0).toLowerCase().startsWith("farm:") ||
                         serverMessages.get(0).toLowerCase().startsWith("garden:"))
                     return;
-                else if (serverMessages.get(0).toLowerCase().startsWith("field:"))
+                else if (serverMessages.get(0).toLowerCase().startsWith("field:") ||
+                        serverMessages.get(0).toLowerCase().startsWith("woods") ||
+                        serverMessages.get(0).toLowerCase().startsWith("rocks"))
                     send("back\n");
                 else
                     showMenu(serverMessages);
