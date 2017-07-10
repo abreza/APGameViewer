@@ -275,9 +275,11 @@ public class MapViewer extends BasicGameState {
                 out.flush();
                 for (int i = 0; i < 100; i++) {
                     read(in);
-                    if (serverMessages == null || serverMessages.get(serverMessages.size() - 1) == null )
+                    if (serverMessages == null ||
+                            (serverMessages.size() >=1 && serverMessages.get(serverMessages.size() - 1) == null ))
                         break;
-                    if(serverMessages.get(serverMessages.size() - 1).equals("___")){
+                    if(serverMessages.size() > 0 &&
+                            serverMessages.get(serverMessages.size() - 1).equals("___")){
                         serverMessages.remove(serverMessages.size() - 1);
                         break;
                     }
