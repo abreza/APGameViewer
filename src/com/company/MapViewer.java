@@ -9,6 +9,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -126,6 +127,7 @@ public class MapViewer extends BasicGameState {
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
                 else {
                     checkForBarn(intersectedView);
+                    checkForGarden(intersectedView);
                     sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
                 }
             }
@@ -141,6 +143,16 @@ public class MapViewer extends BasicGameState {
         }
         if(input.isKeyDown(Input.KEY_RIGHT)){
             X += PLAYER_SPEED;
+        }
+    }
+
+    private void checkForGarden(ObjectView intersectedView) {
+        try {
+            if (intersectedView.getName().toLowerCase().endsWith("_tree")){
+                send("inspect " + "Garden" + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -183,7 +195,8 @@ public class MapViewer extends BasicGameState {
                 }
                 else if (serverMessages.get(0).equalsIgnoreCase("Backpack/"))
                     showBackPackMenu(serverMessages);
-                else if (serverMessages.get(0).toLowerCase().startsWith("farm:"))
+                else if (serverMessages.get(0).toLowerCase().startsWith("farm:") ||
+                        serverMessages.get(0).toLowerCase().startsWith("garden:"))
                     return;
                 else
                     showMenu(serverMessages);
@@ -295,7 +308,11 @@ public class MapViewer extends BasicGameState {
     }
 
     private void read(BufferedReader in) throws IOException {
-        serverMessages.add(in.readLine());
+        try {
+            serverMessages.add(in.readLine());
+        }catch (SocketException e){
+
+        }
     }
 
     public boolean playerIntersect(Position position){
