@@ -462,6 +462,6 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(32 * 32 - 15, 12 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[1], ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(11 * 32 - 15, 12 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[3], ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(-15, 33 * 32 - 30, 40 * 32, 7 * 32), null, Names.RIVER.name(), ObjectView.Type.BUILDING_ITEM));
-        mapViews.get(4).objectViews = objectViews;
+        mapViews.get(4).setObjectViews(objectViews);
     }
 }
