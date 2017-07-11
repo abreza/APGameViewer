@@ -36,6 +36,7 @@ public class MapViewer extends BasicGameState {
     private Socket socket;
     private List<String> serverMessages;
     private static DatagramSocket UDPServerSocket;
+    private Timer getResourceTimer;
     private static ServerSocket TCPServerSocket;
     private static Socket androidSocket;
     private static PrintWriter out;
