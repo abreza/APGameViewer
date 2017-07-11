@@ -28,6 +28,7 @@ public class MapViewer extends BasicGameState {
     public static int PLAYER_SPEED = 1;
     public static int STATE_ID = 1;
     public TiledMap map;
+    private boolean inRequest = false;
     private String TMXName;
     private List<ObjectView> objectViews;
     private List<Animal> animals;
@@ -54,11 +55,11 @@ public class MapViewer extends BasicGameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         map = new TiledMap("resource/" + TMXName + ".tmx");
         if (TMXName.equalsIgnoreCase("map-farm")) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
+            getResourceTimer = new Timer();
+            getResourceTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (STATE_ID == 1)
+                    if (STATE_ID == 1 && !inRequest)
                         sendAndGetResponse("farmResources\n");
                 }
             }, 0, 8000);
@@ -95,6 +96,7 @@ public class MapViewer extends BasicGameState {
             ObjectView intersectedView =
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null) {
+                inRequest = true;
                 if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
                 else {
@@ -119,8 +121,6 @@ public class MapViewer extends BasicGameState {
             GameState.player.moveX += PLAYER_SPEED;
         }
     }
-
-
 
     private void checkForForest(ObjectView intersectedView) {
         try {
@@ -179,7 +179,7 @@ public class MapViewer extends BasicGameState {
             send(message);
             TimeUnit.MILLISECONDS.sleep(500);
             System.out.println(serverMessages);
-            if (serverMessages.size() >= 1) {
+            if (serverMessages.size() >= 1 && serverMessages.get(0) != null) {
                 if (serverMessages.get(0).equalsIgnoreCase("Y/N"))
                     showYesNoMenu(serverMessages);
                 else if (serverMessages.get(0).equalsIgnoreCase("Number/"))
@@ -209,6 +209,7 @@ public class MapViewer extends BasicGameState {
                     setFarmResources(serverMessages);
                 } else
                     showMenu(serverMessages);
+                inRequest = false;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -226,31 +227,70 @@ public class MapViewer extends BasicGameState {
             JSONArray hasFruit = (JSONArray) gardenJson.get("fruit");
             JSONArray isPlowed = (JSONArray) fieldJson.get("plowed");
             JSONArray plant = (JSONArray) fieldJson.get("plant");
+            JSONArray isCroped = (JSONArray) fieldJson.get("crop");
+            JSONArray age = (JSONArray) fieldJson.get("age");
             for (ObjectView objectView :
                     GameState.mapViews.get(1).objectViews) {
                 if (objectView.getName().equalsIgnoreCase(Names.PEACH_TREE.name()))
                     if ((boolean) isBought.get(0)) {
-                        objectView.setImagePath("/resource/tree/tree.png");
+                        if ((boolean) hasFruit.get(0))
+                            objectView.setImagePath("/resource/tree/tree-peach.png");
+                        else
+                            objectView.setImagePath("/resource/tree/tree.png");
                     }
                 if (objectView.getName().equalsIgnoreCase(Names.PEAR_TREE.name()))
-                    if ((boolean) isBought.get(1))
-                        objectView.setImagePath("/resource/tree/tree.png");
+                    if ((boolean) isBought.get(1)) {
+                        if ((boolean) hasFruit.get(1))
+                            objectView.setImagePath("/resource/tree/tree-pear.png");
+                        else
+                            objectView.setImagePath("/resource/tree/tree.png");
+                    }
                 if (objectView.getName().equalsIgnoreCase(Names.LEMON_TREE.name()))
-                    if ((boolean) isBought.get(2))
-                        objectView.setImagePath("/resource/tree/tree.png");
+                    if ((boolean) isBought.get(2)) {
+                        if ((boolean) hasFruit.get(2))
+                            objectView.setImagePath("/resource/tree/tree-lemon.png");
+                        else
+                            objectView.setImagePath("/resource/tree/tree.png");
+                    }
                 if (objectView.getName().equalsIgnoreCase(Names.POMEGRANATE_TREE.name()))
-                    if ((boolean) isBought.get(3))
-                        objectView.setImagePath("/resource/tree/tree.png");
-                if (objectView.getName().equalsIgnoreCase(Names.ORANGE_TREE.name()))
-                    if ((boolean) isBought.get(4))
-                        objectView.setImagePath("/resource/tree/tree.png");
+                    if ((boolean) isBought.get(3)) {
+                        if ((boolean) hasFruit.get(3))
+                            objectView.setImagePath("/resource/tree/tree-pomegranate.png");
+                        else
+                            objectView.setImagePath("/resource/tree/tree.png");
+                    }
                 if (objectView.getName().equalsIgnoreCase(Names.APPLE_TREE.name()))
-                    if ((boolean) isBought.get(5))
-                        objectView.setImagePath("/resource/tree/tree.png");
+                    if ((boolean) isBought.get(4)) {
+                        if ((boolean) hasFruit.get(4))
+                            objectView.setImagePath("/resource/tree/tree-apple.png");
+                        else
+                            objectView.setImagePath("/resource/tree/tree.png");
+                    }
+                if (objectView.getName().equalsIgnoreCase(Names.ORANGE_TREE.name()))
+                    if ((boolean) isBought.get(5)) {
+                        if ((boolean) hasFruit.get(5))
+                            objectView.setImagePath("/resource/tree/tree-orange.png");
+                        else
+                            objectView.setImagePath("/resource/tree/tree.png");
+                    }
                 if (objectView.getName().toLowerCase().startsWith("field no.")){
                     int number = Integer.parseInt(objectView.getName().substring(9));
-                    if ((boolean) isPlowed.get(number))
-                        objectView.setImagePath("/resource/crete/plowed.png");
+                    if  (((String) plant.get(number)).toLowerCase().startsWith("empty")) {
+                        if ((boolean) isPlowed.get(number))
+                            objectView.setImagePath("/resource/crete/plowed.png");
+                        else
+                            objectView.setImagePath(null);
+                    }else{
+                        if ((boolean) isCroped.get(number)){
+                            objectView.setImagePath("/resource/crete/" + (String) plant.get(number) + ".png");
+                        }else if ((double) age.get(number) <= 3){
+                            objectView.setImagePath("/resource/crete/first.png");
+                        }else if ((double) age.get(number) <= 7){
+                            objectView.setImagePath("/resource/crete/second.png");
+                        }else{
+                            objectView.setImagePath("/resource/crete/third.png");
+                        }
+                    }
                 }
             }
         } catch (ParseException e) {
