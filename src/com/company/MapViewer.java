@@ -1,19 +1,27 @@
 package com.company;
 
 
+import javafx.application.Platform;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.lwjgl.opengl.GLContext;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
-import javax.naming.Name;
-import javax.print.attribute.standard.MediaSize;
 import javax.swing.*;
+import java.util.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
@@ -24,7 +32,9 @@ public class MapViewer extends BasicGameState {
     public TiledMap map;
     private String TMXName;
     public List<ObjectView> objectViews;
-    public enum Direction{LEFT, RIGHT, UP, DOWN}
+
+    public enum Direction {LEFT, RIGHT, UP, DOWN}
+
     private Direction playerDirection = Direction.RIGHT;
     private int id;
     private Socket socket;
@@ -33,7 +43,7 @@ public class MapViewer extends BasicGameState {
 
 
     public MapViewer(String TMXName, int id) {
-        this.id= id;
+        this.id = id;
         this.TMXName = TMXName;
     }
 
@@ -45,6 +55,16 @@ public class MapViewer extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         map = new TiledMap("resource/" + TMXName + ".tmx");
+        if (TMXName.equalsIgnoreCase("map-farm")) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (STATE_ID == 1)
+                        sendAndGetResponse("farmResources\n");
+                }
+            }, 0, 8000);
+        }
     }
 
     @Override
@@ -55,7 +75,7 @@ public class MapViewer extends BasicGameState {
             GameState.player.setImage(GameState.playerUp.get(GameState.upNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
             GameState.upNumber = (GameState.upNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+            if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (GameState.app.getHeight() / 8 > GameState.player.getPosition().y) {
                     GameState.firstY -= 1;
                 } else {
@@ -69,7 +89,7 @@ public class MapViewer extends BasicGameState {
             GameState.player.setImage(GameState.playerDown.get(GameState.downNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
             GameState.downNumber = (GameState.downNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+            if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                     if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().y) {
                         GameState.firstY += 1;
@@ -85,7 +105,7 @@ public class MapViewer extends BasicGameState {
             GameState.player.setImage(GameState.playerLeft.get(GameState.leftNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
             GameState.leftNumber = (GameState.leftNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+            if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (GameState.app.getHeight() / 8 > GameState.player.getPosition().x) {
                     GameState.firstX -= 1;
                 } else {
@@ -99,7 +119,7 @@ public class MapViewer extends BasicGameState {
             GameState.player.setImage(GameState.playerRight.get(GameState.rightNumber / Animation_SPEED)
                     .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
             GameState.rightNumber = (GameState.rightNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
+            if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                 if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
                     if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().x) {
                         GameState.firstX += 1;
@@ -112,19 +132,35 @@ public class MapViewer extends BasicGameState {
         }
         graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
         for (ObjectView objectView : objectViews) {
-            if(objectView.getImage() != null){
-                graphics.drawImage(objectView.getImage(), objectView.getPosition().x, objectView.getPosition().y);
+            if (objectView.getImage() != null) {
+                graphics.drawImage(objectView.getImage().getScaledCopy(
+                        objectView.getPosition().width, objectView.getPosition().height
+                ), objectView.getPosition().x - GameState.firstX + 15, objectView.getPosition().y - GameState.firstY + 15);
+            }else if (objectView.getImagePath() != null){
+                graphics.drawImage(new Image(objectView.getImagePath()).getScaledCopy(
+                        objectView.getPosition().width, objectView.getPosition().height
+                ), objectView.getPosition().x - GameState.firstX + 15, objectView.getPosition().y - GameState.firstY + 15);
+
             }
         }
     }
 
+    private ObjectView getObjectViewByName(String name) {
+        for (ObjectView objectView :
+                objectViews) {
+            if (objectView.getName().equalsIgnoreCase(name))
+                return objectView;
+        }
+        return null;
+    }
+
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        Input input  = gameContainer.getInput();
-        if(input.isKeyPressed(Input.KEY_ENTER)){
+        Input input = gameContainer.getInput();
+        if (input.isKeyPressed(Input.KEY_ENTER)) {
             ObjectView intersectedView =
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
-            if (intersectedView != null){
+            if (intersectedView != null) {
                 if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
                 else {
@@ -136,22 +172,22 @@ public class MapViewer extends BasicGameState {
                 }
             }
         }
-        if(input.isKeyDown(Input.KEY_UP)){
+        if (input.isKeyDown(Input.KEY_UP)) {
             Y -= PLAYER_SPEED;
         }
-        if(input.isKeyDown(Input.KEY_DOWN)){
+        if (input.isKeyDown(Input.KEY_DOWN)) {
             Y += PLAYER_SPEED;
         }
-        if(input.isKeyDown(Input.KEY_LEFT)){
+        if (input.isKeyDown(Input.KEY_LEFT)) {
             X -= PLAYER_SPEED;
         }
-        if(input.isKeyDown(Input.KEY_RIGHT)){
+        if (input.isKeyDown(Input.KEY_RIGHT)) {
             X += PLAYER_SPEED;
         }
     }
 
     private void checkForForest(ObjectView intersectedView) {
-        try{
+        try {
             for (int i = 0; i < Names.WOOD_NAMES.length; i++) {
                 if (intersectedView.getName().equalsIgnoreCase(Names.WOOD_NAMES[i])) {
                     send("inspect " + "woods" + "\n");
@@ -170,8 +206,8 @@ public class MapViewer extends BasicGameState {
     }
 
     private void checkForField(ObjectView intersectedView) {
-        try{
-            if (intersectedView.getName().toLowerCase().startsWith("field")){
+        try {
+            if (intersectedView.getName().toLowerCase().startsWith("field")) {
                 send("inspect " + "Field" + "\n");
             }
         } catch (IOException e) {
@@ -181,7 +217,7 @@ public class MapViewer extends BasicGameState {
 
     private void checkForGarden(ObjectView intersectedView) {
         try {
-            if (intersectedView.getName().toLowerCase().endsWith("_tree")){
+            if (intersectedView.getName().toLowerCase().endsWith("_tree")) {
                 send("inspect " + "Garden" + "\n");
             }
         } catch (IOException e) {
@@ -215,18 +251,16 @@ public class MapViewer extends BasicGameState {
                 else if (serverMessages.get(0).equalsIgnoreCase("greenhouse/broken"))
                     repairGreenHouse();
                 else if (serverMessages.get(0).equalsIgnoreCase("greenhouse/repaired")) {
-                    for (ObjectView objectView:objectViews) {
-                        if(objectView.getType() == ObjectView.Type.BUILDING &&
+                    for (ObjectView objectView : objectViews) {
+                        if (objectView.getType() == ObjectView.Type.BUILDING &&
                                 objectView.getName().equalsIgnoreCase(Names.GREENHOUSE.name())) {
                             BuildingObjectView building = (BuildingObjectView) objectView;
                             goTo(building);
                         }
                     }
-                }
-                else if (serverMessages.get(0).equalsIgnoreCase("barnNames")){
+                } else if (serverMessages.get(0).equalsIgnoreCase("barnNames")) {
                     setBarnNames(serverMessages);
-                }
-                else if (serverMessages.get(0).equalsIgnoreCase("Backpack/"))
+                } else if (serverMessages.get(0).equalsIgnoreCase("Backpack/"))
                     showBackPackMenu(serverMessages);
                 else if (serverMessages.get(0).toLowerCase().startsWith("farm:") ||
                         serverMessages.get(0).toLowerCase().startsWith("garden:"))
@@ -235,7 +269,9 @@ public class MapViewer extends BasicGameState {
                         serverMessages.get(0).toLowerCase().startsWith("woods") ||
                         serverMessages.get(0).toLowerCase().startsWith("rocks"))
                     send("back\n");
-                else
+                else if (serverMessages.get(0).equalsIgnoreCase("farmResources")) {
+                    setFarmResources(serverMessages);
+                } else
                     showMenu(serverMessages);
             }
         } catch (IOException e) {
@@ -245,19 +281,60 @@ public class MapViewer extends BasicGameState {
         }
     }
 
+    private void setFarmResources(List<String> serverMessages) {
+        try {
+            JSONObject json = (JSONObject)  new JSONParser().parse(serverMessages.get(1));
+            JSONObject gardenJson = (JSONObject)json.get("garden");
+            JSONObject fieldJson = (JSONObject) json.get("field");
+            JSONArray isBought = (JSONArray) gardenJson.get("bought");
+            JSONArray hasFruit = (JSONArray) gardenJson.get("fruit");
+            JSONArray isPlowed = (JSONArray) fieldJson.get("plowed");
+            JSONArray plant = (JSONArray) fieldJson.get("plant");
+            for (ObjectView objectView :
+                    GameState.mapViews.get(1).objectViews) {
+                if (objectView.getName().equalsIgnoreCase(Names.PEACH_TREE.name()))
+                    if ((boolean) isBought.get(0)) {
+                        objectView.setImagePath("/resource/tree/tree.png");
+                    }
+                if (objectView.getName().equalsIgnoreCase(Names.PEAR_TREE.name()))
+                    if ((boolean) isBought.get(1))
+                        objectView.setImagePath("/resource/tree/tree.png");
+                if (objectView.getName().equalsIgnoreCase(Names.LEMON_TREE.name()))
+                    if ((boolean) isBought.get(2))
+                        objectView.setImagePath("/resource/tree/tree.png");
+                if (objectView.getName().equalsIgnoreCase(Names.POMEGRANATE_TREE.name()))
+                    if ((boolean) isBought.get(3))
+                        objectView.setImagePath("/resource/tree/tree.png");
+                if (objectView.getName().equalsIgnoreCase(Names.ORANGE_TREE.name()))
+                    if ((boolean) isBought.get(4))
+                        objectView.setImagePath("/resource/tree/tree.png");
+                if (objectView.getName().equalsIgnoreCase(Names.APPLE_TREE.name()))
+                    if ((boolean) isBought.get(5))
+                        objectView.setImagePath("/resource/tree/tree.png");
+                if (objectView.getName().toLowerCase().startsWith("field no.")){
+                    int number = Integer.parseInt(objectView.getName().substring(9));
+                    if ((boolean) isPlowed.get(number))
+                        objectView.setImagePath("/resource/crete/plowed.png");
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setBarnNames(List<String> serverMessages) {
         List<ObjectView> cowObjectViews = new ArrayList<>();
         List<ObjectView> chickenObjectViews = new ArrayList<>();
         List<ObjectView> sheepObjectViews = new ArrayList<>();
         System.out.println(objectViews.size());
-        for (ObjectView objectView: GameState.mapViews.get(2).objectViews) {
-            if (objectView.getName().toLowerCase().startsWith("cow")){
+        for (ObjectView objectView : GameState.mapViews.get(2).objectViews) {
+            if (objectView.getName().toLowerCase().startsWith("cow")) {
                 cowObjectViews.add(objectView);
             }
-            if (objectView.getName().toLowerCase().startsWith("sheep")){
+            if (objectView.getName().toLowerCase().startsWith("sheep")) {
                 sheepObjectViews.add(objectView);
             }
-            if (objectView.getName().toLowerCase().startsWith("chicken")){
+            if (objectView.getName().toLowerCase().startsWith("chicken")) {
                 chickenObjectViews.add(objectView);
             }
         }
@@ -300,11 +377,10 @@ public class MapViewer extends BasicGameState {
     }
 
     private void showMenu(List<String> serverMessages) {
-        if (serverMessages.size() == 1){
+        if (serverMessages.size() == 1) {
             MyJDialog dialog = new MyJDialog(new JFrame(), "Message", serverMessages.get(0), this);
             dialog.setSize(500, 300);
-        }
-        else {
+        } else {
             String[] messages = new String[serverMessages.size() - 1];
             for (int i = 0; i < messages.length; i++) {
                 messages[i] = serverMessages.get(i + 1);
@@ -317,7 +393,7 @@ public class MapViewer extends BasicGameState {
     private String send(final String message) throws IOException {
         final String[] res = new String[1];
         res[0] = new String();
-        socket = new Socket("localhost", 1377);
+        socket = new Socket("localhost", 1378);
         new Thread(() -> {
             try {
                 serverMessages = new ArrayList<>();
@@ -328,10 +404,10 @@ public class MapViewer extends BasicGameState {
                 for (int i = 0; i < 100; i++) {
                     read(in);
                     if (serverMessages == null ||
-                            (serverMessages.size() >=1 && serverMessages.get(serverMessages.size() - 1) == null ))
+                            (serverMessages.size() >= 1 && serverMessages.get(serverMessages.size() - 1) == null))
                         break;
-                    if(serverMessages.size() > 0 &&
-                            serverMessages.get(serverMessages.size() - 1).equals("___")){
+                    if (serverMessages.size() > 0 &&
+                            serverMessages.get(serverMessages.size() - 1).equals("___")) {
                         serverMessages.remove(serverMessages.size() - 1);
                         break;
                     }
@@ -347,15 +423,15 @@ public class MapViewer extends BasicGameState {
     private void read(BufferedReader in) throws IOException {
         try {
             serverMessages.add(in.readLine());
-        }catch (SocketException e){
+        } catch (SocketException e) {
 
         }
     }
 
-    public boolean playerIntersect(Position position){
+    public boolean playerIntersect(Position position) {
         int x = GameState.player.getPosition().x;
         int y = GameState.player.getPosition().y;
-        switch (playerDirection){
+        switch (playerDirection) {
             case UP:
                 return pointIntersect(x + GameState.firstX, y + GameState.firstY - 6, position);
             case DOWN:
@@ -368,9 +444,9 @@ public class MapViewer extends BasicGameState {
         return false;
     }
 
-    private ObjectView getIntersectedView(List<ObjectView> objectViews){
-        for (ObjectView objectView: objectViews){
-            if (playerIntersect(objectView.getPosition())){
+    private ObjectView getIntersectedView(List<ObjectView> objectViews) {
+        for (ObjectView objectView : objectViews) {
+            if (playerIntersect(objectView.getPosition())) {
                 return objectView;
             }
         }
@@ -379,14 +455,13 @@ public class MapViewer extends BasicGameState {
 
 
     private boolean playerIntersect(List<ObjectView> objectViews) {
-        for (ObjectView objectView:objectViews) {
-            if(playerIntersect(objectView.getPosition())){
-                if(objectView.getType() == ObjectView.Type.BUILDING && playerIntersect(objectView.getDoor())){
+        for (ObjectView objectView : objectViews) {
+            if (playerIntersect(objectView.getPosition())) {
+                if (objectView.getType() == ObjectView.Type.BUILDING && playerIntersect(objectView.getDoor())) {
                     BuildingObjectView building = (BuildingObjectView) objectView;
-                    if (building.getStateId() == 3){
+                    if (building.getStateId() == 3) {
                         sendAndGetResponse("greenhouse/repair\n");
-                    }
-                    else {
+                    } else {
                         goTo(building);
                     }
                 }
@@ -398,7 +473,7 @@ public class MapViewer extends BasicGameState {
 
     private void goTo(BuildingObjectView building) {
         try {
-            if (building.getStateId() != 2)
+            if (building.getStateId() != 2 && building.getStateId() != 1)
                 send("goto " + building.getName() + "\n");
         } catch (IOException e) {
             e.printStackTrace();
@@ -409,14 +484,14 @@ public class MapViewer extends BasicGameState {
         GameState.player.getPosition().y = building.getFirstPlayerY();
         GameState.firstX = building.getFirstX();
         GameState.firstY = building.getFirstY();
-        if (building.getStateId() == 2) {
+        if (building.getStateId() == 2 || building.getStateId() == 1) {
             sendAndGetResponse("goto " + building.getName() + "\n");
         }
 
     }
 
-    public static boolean pointIntersect(int x, int y, Position position){
-        if(position.x < x && position.y < y && position.x + position.width > x && position.y + position.height > y){
+    public static boolean pointIntersect(int x, int y, Position position) {
+        if (position.x < x && position.y < y && position.x + position.width > x && position.y + position.height > y) {
             return true;
         }
         return false;

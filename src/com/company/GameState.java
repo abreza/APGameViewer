@@ -95,7 +95,7 @@ public class GameState extends StateBasedGame{
                 new Position(23 * 32 + 10, 39 * 32 - 20, 4 * 32, 20), Names.FOREST.name(), ObjectView.Type.BUILDING, 4));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(17 * 32, 32);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(15 * 32, 0);
-        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 10 * 32 - 15, 6 * 32, 7 * 32), null, Names.PEACH_TREE.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 10 * 32 - 15, 6 * 32, 7 * 32),null , Names.PEACH_TREE.name(), ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(13 * 32 + 10, 10 * 32 - 15, 6 * 32, 7 * 32), null, Names.PEAR_TREE.name(), ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(4 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.LEMON_TREE.name(), ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(13 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.POMEGRANATE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
