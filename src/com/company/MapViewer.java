@@ -8,8 +8,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import javax.swing.*;
 import java.io.*;
-import java.net.Socket;
-import java.net.SocketException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,17 +16,18 @@ import java.util.concurrent.TimeUnit;
 
 public class MapViewer extends BasicGameState {
     public static int PLAYER_SPEED = 1;
-    public static int Animation_SPEED = 10;
     public static int STATE_ID = 1;
     public TiledMap map;
     private String TMXName;
-    public List<ObjectView> objectViews;
-    public enum Direction{LEFT, RIGHT, UP, DOWN}
-    private Direction playerDirection = Direction.RIGHT;
+    private List<ObjectView> objectViews;
+    private List<Animal> animals;
     private int id;
     private Socket socket;
     private List<String> serverMessages;
-    private int Y = 0, X = 0;
+    private static DatagramSocket UDPServerSocket;
+    private static ServerSocket TCPServerSocket;
+    private static Socket androidSocket;
+    private static PrintWriter out;
 
 
     public MapViewer(String TMXName, int id) {
@@ -48,72 +48,15 @@ public class MapViewer extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         map.render(-GameState.firstX, -GameState.firstY);
-        if (Y < 0) {
-            playerDirection = Direction.UP;
-            GameState.player.setImage(GameState.playerUp.get(GameState.upNumber / Animation_SPEED)
-                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.upNumber = (GameState.upNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (GameState.app.getHeight() / 8 > GameState.player.getPosition().y) {
-                    GameState.firstY -= 1;
-                } else {
-                    GameState.player.getPosition().y -= 1;
-                }
-            }
-            Y++;
-        }
-        if (Y > 0) {
-            playerDirection = Direction.DOWN;
-            GameState.player.setImage(GameState.playerDown.get(GameState.downNumber / Animation_SPEED)
-                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.downNumber = (GameState.downNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                    if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().y) {
-                        GameState.firstY += 1;
-                    } else {
-                        GameState.player.getPosition().y += 1;
-                    }
-                }
-            }
-            Y--;
-        }
-        if (X < 0) {
-            playerDirection = Direction.LEFT;
-            GameState.player.setImage(GameState.playerLeft.get(GameState.leftNumber / Animation_SPEED)
-                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.leftNumber = (GameState.leftNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (GameState.app.getHeight() / 8 > GameState.player.getPosition().x) {
-                    GameState.firstX -= 1;
-                } else {
-                    GameState.player.getPosition().x -= 1;
-                }
-            }
-            X++;
-        }
-        if (X > 0) {
-            playerDirection = Direction.RIGHT;
-            GameState.player.setImage(GameState.playerRight.get(GameState.rightNumber / Animation_SPEED)
-                    .getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
-            GameState.rightNumber = (GameState.rightNumber + 1) % (3 * Animation_SPEED);
-            if(!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                if (!playerIntersect(((MapViewer) GameState.gameState.getCurrentState()).objectViews)) {
-                    if (7 * GameState.app.getHeight() / 8 < GameState.player.getPosition().x) {
-                        GameState.firstX += 1;
-                    } else {
-                        GameState.player.getPosition().x += 1;
-                    }
-                }
-            }
-            X--;
-        }
-        graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
         for (ObjectView objectView : objectViews) {
             if(objectView.getImage() != null){
-                graphics.drawImage(objectView.getImage(), objectView.getPosition().x, objectView.getPosition().y);
+                graphics.drawImage(objectView.getImage().
+                        getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
+                        objectView.getPosition().x + 20, objectView.getPosition().y + 35);
             }
         }
+        GameState.player.move();
+        graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
     }
 
     @Override
@@ -134,18 +77,20 @@ public class MapViewer extends BasicGameState {
             }
         }
         if(input.isKeyDown(Input.KEY_UP)){
-            Y -= PLAYER_SPEED;
+            GameState.player.moveY -= PLAYER_SPEED;
         }
         if(input.isKeyDown(Input.KEY_DOWN)){
-            Y += PLAYER_SPEED;
+            GameState.player.moveY += PLAYER_SPEED;
         }
         if(input.isKeyDown(Input.KEY_LEFT)){
-            X -= PLAYER_SPEED;
+            GameState.player.moveX -= PLAYER_SPEED;
         }
         if(input.isKeyDown(Input.KEY_RIGHT)){
-            X += PLAYER_SPEED;
+            GameState.player.moveX += PLAYER_SPEED;
         }
     }
+
+
 
     private void checkForField(ObjectView intersectedView) {
         try{
@@ -328,25 +273,11 @@ public class MapViewer extends BasicGameState {
         }
     }
 
-    public boolean playerIntersect(Position position){
-        int x = GameState.player.getPosition().x;
-        int y = GameState.player.getPosition().y;
-        switch (playerDirection){
-            case UP:
-                return pointIntersect(x + GameState.firstX, y + GameState.firstY - 6, position);
-            case DOWN:
-                return pointIntersect(x + GameState.firstX, y + GameState.firstY + 6, position);
-            case LEFT:
-                return pointIntersect(x + GameState.firstX - 6, y + GameState.firstY, position);
-            case RIGHT:
-                return pointIntersect(x + GameState.firstX + 6, y + GameState.firstY, position);
-        }
-        return false;
-    }
+
 
     private ObjectView getIntersectedView(List<ObjectView> objectViews){
         for (ObjectView objectView: objectViews){
-            if (playerIntersect(objectView.getPosition())){
+            if (GameState.player.intersect(objectView.getPosition(), false)){
                 return objectView;
             }
         }
@@ -354,25 +285,9 @@ public class MapViewer extends BasicGameState {
     }
 
 
-    private boolean playerIntersect(List<ObjectView> objectViews) {
-        for (ObjectView objectView:objectViews) {
-            if(playerIntersect(objectView.getPosition())){
-                if(objectView.getType() == ObjectView.Type.BUILDING && playerIntersect(objectView.getDoor())){
-                    BuildingObjectView building = (BuildingObjectView) objectView;
-                    if (building.getStateId() == 3){
-                        sendAndGetResponse("greenhouse/repair\n");
-                    }
-                    else {
-                        goTo(building);
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
 
-    private void goTo(BuildingObjectView building) {
+
+    void goTo(BuildingObjectView building) {
         try {
             if (building.getStateId() != 2)
                 send("goto " + building.getName() + "\n");
@@ -380,6 +295,7 @@ public class MapViewer extends BasicGameState {
             e.printStackTrace();
         }
         GameState.gameState.enterState(building.getStateId());
+        GameState.player.currentObjectViews = ((MapViewer)GameState.gameState.getState(building.getStateId())).objectViews;
         STATE_ID = building.getStateId();
         GameState.player.getPosition().x = building.getFirstPlayerX();
         GameState.player.getPosition().y = building.getFirstPlayerY();
@@ -391,11 +307,81 @@ public class MapViewer extends BasicGameState {
 
     }
 
-    public static boolean pointIntersect(int x, int y, Position position){
-        if(position.x < x && position.y < y && position.x + position.width > x && position.y + position.height > y){
-            return true;
-        }
-        return false;
+    public static void UDPSend(String message) throws IOException {
+        UDPServerSocket.send(new DatagramPacket(message.getBytes(), message.getBytes().length, InetAddress.getByName("255.255.255.255"), 1377));
+    }
+
+    public static void TCPSend(String message) throws IOException {
+        out.println(message);
+        out.flush();
+    }
+
+    public static String UDPRead(DatagramPacket incoming) throws IOException {
+        UDPServerSocket.receive(incoming);
+        return new String(incoming.getData(), 0, incoming.getLength());
+    }
+
+    public static String TCPRead() throws IOException, ClassNotFoundException {
+        return new BufferedReader(new InputStreamReader(androidSocket.getInputStream())).readLine();
+    }
+
+    public void androidUpdate(){
+        new Thread(() -> {
+            try {
+            TCPServerSocket = new ServerSocket(1377);
+            UDPServerSocket = new DatagramSocket(1377);
+            byte[] buffer = new byte[65536];
+            DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
+            while (true) {
+                String Message = UDPRead(incoming);
+                if(Message == "up"){
+                    GameState.player.moveY -= PLAYER_SPEED;
+                }
+                if(Message == "down"){
+                    GameState.player.moveY += PLAYER_SPEED;
+                }
+                if(Message == "left"){
+                    GameState.player.moveX -= PLAYER_SPEED;
+                }
+                if(Message == "right"){
+                    GameState.player.moveX += PLAYER_SPEED;
+                }
+                if(Message == "ok"){
+                    ObjectView intersectedView =
+                            getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
+                    if (intersectedView != null){
+                        if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
+                            sendAndGetResponse("goto " + intersectedView.getName() + "\n");
+                        else {
+                            checkForBarn(intersectedView);
+                            checkForGarden(intersectedView);
+                            sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
+                        }
+                    }
+                }
+                socket.close();
+            }
+            }catch (IOException ioe){
+
+            }
+        }).start();
+    }
+
+
+    public List<Animal> getAnimals() {
+        return animals;
+    }
+
+    public void setAnimals(List<Animal> animals) {
+        this.animals = animals;
+    }
+
+    public List<ObjectView> getObjectViews() {
+        return objectViews;
+    }
+
+    public void setObjectViews(List<ObjectView> objectViews) {
+        this.objectViews = objectViews;
     }
 
     public String getTMXName() {

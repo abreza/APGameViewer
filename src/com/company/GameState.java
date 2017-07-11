@@ -7,10 +7,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import javax.naming.Name;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class GameState extends StateBasedGame{
 
@@ -20,13 +18,7 @@ public class GameState extends StateBasedGame{
     public static int height = 700;
     public static Map<Integer, MapViewer> mapViews = new HashMap<>();
     public static GameState gameState;
-    public static ObjectView player;
-    public static List<Image> playerUp = new ArrayList<>();
-    public static List<Image> playerDown = new ArrayList<>();
-    public static List<Image> playerRight = new ArrayList<>();
-    public static List<Image> playerLeft = new ArrayList<>();
-    public static int upNumber = 0, downNumber = 0, leftNumber = 0, rightNumber = 0;
-
+    public static Animal player;
     public GameState() throws SlickException {
         super("map-village");
         addMapView("map-village", 0);
@@ -48,39 +40,42 @@ public class GameState extends StateBasedGame{
     }
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-        playerUp.add(new Image("/resource/person/person_up_0.png"));
-        playerUp.add(new Image("/resource/person/person_up_1.png"));
-        playerUp.add(new Image("/resource/person/person_up_2.png"));
 
-        playerDown.add(new Image("/resource/person/person_down_0.png"));
-        playerDown.add(new Image("/resource/person/person_down_1.png"));
-        playerDown.add(new Image("/resource/person/person_down_2.png"));
+        List<Image> up = new ArrayList<>();
+        up.add(new Image("/resource/person/person_up_0.png"));
+        up.add(new Image("/resource/person/person_up_1.png"));
+        up.add(new Image("/resource/person/person_up_2.png"));
+        List<Image> down = new ArrayList<>();
+        down.add(new Image("/resource/person/person_down_0.png"));
+        down.add(new Image("/resource/person/person_down_1.png"));
+        down.add(new Image("/resource/person/person_down_2.png"));
+        List<Image> left = new ArrayList<>();
+        left.add(new Image("/resource/person/person_left_0.png"));
+        left.add(new Image("/resource/person/person_left_1.png"));
+        left.add(new Image("/resource/person/person_left_2.png"));
+        List<Image> right = new ArrayList<>();
+        right.add(new Image("/resource/person/person_right_0.png"));
+        right.add(new Image("/resource/person/person_right_1.png"));
+        right.add(new Image("/resource/person/person_right_2.png"));
+        player = new Animal(new Position(GameState.width / 8,GameState.height / 8,40,50), null, "0",
+                ObjectView.Type.PLAYER, up , down, left, right);
+        player.setImage(right.get(0).getScaledCopy(player.getPosition().width, player.getPosition().height));
 
-        playerLeft.add(new Image("/resource/person/person_left_0.png"));
-        playerLeft.add(new Image("/resource/person/person_left_1.png"));
-        playerLeft.add(new Image("/resource/person/person_left_2.png"));
-
-        playerRight.add(new Image("/resource/person/person_right_0.png"));
-        playerRight.add(new Image("/resource/person/person_right_1.png"));
-        playerRight.add(new Image("/resource/person/person_right_2.png"));
-
-
-        player = new ObjectView(new Position(GameState.width / 8,GameState.height / 8,40,50), null, "0", ObjectView.Type.PLAYER);
-        player.setImage(new Image("/resource/person/person_right_0.png").getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height));
         this.getState(0).init(gameContainer, this);
         this.getState(1).init(gameContainer, this);
         List<ObjectView> objectViews = new ArrayList<>();
+        List<Animal> animals = new ArrayList<>();
         objectViews.add(new ObjectView(new Position(0, 0, 50, 40 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(60 * 32 - 70, 0, 70, 40 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, 0, 23 * 32, 50), null, Names.WALL.name(), ObjectView.Type.ITEM));
-        objectViews.add(new ObjectView(new Position(27 * 32 + 10, 0, 60 * 32 - (28 * 32 + 10), 50), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(27 * 32 + 10, 0, 60 * 32 - (28 * 32 + 10), 50), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, 37 * 32 + 10, 22 * 32, 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
-        objectViews.add(new ObjectView(new Position(28 * 32, 37 * 32 + 10, 60 * 32 - (28 * 32), 32), null, "0", ObjectView.Type.ITEM));
+        objectViews.add(new ObjectView(new Position(28 * 32, 37 * 32 + 10, 60 * 32 - (28 * 32), 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(28 * 32 + 10, 50, 64, 64), null, Names.WALL.name(), ObjectView.Type.ITEM));
 
         objectViews.add(new ObjectView(new Position(4 * 32 + 10, 32, 5 * 32, 4 * 32), null, Names.HOME.name(), ObjectView.Type.BUILDING));
         objectViews.add(new BuildingObjectView(new Position(23 * 32 + 10, 0, 4 * 32, 20), null,
-                new Position(23 * 32 + 10, 0, 4 * 32, 20), Names.VIllage.name(), ObjectView.Type.BUILDING, 0));
+                new Position(23 * 32 + 10, 0, 4 * 32, 20), Names.VILLAGE.name(), ObjectView.Type.BUILDING, 0));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(20, 300);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 0);
         objectViews.add(new BuildingObjectView(new Position(13 * 32 + 10, 42, 7 * 32, 4 * 32), null,
@@ -102,6 +97,7 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(13 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.POMEGRANATE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(4 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.APPLE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(13 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.ORANGE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
+        mapViews.get(1).setObjectViews(objectViews);
         objectViews.add(new ObjectView(new Position(28 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.0", ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(38 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.1", ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(48 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.2", ObjectView.Type.BUILDING_ITEM));
@@ -111,8 +107,8 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(28 * 32 + 10, 31 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.6", ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(38 * 32 + 10, 31 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.7", ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(48 * 32 + 10, 31 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.8", ObjectView.Type.BUILDING_ITEM));
-        mapViews.get(1).objectViews = objectViews;
-
+        mapViews.get(1).setObjectViews(objectViews);
+        GameState.player.currentObjectViews = objectViews;
 
         objectViews = new ArrayList<>();
         objectViews.add(new ObjectView(new Position(-32, -32, 32, 8 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
@@ -163,33 +159,228 @@ public class GameState extends StateBasedGame{
         ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setFirstXAndY(18 * 32, -50);
 
 
-        mapViews.get(0).objectViews = objectViews;
+        mapViews.get(0).setObjectViews(objectViews);
 
         objectViews = new ArrayList<>();
         objectViews.add(new BuildingObjectView(new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), null,
                 new Position(12 * 32, 28 * 32, 3 * 32, 2 * 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 0);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(16 * 32, 6 * 32);
-        objectViews.add(new ObjectView(new Position(32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(6 * 32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(11 * 32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(3 * 32 - 15, 10 * 32 - 15, 3 *32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(9 * 32 - 15, 10 * 32 - 15, 3 *32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(15 * 32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(20 * 32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(25 * 32 - 15, 0 - 15, 3 *32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(19 * 32 - 15, 10 * 32 - 15, 3 *32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(24 * 32 - 15, 10 * 32 - 15, 3 *32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(3 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(5 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(7 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(9 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(3 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(5 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(7 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(9 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.BUILDING_ITEM));
+
+
+
+
+        List<Image> cowUp = new ArrayList<>();
+        cowUp.add(new Image("/resource/cow/cu0.png"));
+        cowUp.add(new Image("/resource/cow/cu1.png"));
+        cowUp.add(new Image("/resource/cow/cu2.png"));
+        cowUp.add(new Image("/resource/cow/cu3.png"));
+        List<Image> cowLeft = new ArrayList<>();
+        cowLeft.add(new Image("/resource/cow/cl0.png"));
+        cowLeft.add(new Image("/resource/cow/cl1.png"));
+        cowLeft.add(new Image("/resource/cow/cl2.png"));
+        cowLeft.add(new Image("/resource/cow/cl3.png"));
+        List<Image> cowRight = new ArrayList<>();
+        cowRight.add(new Image("/resource/cow/cr0.png"));
+        cowRight.add(new Image("/resource/cow/cr1.png"));
+        cowRight.add(new Image("/resource/cow/cr2.png"));
+        cowRight.add(new Image("/resource/cow/cr3.png"));
+        List<Image> cowDown = new ArrayList<>();
+        cowDown.add(new Image("/resource/cow/cd0.png"));
+        cowDown.add(new Image("/resource/cow/cd1.png"));
+        cowDown.add(new Image("/resource/cow/cd2.png"));
+        cowDown.add(new Image("/resource/cow/cd3.png"));
+
+        animals.add(new Animal(new Position(32 - 15, 130, 2 * 32, 3 * 32), new Image("/resource/cow/cu0.png"), Names.COW_EMPTY.name(),
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+        animals.add(new Animal(new Position(6 * 32 - 15, 130, 2 * 32, 3 * 32), new Image("/resource/cow/cu0.png"), Names.COW_EMPTY.name(),
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+        animals.add(new Animal(new Position(11 * 32 - 15, 130, 2 * 32, 3 * 32), new Image("/resource/cow/cu0.png"), Names.COW_EMPTY.name(),
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+        animals.add(new Animal(new Position(3 * 32 - 15, 6 * 32, 2 * 32, 3 * 32), new Image("/resource/cow/cd0.png"), Names.COW_EMPTY.name(),
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+        animals.add(new Animal(new Position(9 * 32 - 15, 6 * 32, 2 * 32, 3 * 32), new Image("/resource/cow/cd0.png"), Names.COW_EMPTY.name(),
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+
+        List<Image> sheepUp = new ArrayList<>();
+        sheepUp.add(new Image("/resource/sheep/shu0.png"));
+        sheepUp.add(new Image("/resource/sheep/shu1.png"));
+        sheepUp.add(new Image("/resource/sheep/shu2.png"));
+        sheepUp.add(new Image("/resource/sheep/shu3.png"));
+        List<Image> sheepLeft = new ArrayList<>();
+        sheepLeft.add(new Image("/resource/sheep/shl0.png"));
+        sheepLeft.add(new Image("/resource/sheep/shl1.png"));
+        sheepLeft.add(new Image("/resource/sheep/shl2.png"));
+        sheepLeft.add(new Image("/resource/sheep/shl3.png"));
+        List<Image> sheepRight = new ArrayList<>();
+        sheepRight.add(new Image("/resource/sheep/shr0.png"));
+        sheepRight.add(new Image("/resource/sheep/shr1.png"));
+        sheepRight.add(new Image("/resource/sheep/shr2.png"));
+        sheepRight.add(new Image("/resource/sheep/shr3.png"));
+        List<Image> sheepDown = new ArrayList<>();
+        sheepDown.add(new Image("/resource/sheep/shd0.png"));
+        sheepDown.add(new Image("/resource/sheep/shd1.png"));
+        sheepDown.add(new Image("/resource/sheep/shd2.png"));
+        sheepDown.add(new Image("/resource/sheep/shd3.png"));
+
+        animals.add(new Animal(new Position(15 * 32 - 15, 130, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shu0.png"), Names.SHEEP_EMPTY.name(),
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+        animals.add(new Animal(new Position(20 * 32 - 15, 130, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shu0.png"), Names.SHEEP_EMPTY.name(),
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+        animals.add(new Animal(new Position(25 * 32 - 15, 130, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shu0.png"), Names.SHEEP_EMPTY.name(),
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+        animals.add(new Animal(new Position(19 * 32 - 15, 7 * 32, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shd0.png"), Names.SHEEP_EMPTY.name(),
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+        animals.add(new Animal(new Position(24 * 32 - 15, 7 * 32, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shd0.png"), Names.SHEEP_EMPTY.name(),
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+
+        List<Image> chickenUp = new ArrayList<>();
+        chickenUp.add(new Image("/resource/chicken/chu0.png"));
+        chickenUp.add(new Image("/resource/chicken/chu1.png"));
+        chickenUp.add(new Image("/resource/chicken/chu2.png"));
+        chickenUp.add(new Image("/resource/chicken/chu3.png"));
+        List<Image> chickenLeft = new ArrayList<>();
+        chickenLeft.add(new Image("/resource/chicken/chl0.png"));
+        chickenLeft.add(new Image("/resource/chicken/chl1.png"));
+        chickenLeft.add(new Image("/resource/chicken/chl2.png"));
+        chickenLeft.add(new Image("/resource/chicken/chl3.png"));
+        List<Image> chickenRight = new ArrayList<>();
+        chickenRight.add(new Image("/resource/chicken/chr0.png"));
+        chickenRight.add(new Image("/resource/chicken/chr1.png"));
+        chickenRight.add(new Image("/resource/chicken/chr2.png"));
+        chickenRight.add(new Image("/resource/chicken/chr3.png"));
+        List<Image> chickenDown = new ArrayList<>();
+        chickenDown.add(new Image("/resource/chicken/chd0.png"));
+        chickenDown.add(new Image("/resource/chicken/chd1.png"));
+        chickenDown.add(new Image("/resource/chicken/chd2.png"));
+        chickenDown.add(new Image("/resource/chicken/chd3.png"));
+        animals.add(new Animal(new Position(32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(3 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(5 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(7 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(9 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(3 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(5 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(7 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+        animals.add(new Animal(new Position(9 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+
+
+        ObjectView obj = new ObjectView(new Position(32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ITEM);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(6 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ITEM);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(11 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(3 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(9 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+
+        obj = new ObjectView(new Position(15 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(20 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(25 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(19 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(24 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(3 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(5 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(7 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(9 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(3 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(5 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(7 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
+        obj = new ObjectView(new Position(9 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        for (Animal animal:animals) {
+            animal.animalFood.add(obj);
+        }
+        objectViews.add(obj);
         objectViews.add(new ObjectView(new Position(0, -15, 2, 32 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, -15, 32 * 32, 2), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(29 * 32, -15, 2, 32 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
@@ -201,7 +392,47 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(12 * 32 - 15, 19 * 32 - 15, 32, 9 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(16 * 32 - 15, 19 * 32 - 15, 32, 9 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
 
-        mapViews.get(2).objectViews = objectViews;
+
+        objectViews.addAll(animals);
+        mapViews.get(2).setObjectViews(objectViews);
+        for (Animal animal : animals) {
+            animal.currentObjectViews = new ArrayList<>(objectViews);
+            animal.currentObjectViews.remove(animal);
+        }
+        for (Animal animal:animals) {
+            animal.Animation_SPEED = 50;
+        }
+        new Thread(() -> {
+            while (true){
+                for (Animal animal:animals) {
+                    animal.move();
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+        new Thread(() -> {
+            int flag;
+            while (true){
+                for (Animal animal:animals) {
+                    flag = ((int)(Math.random() * 300) * 2 - 1) * (animal.moveX * 2 + ((int)(Math.random() * 2) * 2 - 1));
+                    flag /= Math.abs(flag);
+                    animal.moveX = flag * ((int)(Math.random() * 30));
+                    flag = ((int)(Math.random() * 300) * 2 - 1) * (animal.moveY * 2 + ((int)(Math.random() * 2) * 2 - 1));
+                    flag /= Math.abs(flag);
+                    animal.moveY = flag * ((int)(Math.random() * 30));
+                }
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        mapViews.get(2).setAnimals(animals);
 
         objectViews = new ArrayList<>();
         objectViews.add(new BuildingObjectView(new Position(12 * 32 - 15, 28 * 32, 4 * 32 + 30, 2 * 32), null,
@@ -218,13 +449,13 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(29 * 32, -15, 2, 32 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, 29 * 32 - 45, 13 * 32, 2), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(17 * 32 , 29 * 32 - 45, 13 * 32, 2), null, Names.WALL.name(), ObjectView.Type.ITEM));
-        mapViews.get(3).objectViews = objectViews;
+        mapViews.get(3).setObjectViews(objectViews);
 
         objectViews = new ArrayList<>();
         objectViews.add(new BuildingObjectView(new Position(31 * 32, 0, 5 * 32, 32), null,
                 new Position(31 * 32, 0, 5 * 32, 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(220, 100);
         ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setFirstXAndY(18 * 32, 37 * 32 - 50);
-        mapViews.get(4).objectViews = objectViews;
+        mapViews.get(4).setObjectViews(objectViews);
     }
 }

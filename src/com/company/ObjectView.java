@@ -6,9 +6,10 @@ import org.newdawn.slick.Image;
 public class ObjectView {
 
     private Position position;
+    private Position dynamicPosition;
     private Image image;
     private Position door;
-    public enum Type{BUILDING, BUILDING_ITEM, ITEM, PLAYER}
+    public enum Type{BUILDING, BUILDING_ITEM, ITEM, PLAYER, ANIMAL}
     private Type type;
     private String name;
 
@@ -17,11 +18,27 @@ public class ObjectView {
         this.type = type;
         this.name = name;
         this.position = position;
+        this.dynamicPosition = new Position(0, 0, position.width, position.height);
         this.image = image;
     }
 
     public Position getPosition() {
-        return position;
+        if(image == null || type == Type.PLAYER)
+            return position;
+        else{
+            dynamicPosition.x = position.x - GameState.firstX;
+            dynamicPosition.y = position.y - GameState.firstY;
+            return dynamicPosition;
+        }
+    }
+    public Position getPosition(boolean b) {
+        if(image == null || type == Type.PLAYER || b)
+            return position;
+        else{
+            dynamicPosition.x = position.x - GameState.firstX;
+            dynamicPosition.y = position.y - GameState.firstY;
+            return dynamicPosition;
+        }
     }
 
     public void setPosition(Position position) {
