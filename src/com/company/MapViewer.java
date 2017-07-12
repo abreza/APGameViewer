@@ -58,6 +58,8 @@ public class MapViewer extends BasicGameState {
                 public void run() {
                     if (STATE_ID == 1 && !inRequest)
                         sendAndGetResponse("farmResources\n");
+                    if (STATE_ID == 3 && !inRequest)
+                        sendAndGetResponse("greenhouseResources\n");
                 }
             }, 0, 8000);
         }
@@ -70,7 +72,13 @@ public class MapViewer extends BasicGameState {
             if(objectView.getImage() != null){
                 graphics.drawImage(objectView.getImage().
                         getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
-                        objectView.getPosition().x + 20, objectView.getPosition().y + 35);
+                        objectView.getPosition().x  + 20,
+                        objectView.getPosition().y  + 35);
+            }else if (objectView.getImagePath() != null){
+                graphics.drawImage(new Image(objectView.getImagePath()).
+                                getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
+                        objectView.getPosition().x - GameState.firstX + 20,
+                        objectView.getPosition().y - GameState.firstY + 45);
             }
         }
         GameState.player.move();
@@ -93,6 +101,7 @@ public class MapViewer extends BasicGameState {
             ObjectView intersectedView =
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null) {
+                System.out.println(intersectedView.getName());
                 inRequest = true;
                 if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
@@ -204,13 +213,49 @@ public class MapViewer extends BasicGameState {
                     send("back\n");
                 else if (serverMessages.get(0).equalsIgnoreCase("farmResources")) {
                     setFarmResources(serverMessages);
-                } else
+                }else if (serverMessages.get(0).equalsIgnoreCase("greenhouseResources")){
+                    setGreenHouseResources(serverMessages);
+                }else
                     showMenu(serverMessages);
                 inRequest = false;
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setGreenHouseResources(List<String> serverMessages){
+        try {
+            JSONObject json = (JSONObject) new JSONParser().parse(serverMessages.get(1));
+            JSONArray isPlowed = (JSONArray) json.get("plowed");
+            JSONArray plant = (JSONArray) json.get("plant");
+            JSONArray isCroped = (JSONArray) json.get("crop");
+            JSONArray age = (JSONArray) json.get("age");
+            for (ObjectView objectView :
+                    GameState.mapViews.get(3).objectViews) {
+                if (objectView.getName().toLowerCase().startsWith("field no.")){
+                    int number = Integer.parseInt(objectView.getName().substring(9));
+                    if  (((String) plant.get(number)).toLowerCase().startsWith("empty")) {
+                        if ((boolean) isPlowed.get(number))
+                            objectView.setImagePath("/resource/crete/plowed.png");
+                        else
+                            objectView.setImagePath(null);
+                    }else{
+                        if ((boolean) isCroped.get(number)){
+                            objectView.setImagePath("/resource/crete/" + (String) plant.get(number) + ".png");
+                        }else if ((double) age.get(number) <= 3){
+                            objectView.setImagePath("/resource/crete/first.png");
+                        }else if ((double) age.get(number) <= 7){
+                            objectView.setImagePath("/resource/crete/second.png");
+                        }else{
+                            objectView.setImagePath("/resource/crete/third.png");
+                        }
+                    }
+                }
+            }
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
@@ -300,7 +345,7 @@ public class MapViewer extends BasicGameState {
         List<ObjectView> chickenObjectViews = new ArrayList<>();
         List<ObjectView> sheepObjectViews = new ArrayList<>();
         System.out.println(objectViews.size());
-        for (ObjectView objectView : GameState.mapViews.get(2).objectViews) {
+        for (ObjectView objectView : GameState.animals) {
             if (objectView.getName().toLowerCase().startsWith("cow")) {
                 cowObjectViews.add(objectView);
             }
@@ -318,6 +363,12 @@ public class MapViewer extends BasicGameState {
                 chickenObjectViews.get(i - 6).setName(serverMessages.get(i));
             if (i >= 16)
                 sheepObjectViews.get(i - 16).setName(serverMessages.get(i));
+        }
+        for (int i = 0; i < GameState.animals.size(); i++) {
+            Animal animal = GameState.animals.get(i);
+            if (!animal.getName().toLowerCase().endsWith("_empty")){
+                GameState.mapViews.get(2).objectViews.add(animal);
+            }
         }
     }
 
@@ -405,7 +456,7 @@ public class MapViewer extends BasicGameState {
 
     private ObjectView getIntersectedView(List<ObjectView> objectViews){
         for (ObjectView objectView: objectViews){
-            if (GameState.player.intersect(objectView.getPosition(), false)){
+            if (GameState.player.intersect(objectView.getPosition(true), false)){
                 return objectView;
             }
         }

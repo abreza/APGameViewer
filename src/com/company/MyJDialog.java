@@ -38,8 +38,8 @@ public class MyJDialog extends JDialog {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(new ImageIcon(System.getProperty("user.dir") +
-                        "\\resource\\wooden-texture.jpg").getImage(), 0, 0, null);
+                g.drawImage(new ImageIcon(this.getClass().getClassLoader()
+                        .getResource("wooden-texture.jpg")).getImage(), 0, 0, null);
             }
         };
         buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.Y_AXIS));

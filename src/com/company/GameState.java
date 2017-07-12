@@ -19,6 +19,7 @@ public class GameState extends StateBasedGame{
     public static Map<Integer, MapViewer> mapViews = new HashMap<>();
     public static GameState gameState;
     public static Animal player;
+    public static List<Animal> animals;
     public GameState() throws SlickException {
         super("map-village");
         addMapView("map-village", 0);
@@ -64,7 +65,7 @@ public class GameState extends StateBasedGame{
         this.getState(0).init(gameContainer, this);
         this.getState(1).init(gameContainer, this);
         List<ObjectView> objectViews = new ArrayList<>();
-        List<Animal> animals = new ArrayList<>();
+        animals = new ArrayList<>();
         objectViews.add(new ObjectView(new Position(0, 0, 50, 40 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(60 * 32 - 70, 0, 70, 40 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
         objectViews.add(new ObjectView(new Position(0, 0, 23 * 32, 50), null, Names.WALL.name(), ObjectView.Type.ITEM));
@@ -276,38 +277,38 @@ public class GameState extends StateBasedGame{
                 ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
 
 
-        ObjectView obj = new ObjectView(new Position(32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ITEM);
+        ObjectView obj = new ObjectView(new Position(32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ITEM);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(6 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ITEM);
+        obj = new ObjectView(new Position(6 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ITEM);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(11 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(11 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(3 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(3 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(9 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.COW_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(9 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
 
-        obj = new ObjectView(new Position(15 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(15 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(20 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(20 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
@@ -316,67 +317,67 @@ public class GameState extends StateBasedGame{
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(25 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(25 * 32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(19 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(19 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(24 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.SHEEP_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(24 * 32 - 15, 10 * 32 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(32 - 15, 15 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(3 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(3 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(5 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(5 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(7 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(7 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(9 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(9 * 32 - 15, 15 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(32 - 15, 27 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(3 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(3 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(5 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(5 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(7 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(7 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
         objectViews.add(obj);
-        obj = new ObjectView(new Position(9 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.CHICKEN_EMPTY.name(), ObjectView.Type.ANIMAL);
+        obj = new ObjectView(new Position(9 * 32 - 15, 27 * 32 - 15, 32, 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ANIMAL);
         for (Animal animal:animals) {
             animal.animalFood.add(obj);
         }
@@ -393,7 +394,7 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(16 * 32 - 15, 19 * 32 - 15, 32, 9 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
 
 
-        objectViews.addAll(animals);
+//        objectViews.addAll(animals);
         mapViews.get(2).setObjectViews(objectViews);
         for (Animal animal : animals) {
             animal.currentObjectViews = new ArrayList<>(objectViews);
