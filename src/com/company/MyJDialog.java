@@ -13,7 +13,10 @@ public class MyJDialog extends JDialog {
     int focusedButtonId = 0;
     protected MapViewer mapViewer;
     protected JPanel buttonPane;
+    protected ArrayList<Integer> buttonsInPaneId = new ArrayList<>();
     protected ArrayList<JButton> jButtons = new ArrayList<>();
+    protected String[] messages;
+    protected JButton buttonExit;
     private static final long serialVersionUID = 1L;
 
     public MyJDialog(JFrame parent, String title, String message, MapViewer viewer, boolean firstConstructor) {
@@ -34,7 +37,7 @@ public class MyJDialog extends JDialog {
     }
 
     private void setButtonPane() {
-        buttonPane = new JPanel(){
+        buttonPane = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -46,8 +49,7 @@ public class MyJDialog extends JDialog {
     }
 
 
-
-    public MyJDialog(JFrame parent, String title, String message, MapViewer viewer){
+    public MyJDialog(JFrame parent, String title, String message, MapViewer viewer) {
         this(parent, title, message, viewer, true);
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
@@ -64,9 +66,23 @@ public class MyJDialog extends JDialog {
         setLocation(p.x, p.y);
         this.mapViewer = viewer;
 
+        this.messages = messages;
         setButtonPane();
-        for (int i = 0; i < messages.length; i++) {
-            addButton(messages[i]);
+        if (messages.length < 10) {
+            int i = 0;
+            for (i = 0; i < messages.length; i++) {
+                addButton(messages[i]);
+                buttonsInPaneId.add(i);
+            }
+        } else {
+            int i = 0;
+            for (i = 0; i < messages.length; i++) {
+                if (i < 10) {
+                    addButton(messages[i]);
+                    buttonsInPaneId.add(i);
+                } else
+                    makeButton(messages[i]);
+            }
         }
 
         makeQuitButton();
@@ -94,17 +110,22 @@ public class MyJDialog extends JDialog {
         button.setFont(new Font("Arial", Font.PLAIN, 20));
         buttonPane.add(button);
         jButtons.add(button);
+        buttonExit = button;
     }
 
-    public void addButton(String message) {
+    public JButton makeButton(String message) {
         JButton button = new JButton(message);
         button.addActionListener(new ButtonListener(button));
         button.setFont(new Font("Arial", Font.PLAIN, 20));
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
-        buttonPane.add(button);
         jButtons.add(button);
+        return button;
+    }
+
+    public void addButton(String message) {
+        buttonPane.add(makeButton(message));
     }
 
     public JRootPane createRootPane() {
@@ -115,18 +136,67 @@ public class MyJDialog extends JDialog {
             private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent e) {
-                if (focusedButtonId == jButtons.size() - 1)
+                boolean change = true;
+                if (focusedButtonId == jButtons.size() - 1) {
+                    change = false;
                     focusedButtonId = -1;
-                jButtons.get(++focusedButtonId).requestFocus();
+                    for (int i = 0; i < buttonsInPaneId.size(); i++) {
+                        buttonsInPaneId.set(i, i);
+                    }
+                    for (int i = 0; i < buttonsInPaneId.size(); i++) {
+                        if (buttonsInPaneId.get(i) < messages.length)
+                            jButtons.get(i).setText(messages[buttonsInPaneId.get(i)]);
+                    }
+                    jButtons.get(0).requestFocus();
+                }
+                focusedButtonId++;
+                if (focusedButtonId == jButtons.size() - 1){
+                    jButtons.get(focusedButtonId).requestFocus();
+                }else if (change) {
+                    if (!buttonsInPaneId.contains(focusedButtonId)) {
+                        for (int i = 0; i < buttonsInPaneId.size() - 1; i++) {
+                            buttonsInPaneId.set(i, buttonsInPaneId.get(i + 1));
+                        }
+                        buttonsInPaneId.set(buttonsInPaneId.size() - 1, focusedButtonId);
+                        for (int i = 0; i < buttonsInPaneId.size(); i++) {
+                            if (buttonsInPaneId.get(i) < messages.length)
+                                jButtons.get(i).setText(messages[buttonsInPaneId.get(i)]);
+                        }
+                    }
+                    jButtons.get(buttonsInPaneId.indexOf(focusedButtonId)).requestFocus();
+                }
             }
         };
         KeyStroke strokeUp = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
         Action actionUp = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (focusedButtonId == 0)
+                if (focusedButtonId == 0) {
                     focusedButtonId = jButtons.size();
-                jButtons.get(--focusedButtonId).requestFocus();
+                    for (int i = 0; i < buttonsInPaneId.size(); i++) {
+                        buttonsInPaneId.set(i, jButtons.size() - 1 - buttonsInPaneId.size() + i);
+                    }
+                    for (int i = 0; i < buttonsInPaneId.size(); i++) {
+                        if (buttonsInPaneId.get(i) < messages.length)
+                            jButtons.get(i).setText(messages[buttonsInPaneId.get(i)]);
+                    }
+                }
+                focusedButtonId--;
+                if (focusedButtonId == jButtons.size() - 1)
+                    buttonExit.requestFocus();
+                else {
+                    if (!buttonsInPaneId.contains(focusedButtonId)) {
+                        for (int i = buttonsInPaneId.size() - 1; i > 0; i--) {
+                            buttonsInPaneId.set(i, buttonsInPaneId.get(i - 1));
+                        }
+                        buttonsInPaneId.set(0, focusedButtonId);
+                        for (int i = 0; i < buttonsInPaneId.size(); i++) {
+                            if (buttonsInPaneId.get(i) < messages.length)
+                                jButtons.get(i).setText(messages[buttonsInPaneId.get(i)]);
+                        }
+                    }
+                    jButtons.get(buttonsInPaneId.indexOf(focusedButtonId)).requestFocus();
+                }
             }
         };
         KeyStroke strokeEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
@@ -151,7 +221,7 @@ public class MyJDialog extends JDialog {
         private JButton button = null;
         private String message;
 
-        public ButtonListener(String message){
+        public ButtonListener(String message) {
             this.message = message;
         }
 
