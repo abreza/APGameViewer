@@ -11,12 +11,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
 import javax.swing.*;
-import java.util.Timer;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 
@@ -33,6 +31,8 @@ public class MapViewer extends BasicGameState {
     private List<String> serverMessages;
     private static DatagramSocket UDPServerSocket;
     private Timer getResourceTimer;
+    private ObjectView intersectedView;
+    private Map<ObjectView, Integer> objectsToRemove = new HashMap<>();
     private static ServerSocket TCPServerSocket;
     private static Socket androidSocket;
     private static PrintWriter out;
@@ -69,18 +69,23 @@ public class MapViewer extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         map.render(-GameState.firstX, -GameState.firstY);
         for (ObjectView objectView : objectViews) {
-            if(objectView.getImage() != null){
+            if (objectView.getImage() != null) {
                 graphics.drawImage(objectView.getImage().
-                        getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
-                        objectView.getPosition().x  + 20,
-                        objectView.getPosition().y  + 35);
-            }else if (objectView.getImagePath() != null){
+                                getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
+                        objectView.getPosition().x + 20,
+                        objectView.getPosition().y + 35);
+            } else if (objectView.getImagePath() != null) {
                 graphics.drawImage(new Image(objectView.getImagePath()).
                                 getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
                         objectView.getPosition().x - GameState.firstX + 20,
                         objectView.getPosition().y - GameState.firstY + 45);
             }
         }
+        for (ObjectView objectView :
+                objectsToRemove.keySet()) {
+            GameState.mapViews.get(objectsToRemove.get(objectView)).objectViews.remove(objectView);
+        }
+        objectsToRemove = new HashMap<>();
         GameState.player.move();
         graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
     }
@@ -98,7 +103,7 @@ public class MapViewer extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
         if (input.isKeyPressed(Input.KEY_ENTER)) {
-            ObjectView intersectedView =
+            intersectedView =
                     getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null) {
                 System.out.println(intersectedView.getName());
@@ -114,17 +119,24 @@ public class MapViewer extends BasicGameState {
                 }
             }
         }
-        if(input.isKeyDown(Input.KEY_UP)){
+        if (input.isKeyDown(Input.KEY_UP)) {
             GameState.player.moveY -= PLAYER_SPEED;
         }
-        if(input.isKeyDown(Input.KEY_DOWN)){
+        if (input.isKeyDown(Input.KEY_DOWN)) {
             GameState.player.moveY += PLAYER_SPEED;
         }
-        if(input.isKeyDown(Input.KEY_LEFT)){
+        if (input.isKeyDown(Input.KEY_LEFT)) {
             GameState.player.moveX -= PLAYER_SPEED;
         }
-        if(input.isKeyDown(Input.KEY_RIGHT)){
+        if (input.isKeyDown(Input.KEY_RIGHT)) {
             GameState.player.moveX += PLAYER_SPEED;
+        }
+        if (input.isKeyPressed(Input.KEY_TAB)) {
+            try {
+                send("back\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -213,9 +225,9 @@ public class MapViewer extends BasicGameState {
                     send("back\n");
                 else if (serverMessages.get(0).equalsIgnoreCase("farmResources")) {
                     setFarmResources(serverMessages);
-                }else if (serverMessages.get(0).equalsIgnoreCase("greenhouseResources")){
+                } else if (serverMessages.get(0).equalsIgnoreCase("greenhouseResources")) {
                     setGreenHouseResources(serverMessages);
-                }else
+                } else
                     showMenu(serverMessages);
                 inRequest = false;
             }
@@ -226,7 +238,7 @@ public class MapViewer extends BasicGameState {
         }
     }
 
-    private void setGreenHouseResources(List<String> serverMessages){
+    private void setGreenHouseResources(List<String> serverMessages) {
         try {
             JSONObject json = (JSONObject) new JSONParser().parse(serverMessages.get(1));
             JSONArray isPlowed = (JSONArray) json.get("plowed");
@@ -235,21 +247,21 @@ public class MapViewer extends BasicGameState {
             JSONArray age = (JSONArray) json.get("age");
             for (ObjectView objectView :
                     GameState.mapViews.get(3).objectViews) {
-                if (objectView.getName().toLowerCase().startsWith("field no.")){
+                if (objectView.getName().toLowerCase().startsWith("field no.")) {
                     int number = Integer.parseInt(objectView.getName().substring(9));
-                    if  (((String) plant.get(number)).toLowerCase().startsWith("empty")) {
+                    if (((String) plant.get(number)).toLowerCase().startsWith("empty")) {
                         if ((boolean) isPlowed.get(number))
                             objectView.setImagePath("/resource/crete/plowed.png");
                         else
                             objectView.setImagePath(null);
-                    }else{
-                        if ((boolean) isCroped.get(number)){
+                    } else {
+                        if ((boolean) isCroped.get(number)) {
                             objectView.setImagePath("/resource/crete/" + (String) plant.get(number) + ".png");
-                        }else if ((double) age.get(number) <= 3){
+                        } else if ((double) age.get(number) <= 3) {
                             objectView.setImagePath("/resource/crete/first.png");
-                        }else if ((double) age.get(number) <= 7){
+                        } else if ((double) age.get(number) <= 7) {
                             objectView.setImagePath("/resource/crete/second.png");
-                        }else{
+                        } else {
                             objectView.setImagePath("/resource/crete/third.png");
                         }
                     }
@@ -262,8 +274,8 @@ public class MapViewer extends BasicGameState {
 
     private void setFarmResources(List<String> serverMessages) {
         try {
-            JSONObject json = (JSONObject)  new JSONParser().parse(serverMessages.get(1));
-            JSONObject gardenJson = (JSONObject)json.get("garden");
+            JSONObject json = (JSONObject) new JSONParser().parse(serverMessages.get(1));
+            JSONObject gardenJson = (JSONObject) json.get("garden");
             JSONObject fieldJson = (JSONObject) json.get("field");
             JSONArray isBought = (JSONArray) gardenJson.get("bought");
             JSONArray hasFruit = (JSONArray) gardenJson.get("fruit");
@@ -315,21 +327,21 @@ public class MapViewer extends BasicGameState {
                         else
                             objectView.setImagePath("/resource/tree/tree.png");
                     }
-                if (objectView.getName().toLowerCase().startsWith("field no.")){
+                if (objectView.getName().toLowerCase().startsWith("field no.")) {
                     int number = Integer.parseInt(objectView.getName().substring(9));
-                    if  (((String) plant.get(number)).toLowerCase().startsWith("empty")) {
+                    if (((String) plant.get(number)).toLowerCase().startsWith("empty")) {
                         if ((boolean) isPlowed.get(number))
                             objectView.setImagePath("/resource/crete/plowed.png");
                         else
                             objectView.setImagePath(null);
-                    }else{
-                        if ((boolean) isCroped.get(number)){
+                    } else {
+                        if ((boolean) isCroped.get(number)) {
                             objectView.setImagePath("/resource/crete/" + (String) plant.get(number) + ".png");
-                        }else if ((double) age.get(number) <= 3){
+                        } else if ((double) age.get(number) <= 3) {
                             objectView.setImagePath("/resource/crete/first.png");
-                        }else if ((double) age.get(number) <= 7){
+                        } else if ((double) age.get(number) <= 7) {
                             objectView.setImagePath("/resource/crete/second.png");
-                        }else{
+                        } else {
                             objectView.setImagePath("/resource/crete/third.png");
                         }
                     }
@@ -366,7 +378,7 @@ public class MapViewer extends BasicGameState {
         }
         for (int i = 0; i < GameState.animals.size(); i++) {
             Animal animal = GameState.animals.get(i);
-            if (!animal.getName().toLowerCase().endsWith("_empty")){
+            if (!animal.getName().toLowerCase().endsWith("_empty")) {
                 GameState.mapViews.get(2).objectViews.add(animal);
             }
         }
@@ -404,6 +416,13 @@ public class MapViewer extends BasicGameState {
         if (serverMessages.size() == 1) {
             MyJDialog dialog = new MyJDialog(new JFrame(), "Message", serverMessages.get(0), this);
             dialog.setSize(500, 300);
+            if (serverMessages.get(0).toLowerCase().endsWith("collected.") && (STATE_ID == 4 || STATE_ID == 5)) {
+//                try {
+//                    GameState.mapViews.get(STATE_ID).objectViews.remove(intersectedView);
+//                }catch (ConcurrentModificationException e){
+                objectsToRemove.put(intersectedView, STATE_ID);
+//                }
+            }
         } else {
             String[] messages = new String[serverMessages.size() - 1];
             for (int i = 0; i < messages.length; i++) {
@@ -453,17 +472,14 @@ public class MapViewer extends BasicGameState {
     }
 
 
-
-    private ObjectView getIntersectedView(List<ObjectView> objectViews){
-        for (ObjectView objectView: objectViews){
-            if (GameState.player.intersect(objectView.getPosition(true), false)){
+    private ObjectView getIntersectedView(List<ObjectView> objectViews) {
+        for (ObjectView objectView : objectViews) {
+            if (GameState.player.intersect(objectView.getPosition(true), false)) {
                 return objectView;
             }
         }
         return null;
     }
-
-
 
 
     void goTo(BuildingObjectView building) {
@@ -474,14 +490,57 @@ public class MapViewer extends BasicGameState {
             e.printStackTrace();
         }
         GameState.gameState.enterState(building.getStateId());
-        GameState.player.currentObjectViews = ((MapViewer)GameState.gameState.getState(building.getStateId())).objectViews;
+        GameState.player.currentObjectViews = ((MapViewer) GameState.gameState.getState(building.getStateId())).objectViews;
         STATE_ID = building.getStateId();
         GameState.player.getPosition().x = building.getFirstPlayerX();
         GameState.player.getPosition().y = building.getFirstPlayerY();
         GameState.firstX = building.getFirstX();
         GameState.firstY = building.getFirstY();
+        if (building.getStateId() == 4)
+            setJungleResources();
+        if (building.getStateId() == 5)
+            setCaveResources();
         if (building.getStateId() == 2 || building.getStateId() == 1) {
             sendAndGetResponse("goto " + building.getName() + "\n");
+        }
+
+    }
+
+    private void setCaveResources() {
+        Random random = new Random();
+        int number = random.nextInt(4);
+        String[] imagePaths = {"/resource/jungle/rock.png", "/resource/jungle/rock1.png",
+                "/resource/jungle/rock2.png", "/resource/jungle/rock3.png"};
+        String[] names = {Names.ROCK_NAMES[0], Names.ROCK_NAMES[1], Names.ROCK_NAMES[2], Names.ROCK_NAMES[3]};
+        for (int i = 0; i < number; i++) {
+            int x = random.nextInt(10) * 32 + 6 * 32 - 15;
+            int y = random.nextInt(13) * 32 + 6 * 32 - 15;
+            int type = random.nextInt(4);
+            GameState.mapViews.get(5).objectViews.add(new ObjectView(new Position(x, y, 32, 32),
+                    ObjectView.Type.BUILDING_ITEM, names[type], imagePaths[type]));
+        }
+    }
+
+    private void setJungleResources() {
+        Random random = new Random();
+        int number = random.nextInt(4);
+        String[] imagePaths = {"/resource/jungle/rock.png", "/resource/jungle/branch.png", "/resource/jungle/dug1.png",
+                "/resource/jungle/dug2.png", "/resource/jungle/dug3.png"};
+        String[] names = {Names.ROCK_NAMES[0], Names.WOOD_NAMES[0], Names.WOOD_NAMES[1], Names.WOOD_NAMES[2], Names.WOOD_NAMES[3]};
+        for (int i = 0; i < number; i++) {
+            int x = random.nextInt(34) * 32 - 15;
+            int y = random.nextInt(32) * 32 + 32 - 15;
+            int type = random.nextInt(5);
+            int width, height;
+            if (type <= 1) {
+                width = 32;
+                height = 32;
+            } else {
+                width = 2 * 32;
+                height = 2 * 32;
+            }
+            GameState.mapViews.get(4).objectViews.add(new ObjectView(new Position(x, y, width, height),
+                    ObjectView.Type.BUILDING_ITEM, names[type], imagePaths[type]));
         }
 
     }
@@ -504,43 +563,43 @@ public class MapViewer extends BasicGameState {
         return new BufferedReader(new InputStreamReader(androidSocket.getInputStream())).readLine();
     }
 
-    public void androidUpdate(){
+    public void androidUpdate() {
         new Thread(() -> {
             try {
-            TCPServerSocket = new ServerSocket(1377);
-            UDPServerSocket = new DatagramSocket(1377);
-            byte[] buffer = new byte[65536];
-            DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
-            while (true) {
-                String Message = UDPRead(incoming);
-                if(Message == "up"){
-                    GameState.player.moveY -= PLAYER_SPEED;
-                }
-                if(Message == "down"){
-                    GameState.player.moveY += PLAYER_SPEED;
-                }
-                if(Message == "left"){
-                    GameState.player.moveX -= PLAYER_SPEED;
-                }
-                if(Message == "right"){
-                    GameState.player.moveX += PLAYER_SPEED;
-                }
-                if(Message == "ok"){
-                    ObjectView intersectedView =
-                            getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
-                    if (intersectedView != null){
-                        if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
-                            sendAndGetResponse("goto " + intersectedView.getName() + "\n");
-                        else {
-                            checkForBarn(intersectedView);
-                            checkForGarden(intersectedView);
-                            sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
+                TCPServerSocket = new ServerSocket(1377);
+                UDPServerSocket = new DatagramSocket(1377);
+                byte[] buffer = new byte[65536];
+                DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
+                while (true) {
+                    String Message = UDPRead(incoming);
+                    if (Message == "up") {
+                        GameState.player.moveY -= PLAYER_SPEED;
+                    }
+                    if (Message == "down") {
+                        GameState.player.moveY += PLAYER_SPEED;
+                    }
+                    if (Message == "left") {
+                        GameState.player.moveX -= PLAYER_SPEED;
+                    }
+                    if (Message == "right") {
+                        GameState.player.moveX += PLAYER_SPEED;
+                    }
+                    if (Message == "ok") {
+                        ObjectView intersectedView =
+                                getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
+                        if (intersectedView != null) {
+                            if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
+                                sendAndGetResponse("goto " + intersectedView.getName() + "\n");
+                            else {
+                                checkForBarn(intersectedView);
+                                checkForGarden(intersectedView);
+                                sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
+                            }
                         }
                     }
+                    socket.close();
                 }
-                socket.close();
-            }
-            }catch (IOException ioe){
+            } catch (IOException ioe) {
 
             }
         }).start();

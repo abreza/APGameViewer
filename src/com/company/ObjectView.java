@@ -23,6 +23,15 @@ public class ObjectView {
         this.image = image;
     }
 
+    public ObjectView(Position position,  Type type, String name, String imagePath) {
+        this.door = new Position(position.x + (position.width / 2 - 10), position.y + position.height, 1, 1);
+        this.type = type;
+        this.name = name;
+        this.position = position;
+        this.dynamicPosition = new Position(0, 0, position.width, position.height);
+        this.imagePath = imagePath;
+    }
+
     public String getImagePath() {
         return imagePath;
     }

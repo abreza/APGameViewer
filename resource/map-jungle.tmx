@@ -49,7 +49,7 @@
  </layer>
  <layer name="second" width="40" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2X3U4CMRCFV0DgVlTwRlAUVBRRAfX9n4EH4lzsJk0D3dPpdLeQ/ZLJQjI7nWnnp5tlDQ3pM+1zeivofZG6dfAN334I/x4VYyizZe7tGr83grXZ8wlli3V+ibVuoTP09OkK+oP8nSc8nyEzhw1Tv+AP//+JdUfQufP07xr6N/k7czxfIK8OG6a+C81cK3iDzQXkPdFa/IBfS8hnov6dIvfYy7Hyfh6qMSkT2HlQ9o+tMRtXzcWoxxCYXuiau7FnA9ML2blro3EWTC+Uzl0NmF7Izt0CjXuYa4bb58LO3QJpPphIZjhLnfnA4JsPVeObD8dgepdmf5PcWyVI+1pozmvO8xhI57lNaJyx7wBacfpS1Xdiw3mw66QtSYIau4C0ymqN1auJNvzqQC5j+FdT7FFjSpAu4uxB+o54GR1NzDPYA9bmcvYAGQAA
+   H4sIAAAAAAAAC+2WSQ4CMQwEAwyQf7Dv+/L/N/Ag+sgFcIDYLdQl9S1SypqROykJ8T9sckrbHG3xnB3c9sR+B7gdif1OcDs7+A1wxxAZFd51wfmrg98Yd0yQKem3msFrjixI/ZbwWiFrUj8hWLDswsjetezCyN617MLI3rXswtLe9f4fSntX77Dv8HqHfYrXO0wIIUQdbg13KEHvtZD2u/6znguiA68G6dbwC5q96kyE9DBnH8kv5rWc+SWP3+AOcklQGgAZAAA=
   </data>
  </layer>
  <layer name="cave door" width="40" height="40">

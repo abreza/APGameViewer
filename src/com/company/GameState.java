@@ -27,6 +27,7 @@ public class GameState extends StateBasedGame{
         addMapView("map-barn", 2);
         addMapView("map-greenhouse", 3);
         addMapView("map-jungle", 4);
+        addMapView("map-cave", 5);
         this.enterState(1);
     }
     public static void run() throws SlickException {
@@ -455,14 +456,20 @@ public class GameState extends StateBasedGame{
         objectViews = new ArrayList<>();
         objectViews.add(new BuildingObjectView(new Position(31 * 32, 0, 7 * 32, 32), null,
                 new Position(31 * 32, 0, 7 * 32, 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
-        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(220, 100);
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(220, 70);
         ((BuildingObjectView)objectViews.get(objectViews.size() - 1)).setFirstXAndY(18 * 32, 37 * 32 - 50);
-        objectViews.add(new ObjectView(new Position(30 * 32 - 15, 4 * 32 - 15, 32, 32), null, Names.WOOD_NAMES[0], ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(34 * 32 - 15, 5 * 32 - 15, 32, 32), null, Names.ROCK_NAMES[0], ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(30 * 32 - 15, 6 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[2], ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(32 * 32 - 15, 12 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[1], ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(11 * 32 - 15, 12 * 32 - 15, 2 * 32, 2 * 32), null, Names.WOOD_NAMES[3], ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(-15, 33 * 32 - 30, 40 * 32, 7 * 32), null, Names.RIVER.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new BuildingObjectView(new Position(32, -15, 5 * 32, 3 * 32), null,
+                new Position(32, -15, 5 * 32, 3 * 32), Names.CAVE.name(), ObjectView.Type.BUILDING, 5));
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(330, 110);
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 100);
         mapViews.get(4).setObjectViews(objectViews);
+
+        objectViews = new ArrayList<>();
+        objectViews.add(new BuildingObjectView(new Position(10 * 32, 32, 4 * 32, 3 * 32), null,
+                new Position(10 * 32, 32, 4 * 32, 3 * 32), Names.FOREST.name(), ObjectView.Type.BUILDING, 4));
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(3 * 32, 32);
+        ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 150);
+        mapViews.get(5).setObjectViews(objectViews);
     }
 }
