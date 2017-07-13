@@ -42,11 +42,7 @@ public class FirstScene {
         button1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                try {
                     Main.main(FirstMenu.args);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 Platform.exit();
             }
         });
