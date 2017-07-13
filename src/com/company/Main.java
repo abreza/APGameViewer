@@ -9,8 +9,15 @@ import java.net.Socket;
 public class Main {
     public static int playerId;
     public static int gameID;
-    public static void main(String[] args) throws IOException {
-        init();
+    public static String[] args;
+
+    public static void main(String[] args) {
+        Main.args = args;
+        try {
+            init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             try {
                 GameState.run();

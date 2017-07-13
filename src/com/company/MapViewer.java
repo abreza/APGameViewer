@@ -139,6 +139,10 @@ public class MapViewer extends BasicGameState {
                 e.printStackTrace();
             }
         }
+        if (input.isKeyPressed(Input.KEY_ESCAPE)){
+            PauseDialog dialog = new PauseDialog(new JFrame(), "Pause", "game paused", this, gameContainer);
+            dialog.setSize(500, 300);
+        }
     }
 
     private void checkForForest(ObjectView intersectedView) {
@@ -546,7 +550,7 @@ public class MapViewer extends BasicGameState {
     }
 
     public static void UDPSend(String message) throws IOException {
-        UDPServerSocket.send(new DatagramPacket(message.getBytes(), message.getBytes().length, InetAddress.getByName("255.255.255.255"), 1377));
+        UDPServerSocket.send(new DatagramPacket(message.getBytes(), message.getBytes().length, InetAddress.getByName("255.255.255.255"), 1378));
     }
 
     public static void TCPSend(String message) throws IOException {
@@ -566,8 +570,8 @@ public class MapViewer extends BasicGameState {
     public void androidUpdate() {
         new Thread(() -> {
             try {
-                TCPServerSocket = new ServerSocket(1377);
-                UDPServerSocket = new DatagramSocket(1377);
+                TCPServerSocket = new ServerSocket(1378);
+                UDPServerSocket = new DatagramSocket(1378);
                 byte[] buffer = new byte[65536];
                 DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
                 while (true) {

@@ -27,6 +27,12 @@ public class MyJDialog extends JDialog {
         this.mapViewer = viewer;
 
         JPanel messagePane = new JPanel();
+        if (message.length() > 30){
+            String newMessage = "<html>";
+            newMessage += message.replace(" ", "<br>");
+            newMessage += "</html>";
+            message = newMessage;
+        }
         JLabel messageLabel = new JLabel(message);
         messageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         messagePane.add(messageLabel);

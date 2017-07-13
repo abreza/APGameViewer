@@ -45,7 +45,6 @@ public class BackPackDialog extends MyJDialog {
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
             dispose();
-            System.out.println("sending" + button.getText().substring(0, button.getText().indexOf('.')));
             mapViewer.sendAndGetResponse("backpack/" + button.getText().substring(0, button.getText().indexOf('.')) + "\n");
         }
     }
