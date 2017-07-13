@@ -1,6 +1,5 @@
 package com.company;
 
-import com.sun.javafx.font.freetype.HBGlyphLayout;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -13,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class FirstScene {
@@ -42,7 +42,11 @@ public class FirstScene {
         button1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Main.main(FirstMenu.args);
+                try {
+                    Main.main(FirstMenu.args);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Platform.exit();
             }
         });

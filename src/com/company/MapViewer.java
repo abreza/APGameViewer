@@ -27,8 +27,9 @@ public class MapViewer extends BasicGameState {
     private List<ObjectView> objectViews;
     private List<Animal> animals;
     private int id;
-    private Socket socket;
-    private List<String> serverMessages;
+    private static Socket socket;
+    public static int port;
+    public static List<String> serverMessages;
     private static DatagramSocket UDPServerSocket;
     private Timer getResourceTimer;
     private ObjectView intersectedView;
@@ -433,21 +434,20 @@ public class MapViewer extends BasicGameState {
         }
     }
 
-    private String send(final String message) throws IOException {
+    public static String send(final String message) throws IOException {
         final String[] res = new String[1];
         res[0] = new String();
-        socket = new Socket("localhost", 1378);
+        socket = new Socket("localhost", port);
         new Thread(() -> {
             try {
                 serverMessages = new ArrayList<>();
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out.write(message);
+                out.write(Main.playerId + " " + Main.gameID + " " + message);
                 out.flush();
                 for (int i = 0; i < 100; i++) {
                     read(in);
-                    if (serverMessages == null ||
-                            (serverMessages.size() >= 1 && serverMessages.get(serverMessages.size() - 1) == null))
+                    if (serverMessages == null || (serverMessages.size() >= 1 && serverMessages.get(serverMessages.size() - 1) == null))
                         break;
                     if (serverMessages.size() > 0 &&
                             serverMessages.get(serverMessages.size() - 1).equals("___")) {
@@ -463,7 +463,7 @@ public class MapViewer extends BasicGameState {
         return res[0];
     }
 
-    private void read(BufferedReader in) throws IOException {
+    public static void read(BufferedReader in) throws IOException {
         try {
             serverMessages.add(in.readLine());
         } catch (SocketException e) {

@@ -2,9 +2,15 @@ package com.company;
 
 import org.newdawn.slick.SlickException;
 
-public class Main {
+import java.io.*;
+import java.net.Socket;
 
-    public static void main(String[] args) {
+
+public class Main {
+    public static int playerId;
+    public static int gameID;
+    public static void main(String[] args) throws IOException {
+        init();
         new Thread(() -> {
             try {
                 GameState.run();
@@ -13,4 +19,24 @@ public class Main {
             }
         }).start();
     }
+
+    public static void init() throws IOException {
+        Socket socket = new Socket("localhost", 1378);
+        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out.println("signUp reza");
+        out.flush();
+        playerId = Integer.parseInt(in.readLine());
+        MapViewer.port = playerId;
+        socket.close();
+        socket = new Socket("localhost", MapViewer.port);
+        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//        out.println("add 0");
+        out.println("createNewGame multiPlayer");
+        out.flush();
+        gameID = Integer.parseInt(in.readLine());
+        socket.close();
+    }
+
 }
