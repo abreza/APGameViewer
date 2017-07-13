@@ -19,7 +19,7 @@ public class Animal extends ObjectView {
     public int moveX = 0, moveY = 0;
     public int Animation_SPEED = 10;
     public enum Direction{LEFT, RIGHT, UP, DOWN}
-    private Direction direction = Direction.RIGHT;
+    public Direction direction = Direction.RIGHT;
     public Animal(Position position, Image image, String name, Type type, List<Image> up, List<Image> down, List<Image> left, List<Image> right) {
         super(position, image, name, type);
         this.up = up;

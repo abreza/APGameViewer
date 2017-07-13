@@ -37,6 +37,7 @@ public class MapViewer extends BasicGameState {
     private static ServerSocket TCPServerSocket;
     private static Socket androidSocket;
     private static PrintWriter out;
+    private static boolean first = false;
 
 
     public MapViewer(String TMXName, int id) {
@@ -68,6 +69,10 @@ public class MapViewer extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        if(!first){
+            Main.test.start();
+            first = true;
+        }
         map.render(-GameState.firstX, -GameState.firstY);
         for (ObjectView objectView : objectViews) {
             if (objectView.getImage() != null) {
@@ -82,9 +87,11 @@ public class MapViewer extends BasicGameState {
                         objectView.getPosition().y - GameState.firstY + 45);
             }
         }
-        for (ObjectView objectView :
-                objectsToRemove.keySet()) {
+        for (ObjectView objectView : objectsToRemove.keySet()) {
             GameState.mapViews.get(objectsToRemove.get(objectView)).objectViews.remove(objectView);
+        }
+        for (Animal player : Main.players.keySet()){
+            graphics.drawImage(player.getImage(), player.getPosition().x, player.getPosition().y);
         }
         objectsToRemove = new HashMap<>();
         GameState.player.move();
@@ -441,7 +448,7 @@ public class MapViewer extends BasicGameState {
         new Thread(() -> {
             try {
                 serverMessages = new ArrayList<>();
-                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.write(Main.playerId + " " + Main.gameID + " " + message);
                 out.flush();
