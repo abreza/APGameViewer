@@ -1,6 +1,7 @@
 package com.company;
 
 
+import com.company.Chat.ChatRoom;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -151,6 +152,9 @@ public class MapViewer extends BasicGameState {
         if (input.isKeyPressed(Input.KEY_ESCAPE)){
             PauseDialog dialog = new PauseDialog(new JFrame(), "Pause", "game paused", this, gameContainer);
             dialog.setSize(500, 300);
+        }
+        if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)){
+            ChatRoom.main(FirstMenu.args);
         }
     }
 

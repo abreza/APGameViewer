@@ -18,11 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
         Main.args = args;
-//        try {
-//            init();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            initFirst();
+            initCreateMultiPlayer();
+//            initAdd();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             try {
                 GameState.run();
@@ -108,9 +110,9 @@ public class Main {
                     i -= 4;
                     continue;
                 }
-                System.out.println(i + " " + message[i] + " " + message[i + 1] + " " + message[i + 2] + " " + message[i + 3] + " " + message[i + 4]);
+//                System.out.println(i + " " + message[i] + " " + message[i + 1] + " " + message[i + 2] + " " + message[i + 3] + " " + message[i + 4]);
                 if(message[i].equals(Integer.toString(playerId))){
-                    System.out.println(message[i + 1] + " " + message[i + 2] + " " + message[i + 3]);
+//                    System.out.println(message[i + 1] + " " + message[i + 2] + " " + message[i + 3]);
                     boolean b = false;
                     if(message[i + 4].equals("1")){
                         for(Animal player : players.keySet()){
