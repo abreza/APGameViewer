@@ -1,8 +1,6 @@
 package com.company;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +12,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyXmlWriter {
 
@@ -96,5 +96,132 @@ public class MyXmlWriter {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addTree(String productName, int cost) {
+        Element tree = doc.createElement("Tree");
+        root.appendChild(tree);
+        Attr productNameAt = doc.createAttribute("productName");
+        productNameAt.setValue(productName);
+        tree.setAttributeNode(productNameAt);
+        Element costEl = doc.createElement("cost");
+        costEl.appendChild(doc.createTextNode(Integer.toString(cost)));
+        tree.appendChild(costEl);
+    }
+
+    public ArrayList<String> getTrees() {
+        ArrayList<String> output = new ArrayList<>();
+        NodeList treesList = doc.getElementsByTagName("Tree");
+        for (int i = 0; i < treesList.getLength(); i++) {
+            Node treeNode = treesList.item(i);
+            if (treeNode.getNodeType() == Node.ELEMENT_NODE){
+                Element treeElement = (Element) treeNode;
+                output.add(treeElement.getAttribute("productName") + "_TREE");
+            }
+        }
+        return output;
+    }
+
+    public void addTreeField(String name, int index) {
+        Element treeFieldEl = doc.createElement("TreeField");
+        root.appendChild(treeFieldEl);
+        Attr indexAt = doc.createAttribute("index");
+        indexAt.setValue(Integer.toString(index));
+        treeFieldEl.setAttributeNode(indexAt);
+        Element nameEl = doc.createElement("name");
+        nameEl.appendChild(doc.createTextNode(name));
+        treeFieldEl.appendChild(nameEl);
+    }
+
+    public ArrayList<String> getPlantProducts(){
+        ArrayList<String> output = new ArrayList<>();
+        NodeList productNodeList = doc.getElementsByTagName("PlantProduct");
+
+        for (int i = 0; i < productNodeList.getLength(); i++) {
+            Node productNode = productNodeList.item(i);
+            if (productNode.getNodeType() == Node.ELEMENT_NODE){
+                Element productElement = (Element) productNode;
+                String name = productElement.getElementsByTagName("name").item(0).getTextContent();
+                output.add(name);
+            }
+        }
+        return output;
+    }
+
+    public void addCook(HashMap<String, Integer> ingredientNames, ArrayList<String> cookingToolNames, String name, int energy, int health) {
+        Element cookElement = doc.createElement("Cook");
+        root.appendChild(cookElement);
+        for (String ingredient :
+                ingredientNames.keySet()) {
+            Element ingredientEl = doc.createElement("ingredient");
+            Attr numberAtr = doc.createAttribute("number");
+            numberAtr.setValue(Integer.toString(ingredientNames.get(ingredient)));
+            ingredientEl.setAttributeNode(numberAtr);
+            ingredientEl.appendChild(doc.createTextNode(ingredient));
+            cookElement.appendChild(ingredientEl);
+        }
+        for (String cookingTool :
+                cookingToolNames) {
+            Element cookingToolEl = doc.createElement("cookingTool");
+            cookingToolEl.appendChild(doc.createTextNode(cookingTool));
+            cookElement.appendChild(cookingToolEl);
+        }
+        Element nameEl = doc.createElement("name");
+        nameEl.appendChild(doc.createTextNode(name));
+        cookElement.appendChild(nameEl);
+        Element energyEl = doc.createElement("energy");
+        energyEl.appendChild(doc.createTextNode(Integer.toString(energy)));
+        cookElement.appendChild(energyEl);
+        Element healthEl = doc.createElement("health");
+        healthEl.appendChild(doc.createTextNode(Integer.toString(health)));
+        cookElement.appendChild(healthEl);
+
+    }
+
+
+    public void addPlayer(int money, int capacity, int maxHealth, int curHealth, int consHealth,
+                          int refHealth, int maxEnergy, int curEnergy, int consEnergy, int refEnergy) {
+        removeLastPlayer();
+        Element playerElement = doc.createElement("Player");
+        root.appendChild(playerElement);
+        Element moneyEl = doc.createElement("money");
+        moneyEl.appendChild(doc.createTextNode(Integer.toString(money)));
+        playerElement.appendChild(moneyEl);
+        Element capacityEl = doc.createElement("capacity");
+        capacityEl.appendChild(doc.createTextNode(Integer.toString(capacity)));
+        playerElement.appendChild(capacityEl);
+        Element maxHealthEl = doc.createElement("maxHealth");
+        maxHealthEl.appendChild(doc.createTextNode(Integer.toString(maxHealth)));
+        playerElement.appendChild(maxHealthEl);
+        Element curHealthEl = doc.createElement("curHealth");
+        curHealthEl.appendChild(doc.createTextNode(Integer.toString(curHealth)));
+        playerElement.appendChild(curHealthEl);
+        Element consHealthEl = doc.createElement("consHealth");
+        consHealthEl.appendChild(doc.createTextNode(Integer.toString(consHealth)));
+        playerElement.appendChild(consHealthEl);
+        Element refHealthEl = doc.createElement("refHealth");
+        refHealthEl.appendChild(doc.createTextNode(Integer.toString(refHealth)));
+        playerElement.appendChild(refHealthEl);
+        Element maxEnergyEl = doc.createElement("maxEnergy");
+        maxEnergyEl.appendChild(doc.createTextNode(Integer.toString(maxEnergy)));
+        playerElement.appendChild(maxEnergyEl);
+        Element curEnergyEl = doc.createElement("curEnergy");
+        curEnergyEl.appendChild(doc.createTextNode(Integer.toString(curEnergy)));
+        playerElement.appendChild(curEnergyEl);
+        Element consEnergyEl = doc.createElement("consEnergy");
+        consEnergyEl.appendChild(doc.createTextNode(Integer.toString(consEnergy)));
+        playerElement.appendChild(consEnergyEl);
+        Element refEnergyEl = doc.createElement("refEnergy");
+        refEnergyEl.appendChild(doc.createTextNode(Integer.toString(refEnergy)));
+        playerElement.appendChild(refEnergyEl);
+
+    }
+
+    private void removeLastPlayer(){
+        NodeList playerList = doc.getElementsByTagName("Player");
+        if (playerList.getLength() == 0)
+            return;
+        Element playerElement = (Element) playerList.item(0);
+        root.removeChild(playerElement);
     }
 }
