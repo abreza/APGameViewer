@@ -133,6 +133,7 @@ public class Animal extends ObjectView {
                     eat();
                 return true;
             }
+
         }
         if(getType() != Type.PLAYER && intersect(GameState.player.getPosition(), true))
             return true;

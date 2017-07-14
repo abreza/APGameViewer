@@ -69,17 +69,22 @@ public class MapViewer extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        if(!first){
-            Main.test.start();
-            first = true;
-        }
         map.render(-GameState.firstX, -GameState.firstY);
+        Main.positions();
         for (ObjectView objectView : objectViews) {
             if (objectView.getImage() != null) {
-                graphics.drawImage(objectView.getImage().
-                                getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
-                        objectView.getPosition().x + 20,
-                        objectView.getPosition().y + 35);
+                if(objectView.getType() != ObjectView.Type.PLAYER){
+                    graphics.drawImage(objectView.getImage().
+                                    getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
+                            objectView.getPosition().x + 20,
+                            objectView.getPosition().y + 35);
+                }
+                else{
+                    graphics.drawImage(objectView.getImage().
+                                    getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height),
+                            objectView.getPosition().x - GameState.firstX + 18,
+                            objectView.getPosition().y - GameState.firstY + 38);
+                }
             } else if (objectView.getImagePath() != null) {
                 graphics.drawImage(new Image(objectView.getImagePath()).
                                 getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
@@ -87,11 +92,9 @@ public class MapViewer extends BasicGameState {
                         objectView.getPosition().y - GameState.firstY + 45);
             }
         }
+
         for (ObjectView objectView : objectsToRemove.keySet()) {
             GameState.mapViews.get(objectsToRemove.get(objectView)).objectViews.remove(objectView);
-        }
-        for (Animal player : Main.players.keySet()){
-            graphics.drawImage(player.getImage(), player.getPosition().x, player.getPosition().y);
         }
         objectsToRemove = new HashMap<>();
         GameState.player.move();
@@ -111,8 +114,7 @@ public class MapViewer extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
         if (input.isKeyPressed(Input.KEY_ENTER)) {
-            intersectedView =
-                    getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
+            intersectedView = getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null) {
                 System.out.println(intersectedView.getName());
                 inRequest = true;
@@ -500,6 +502,7 @@ public class MapViewer extends BasicGameState {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         GameState.gameState.enterState(building.getStateId());
         GameState.player.currentObjectViews = ((MapViewer) GameState.gameState.getState(building.getStateId())).objectViews;
         STATE_ID = building.getStateId();

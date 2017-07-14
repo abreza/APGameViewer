@@ -18,11 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
         Main.args = args;
-//        try {
-//            init();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            initFirst();
+//            initCreateMultiPlayer();
+//            initAdd();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             try {
                 GameState.run();
@@ -64,88 +66,108 @@ public class Main {
         socket.close();
     }
 
-    public static Thread test = new Thread(() -> {
+
+    public static void positions() {
         try {
-            while (true){
-                Thread.sleep(3);
-                Socket socket = new Socket("localhost", 4033);
-                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                if (GameState.player.direction == Animal.Direction.UP){
-                    out.println(MapViewer.port + " " + GameState.player.getPosition().x + " " + GameState.player.getPosition().y + " up" + GameState.player.upNumber);
-                }
-                else if (GameState.player.direction == Animal.Direction.DOWN){
-                    out.println(MapViewer.port + " " + GameState.player.getPosition().x + " " + GameState.player.getPosition().y + " down" + GameState.player.downNumber);
-                }
-                else if (GameState.player.direction == Animal.Direction.LEFT){
-                    out.println(MapViewer.port + " " + GameState.player.getPosition().x + " " + GameState.player.getPosition().y + " left" + GameState.player.leftNumber);
-                }
-                else if (GameState.player.direction == Animal.Direction.RIGHT){
-                    out.println(MapViewer.port + " " + GameState.player.getPosition().x + " " + GameState.player.getPosition().y + " right" + GameState.player.rightNumber);
-                }
-                out.flush();
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String msg = in.readLine();
-                String[] message = msg.split(" ");
-                if(!message[0].equals("empty")){
-                    System.out.println(message[1] + " " + message[2]);
-                    boolean b = false;
-                    for(Animal player : players.keySet()){
-                        if(player.getName().equals("player" + message[0])){
-                            players.replace(player, 1);
-                            b = true;
-                            player.getPosition().x = Integer.parseInt(message[1]);
-                            player.getPosition().y = Integer.parseInt(message[2]);
-                            Image image = null;
-                            if(message[3].startsWith("up")){
-                                image = player.up.get(0);
-                            }
-                            else if(message[3].startsWith("down")){
-                                image = player.down.get(0);
-                            }
-                            else if(message[3].startsWith("left")){
-                                image = player.left.get(0);
-                            }
-                            else if(message[3].startsWith("right")){
-                                image = player.right.get(0);
-                            }
-                            player.setImage(image);
-                        }
-                    }
-                    if(!b){
-                        Image image = null;
-                        if(message[3].startsWith("up")){
-                            image = GameState.player.up.get(0);
-                        }
-                        else if(message[3].startsWith("down")){
-                            image = GameState.player.down.get(0);
-                        }
-                        else if(message[3].startsWith("left")){
-                            image = GameState.player.left.get(0);
-                        }
-                        else if(message[3].startsWith("right")){
-                            image = GameState.player.right.get(0);
-                        }
-                        Animal player = new Animal(new Position(Integer.parseInt(message[1]), Integer.parseInt(message[2]), GameState.player.getPosition().height,
-                                GameState.player.getPosition().width), image, "player" + message[0], GameState.player.getType(),
-                                GameState.player.up, GameState.player.down, GameState.player.right, GameState.player.left);
-                        players.put(player, 1);
-                        ((MapViewer)GameState.gameState.getCurrentState()).getObjectViews().add(player);
-                    }
-                    for (Animal player:players.keySet()) {
-                        if(players.get(player) == 0){
-                            players.remove(player);
-                        }
-                        else{
-                            players.replace(player, 0);
-                        }
-                    }
-                }
-                socket.close();
+            Socket socket = new Socket("localhost", 4033 + gameID);
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+            if (GameState.player.direction == Animal.Direction.UP){
+                out.println(MapViewer.port + " " + (GameState.player.getPosition().x + GameState.firstX - 35) +
+                        " " + (GameState.player.getPosition().y + GameState.firstY - 20) + " up" +
+                        GameState.player.upNumber / GameState.player.Animation_SPEED);
             }
+            else if (GameState.player.direction == Animal.Direction.DOWN){
+                out.println(MapViewer.port + " " + (GameState.player.getPosition().x + GameState.firstX - 35) +
+                        " " + (GameState.player.getPosition().y + GameState.firstY - 20) + " down" +
+                        GameState.player.downNumber / GameState.player.Animation_SPEED);
+            }
+            else if (GameState.player.direction == Animal.Direction.LEFT){
+                out.println(MapViewer.port + " " + (GameState.player.getPosition().x + GameState.firstX - 35) +
+                        " " + (GameState.player.getPosition().y + GameState.firstY - 20) + " left" +
+                        GameState.player.leftNumber / GameState.player.Animation_SPEED);
+            }
+            else if (GameState.player.direction == Animal.Direction.RIGHT){
+                out.println(MapViewer.port + " " + (GameState.player.getPosition().x + GameState.firstX - 35) +
+                        " " + (GameState.player.getPosition().y + GameState.firstY - 20) + " right" +
+                        GameState.player.rightNumber / GameState.player.Animation_SPEED);
+            }
+            out.flush();
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String msg = in.readLine();
+            String[] message = msg.split(" ");
+            for (int i = 0; i < message.length; i += 5) {
+                if(message[i].equals("empty")){
+                    i -= 4;
+                    continue;
+                }
+                System.out.println(i + " " + message[i] + " " + message[i + 1] + " " + message[i + 2] + " " + message[i + 3] + " " + message[i + 4]);
+                if(message[i].equals(Integer.toString(playerId))){
+                    System.out.println(message[i + 1] + " " + message[i + 2] + " " + message[i + 3]);
+                    boolean b = false;
+                    if(message[i + 4].equals("1")){
+                        for(Animal player : players.keySet()){
+                            if(player.getName().equals("player" + message[i])){
+                                players.replace(player, 1);
+                                b = true;
+                                player.getPosition().x = Integer.parseInt(message[i + 1]);
+                                player.getPosition().y = Integer.parseInt(message[i + 2]);
+                                Image image = null;
+                                if(message[i + 3].startsWith("up")){
+                                    image = player.up.get(Integer.parseInt(message[i + 3].substring(2, 3)));
+                                }
+                                else if(message[i + 3].startsWith("down")){
+                                    image = player.down.get(Integer.parseInt(message[i + 3].substring(4, 5)));
+                                }
+                                else if(message[i + 3].startsWith("left")){
+                                    image = player.left.get(Integer.parseInt(message[i + 3].substring(4, 5)));
+                                }
+                                else if(message[i + 3].startsWith("right")){
+                                    image = player.right.get(Integer.parseInt(message[i + 3].substring(5, 6)));
+                                }
+                                player.setImage(image);
+                            }
+                        }
+                        if(!b){
+                            Image image = null;
+                            if(message[i + 3].startsWith("up")){
+                                image = GameState.player.up.get(Integer.parseInt(message[i + 3].substring(2, 3)));
+                            }
+                            else if(message[i + 3].startsWith("down")){
+                                image = GameState.player.down.get(Integer.parseInt(message[i + 3].substring(4, 5)));
+                            }
+                            else if(message[i + 3].startsWith("left")){
+                                image = GameState.player.left.get(Integer.parseInt(message[i + 3].substring(4, 5)));
+                            }
+                            else if(message[i + 3].startsWith("right")){
+                                image = GameState.player.right.get(Integer.parseInt(message[i + 3].substring(5, 6)));
+                            }
+                            Animal player = new Animal(new Position(Integer.parseInt(message[i + 1]), Integer.parseInt(message[2]), GameState.player.getPosition().height,
+                                    GameState.player.getPosition().width), image, "player" + message[i], GameState.player.getType(),
+                                    GameState.player.up, GameState.player.down, GameState.player.left, GameState.player.right);
+                            players.put(player, 1);
+                            GameState.player.currentObjectViews.add(player);
+                            ((MapViewer)GameState.gameState.getCurrentState()).getObjectViews().add(player);
+                        }
+                    }
+                    else{
+                        for(Animal player : players.keySet()){
+                            if(player.getName().equals("player" + message[i])){
+                                if(GameState.player.currentObjectViews.contains(player)){
+                                    GameState.player.currentObjectViews.remove(player);
+                                }
+                                if(((MapViewer)GameState.gameState.getCurrentState()).getObjectViews().contains(player)){
+                                    ((MapViewer)GameState.gameState.getCurrentState()).getObjectViews().remove(player);
+                                }
+                                players.remove(player);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
-    });
+    }
 }
