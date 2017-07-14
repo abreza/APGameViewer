@@ -64,6 +64,16 @@ public class Main {
         socket.close();
     }
 
+    public static void initCreateSingle() throws IOException{
+        Socket socket = new Socket("localhost", MapViewer.port);
+        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out.println("createNewGame singlePlayer");
+        out.flush();
+        gameID = Integer.parseInt(in.readLine());
+        socket.close();
+    }
+
     public static Thread test = new Thread(() -> {
         try {
             while (true){
