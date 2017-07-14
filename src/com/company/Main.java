@@ -18,11 +18,11 @@ public class Main {
 
     public static void main(String[] args) {
         Main.args = args;
-        try {
-            init();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            init();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         new Thread(() -> {
             try {
                 GameState.run();
@@ -32,7 +32,7 @@ public class Main {
         }).start();
     }
 
-    public static void init() throws IOException {
+    public static void initFirst() throws IOException {
         Socket socket = new Socket("localhost", 1378);
         PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -41,11 +41,24 @@ public class Main {
         playerId = Integer.parseInt(in.readLine());
         MapViewer.port = playerId;
         socket.close();
-        socket = new Socket("localhost", MapViewer.port);
-        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    }
+
+
+    public static void initAdd() throws IOException {
+        Socket socket = new Socket("localhost", MapViewer.port);
+        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out.println("add 0");
-//        out.println("createNewGame multiPlayer");
+        out.flush();
+        gameID = Integer.parseInt(in.readLine());
+        socket.close();
+    }
+
+    public static void initCreateMultiPlayer() throws IOException {
+        Socket socket = new Socket("localhost", MapViewer.port);
+        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out.println("createNewGame multiPlayer");
         out.flush();
         gameID = Integer.parseInt(in.readLine());
         socket.close();

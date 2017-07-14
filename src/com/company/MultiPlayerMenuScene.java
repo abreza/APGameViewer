@@ -12,16 +12,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class FirstScene {
+public class MultiPlayerMenuScene {
 
     private Stage primaryStage;
     private VBox layout;
     private Scene scene;
     public static int WIDTH = 1280, HEIGHT = 960;
 
-    public FirstScene(Stage primaryStage) {
+    public MultiPlayerMenuScene(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
@@ -30,32 +31,35 @@ public class FirstScene {
         layout.alignmentProperty().setValue(Pos.TOP_CENTER);
         layout.setSpacing(20);
 
-        Button button1 = makeButton(), button2 = makeButton(), button3 = makeButton(), button4 = makeButton();
+        Button button1 = makeButton(), button2 = makeButton(), button3 = makeButton();
 
         ArrayList<Label> labels = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             labels.add(new Label());
         }
-        button1.setText("Single Player");
+        button1.setText("Create new game");
         HBox first = makeHbox();
+        button1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Main.main(FirstMenu.args);
+                Platform.exit();
+            }
+        });
         ImageView firstIcon = new ImageView(new Image(this.getClass().getClassLoader().getResource("singleplayer-icon.png").toString()));
         first.getChildren().addAll(button1, firstIcon);
-        button2.setText("MultiPlayer");
+        button2.setText("Load game");
         HBox second = makeHbox();
         ImageView secondIcon = new ImageView(new Image(this.getClass().getClassLoader().getResource("multiplayer-icon.png").toString()));
         second.getChildren().addAll(button2, secondIcon);
-        button3.setText("Custom Game");
+        button3.setText("Join");
         HBox third = makeHbox();
         ImageView thirdIcon = new ImageView(new Image(this.getClass().getClassLoader().getResource("custom-icon1.png").toString()));
         third.getChildren().addAll(button3, thirdIcon);
-        button4.setText("Exit");
-        HBox fourth = makeHbox();
-        ImageView fourthIcon = new ImageView(new Image(this.getClass().getClassLoader().getResource("exit-icon.png").toString()));
-        fourth.getChildren().addAll(button4, fourthIcon);
 
-        setListeners(button1, button2, button3, button4);
+        setListeners(button1, button2, button3);
         layout.getChildren().addAll(labels);
-        layout.getChildren().addAll(first, second, third, fourth);
+        layout.getChildren().addAll(first, second, third);
         layout.setBackground(new Background(new BackgroundImage(
                 new Image(this.getClass().getClassLoader().getResource("wallpaper-firstMenu.jpg").toString()),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -66,27 +70,29 @@ public class FirstScene {
         return scene;
     }
 
-    private void setListeners(Button button1, Button button2, Button button3, Button button4) {
-
+    private void setListeners(Button button1, Button button2, Button button3) {
         button1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                try {
+                    Main.initCreateMultiPlayer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Main.main(FirstMenu.args);
                 Platform.exit();
             }
         });
 
-        button2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        button3.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                primaryStage.setScene(new MultiPlayerSignInScene(primaryStage).makeScene());
-            }
-        });
-
-
-        button4.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+                try {
+                    Main.initAdd();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Main.main(FirstMenu.args);
                 Platform.exit();
             }
         });
@@ -104,5 +110,4 @@ public class FirstScene {
         button.setMinWidth(200);
         return button;
     }
-
 }
