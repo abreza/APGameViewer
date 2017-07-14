@@ -1,8 +1,6 @@
 package com.company;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +12,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.util.ArrayList;
 
 public class MyXmlWriter {
 
@@ -96,5 +95,40 @@ public class MyXmlWriter {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addTree(String productName, int cost) {
+        Element tree = doc.createElement("Tree");
+        root.appendChild(tree);
+        Attr productNameAt = doc.createAttribute("productName");
+        productNameAt.setValue(productName);
+        tree.setAttributeNode(productNameAt);
+        Element costEl = doc.createElement("cost");
+        costEl.appendChild(doc.createTextNode(Integer.toString(cost)));
+        tree.appendChild(costEl);
+    }
+
+    public ArrayList<String> getTrees() {
+        ArrayList<String> output = new ArrayList<>();
+        NodeList treesList = doc.getElementsByTagName("Tree");
+        for (int i = 0; i < treesList.getLength(); i++) {
+            Node treeNode = treesList.item(i);
+            if (treeNode.getNodeType() == Node.ELEMENT_NODE){
+                Element treeElement = (Element) treeNode;
+                output.add(treeElement.getAttribute("productName") + "_TREE");
+            }
+        }
+        return output;
+    }
+
+    public void addTreeField(String name, int index) {
+        Element treeFieldEl = doc.createElement("TreeField");
+        root.appendChild(treeFieldEl);
+        Attr indexAt = doc.createAttribute("index");
+        indexAt.setValue(Integer.toString(index));
+        treeFieldEl.setAttributeNode(indexAt);
+        Element nameEl = doc.createElement("name");
+        nameEl.appendChild(doc.createTextNode(name));
+        treeFieldEl.appendChild(nameEl);
     }
 }

@@ -93,12 +93,12 @@ public class GameState extends StateBasedGame{
                 new Position(23 * 32 + 10, 39 * 32 - 20, 4 * 32, 20), Names.FOREST.name(), ObjectView.Type.BUILDING, 4));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(17 * 32, 32);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(15 * 32, 0);
-        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 10 * 32 - 15, 6 * 32, 7 * 32),null , Names.PEACH_TREE.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 10 * 32 - 15, 6 * 32, 7 * 32), null, Names.PEAR_TREE.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.LEMON_TREE.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.POMEGRANATE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.APPLE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
-        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.ORANGE_TREE.name(), ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 10 * 32 - 15, 6 * 32, 7 * 32),null , Names.TREE.name() + " No.0", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 10 * 32 - 15, 6 * 32, 7 * 32), null, Names.TREE.name() + " No.1", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.TREE.name() + " No.2", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 20 * 32 - 15, 6 * 32, 7 * 32), null, Names.TREE.name() + " No.3", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(4 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.TREE.name() + " No.4", ObjectView.Type.BUILDING_ITEM));
+        objectViews.add(new ObjectView(new Position(13 * 32 + 10, 30 * 32 - 15, 6 * 32, 7 * 32), null, Names.TREE.name() + " No.5", ObjectView.Type.BUILDING_ITEM));
         mapViews.get(1).setObjectViews(objectViews);
         objectViews.add(new ObjectView(new Position(28 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.0", ObjectView.Type.BUILDING_ITEM));
         objectViews.add(new ObjectView(new Position(38 * 32 + 10, 11 * 32 - 15, 6 * 32, 6 * 32), null, Names.FIELD.name() + " " + "No.1", ObjectView.Type.BUILDING_ITEM));

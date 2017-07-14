@@ -185,7 +185,7 @@ public class MapViewer extends BasicGameState {
 
     private void checkForGarden(ObjectView intersectedView) {
         try {
-            if (intersectedView.getName().toLowerCase().endsWith("_tree")) {
+            if (intersectedView.getName().toLowerCase().startsWith("tree")) {
                 send("inspect " + "Garden" + "\n");
             }
         } catch (IOException e) {
@@ -291,6 +291,7 @@ public class MapViewer extends BasicGameState {
             JSONObject json = (JSONObject) new JSONParser().parse(serverMessages.get(1));
             JSONObject gardenJson = (JSONObject) json.get("garden");
             JSONObject fieldJson = (JSONObject) json.get("field");
+            JSONArray trees = (JSONArray) gardenJson.get("tree");
             JSONArray isBought = (JSONArray) gardenJson.get("bought");
             JSONArray hasFruit = (JSONArray) gardenJson.get("fruit");
             JSONArray isPlowed = (JSONArray) fieldJson.get("plowed");
@@ -299,48 +300,15 @@ public class MapViewer extends BasicGameState {
             JSONArray age = (JSONArray) fieldJson.get("age");
             for (ObjectView objectView :
                     GameState.mapViews.get(1).objectViews) {
-                if (objectView.getName().equalsIgnoreCase(Names.PEACH_TREE.name()))
-                    if ((boolean) isBought.get(0)) {
-                        if ((boolean) hasFruit.get(0))
-                            objectView.setImagePath("/resource/tree/tree-peach.png");
+                if (objectView.getName().toLowerCase().startsWith("tree")){
+                    int index = objectView.getName().charAt(objectView.getName().length() - 1) - '0';
+                    if ((boolean) isBought.get(index)){
+                        if ((boolean) hasFruit.get(index))
+                            objectView.setImagePath("/resource/tree/" + ((String) trees.get(index)).toLowerCase() + ".png");
                         else
                             objectView.setImagePath("/resource/tree/tree.png");
                     }
-                if (objectView.getName().equalsIgnoreCase(Names.PEAR_TREE.name()))
-                    if ((boolean) isBought.get(1)) {
-                        if ((boolean) hasFruit.get(1))
-                            objectView.setImagePath("/resource/tree/tree-pear.png");
-                        else
-                            objectView.setImagePath("/resource/tree/tree.png");
-                    }
-                if (objectView.getName().equalsIgnoreCase(Names.LEMON_TREE.name()))
-                    if ((boolean) isBought.get(2)) {
-                        if ((boolean) hasFruit.get(2))
-                            objectView.setImagePath("/resource/tree/tree-lemon.png");
-                        else
-                            objectView.setImagePath("/resource/tree/tree.png");
-                    }
-                if (objectView.getName().equalsIgnoreCase(Names.POMEGRANATE_TREE.name()))
-                    if ((boolean) isBought.get(3)) {
-                        if ((boolean) hasFruit.get(3))
-                            objectView.setImagePath("/resource/tree/tree-pomegranate.png");
-                        else
-                            objectView.setImagePath("/resource/tree/tree.png");
-                    }
-                if (objectView.getName().equalsIgnoreCase(Names.APPLE_TREE.name()))
-                    if ((boolean) isBought.get(4)) {
-                        if ((boolean) hasFruit.get(4))
-                            objectView.setImagePath("/resource/tree/tree-apple.png");
-                        else
-                            objectView.setImagePath("/resource/tree/tree.png");
-                    }
-                if (objectView.getName().equalsIgnoreCase(Names.ORANGE_TREE.name()))
-                    if ((boolean) isBought.get(5)) {
-                        if ((boolean) hasFruit.get(5))
-                            objectView.setImagePath("/resource/tree/tree-orange.png");
-                        else
-                            objectView.setImagePath("/resource/tree/tree.png");
-                    }
+                }
                 if (objectView.getName().toLowerCase().startsWith("field no.")) {
                     int number = Integer.parseInt(objectView.getName().substring(9));
                     if (((String) plant.get(number)).toLowerCase().startsWith("empty")) {

@@ -47,7 +47,7 @@ public class CustomSelectScene {
         }
 
         HBox first = makeHbox();
-        Label selectCustomLabel = new Label("select custom:");
+        Label selectCustomLabel = CustomMenuScene.makeLabel("Select Custom:");
         File folder = new File(System.getProperty("user.dir") + "/customs");
         File[] filesList = folder.listFiles();
         String[] filesNames = new String[filesList.length + 1];
@@ -102,9 +102,9 @@ public class CustomSelectScene {
                             }
                         }
                     }, 1000);
-                    Main.main(FirstMenu.args);
-                    Platform.exit();
                 }
+                Main.main(FirstMenu.args);
+                Platform.exit();
             }
         });
     }
