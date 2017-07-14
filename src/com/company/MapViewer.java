@@ -63,7 +63,7 @@ public class MapViewer extends BasicGameState {
                     if (STATE_ID == 3 && !inRequest)
                         sendAndGetResponse("greenhouseResources\n");
                 }
-            }, 0, 8000);
+            }, 700, 8000);
         }
     }
 

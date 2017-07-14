@@ -52,10 +52,11 @@ public class CustomSelectScene {
         File[] filesList = folder.listFiles();
         String[] filesNames = new String[filesList.length + 1];
         for (int i = 0; i < filesList.length; i++) {
-            filesNames[i] = filesList[i].getName();
+            filesNames[i + 1] = filesList[i].getName();
         }
-        filesNames[filesNames.length - 1] = "None";
+        filesNames[0] = "None";
         ChoiceBox customSelectCb = new ChoiceBox(FXCollections.observableArrayList(filesNames));
+        customSelectCb.getSelectionModel().selectFirst();
         first.getChildren().addAll(selectCustomLabel, customSelectCb);
         HBox second = makeHbox();
         button1.setText("Go!");
@@ -101,7 +102,7 @@ public class CustomSelectScene {
                                 e.printStackTrace();
                             }
                         }
-                    }, 1000);
+                    }, 400);
                 }
                 Main.main(FirstMenu.args);
                 Platform.exit();
