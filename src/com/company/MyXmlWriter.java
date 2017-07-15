@@ -224,4 +224,39 @@ public class MyXmlWriter {
         Element playerElement = (Element) playerList.item(0);
         root.removeChild(playerElement);
     }
+
+    public void addDrug(int cost, String name, int maxHealth, int curHealth, int consHealth, int refHealth, int maxEnergy, int curEnergy, int consEnergy, int refEnergy) {
+        Element drugElement = doc.createElement("Drug");
+        root.appendChild(drugElement);
+        Element costEl = doc.createElement("cost");
+        costEl.appendChild(doc.createTextNode(Integer.toString(cost)));
+        drugElement.appendChild(costEl);
+        Element nameEl = doc.createElement("name");
+        nameEl.appendChild(doc.createTextNode(name));
+        drugElement.appendChild(nameEl);
+        Element maxHealthEl = doc.createElement("maxHealth");
+        maxHealthEl.appendChild(doc.createTextNode(Integer.toString(maxHealth)));
+        drugElement.appendChild(maxHealthEl);
+        Element curHealthEl = doc.createElement("curHealth");
+        curHealthEl.appendChild(doc.createTextNode(Integer.toString(curHealth)));
+        drugElement.appendChild(curHealthEl);
+        Element consHealthEl = doc.createElement("consHealth");
+        consHealthEl.appendChild(doc.createTextNode(Integer.toString(consHealth)));
+        drugElement.appendChild(consHealthEl);
+        Element refHealthEl = doc.createElement("refHealth");
+        refHealthEl.appendChild(doc.createTextNode(Integer.toString(refHealth)));
+        drugElement.appendChild(refHealthEl);
+        Element maxEnergyEl = doc.createElement("maxEnergy");
+        maxEnergyEl.appendChild(doc.createTextNode(Integer.toString(maxEnergy)));
+        drugElement.appendChild(maxEnergyEl);
+        Element curEnergyEl = doc.createElement("curEnergy");
+        curEnergyEl.appendChild(doc.createTextNode(Integer.toString(curEnergy)));
+        drugElement.appendChild(curEnergyEl);
+        Element consEnergyEl = doc.createElement("consEnergy");
+        consEnergyEl.appendChild(doc.createTextNode(Integer.toString(consEnergy)));
+        drugElement.appendChild(consEnergyEl);
+        Element refEnergyEl = doc.createElement("refEnergy");
+        refEnergyEl.appendChild(doc.createTextNode(Integer.toString(refEnergy)));
+        drugElement.appendChild(refEnergyEl);
+    }
 }

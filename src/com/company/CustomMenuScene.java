@@ -28,7 +28,7 @@ public class CustomMenuScene {
     }
 
     enum Type {
-        PLANT, TREE, TREE_FIELDS, COOK, PLAYER
+        PLANT, TREE, TREE_FIELDS, COOK, PLAYER, DRUG
     }
 
     enum CookIngredient {
@@ -59,7 +59,8 @@ public class CustomMenuScene {
 
         HBox firstRow = makeHbox();
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(Type.PLANT.name(),
-                Type.TREE.name(), Type.TREE_FIELDS.name(), Type.COOK.name(), Type.PLAYER.name()));
+                Type.TREE.name(), Type.TREE_FIELDS.name(), Type.COOK.name(), Type.PLAYER.name(),
+                Type.DRUG.name()));
         Label nameLabel = makeLabel("custom name: ");
         TextField nameField = new TextField();
         Button saveButton = makeButton("Save");
@@ -104,6 +105,10 @@ public class CustomMenuScene {
                         break;
                     case PLAYER:
                         makeSceneForPlayer();
+                        break;
+                    case DRUG:
+                        makeSceneForDrug();
+                        break;
                 }
             }
         });
@@ -120,6 +125,88 @@ public class CustomMenuScene {
                 primaryStage.setScene(new FirstScene(primaryStage).makeScene());
             }
         });
+    }
+
+    private void makeSceneForDrug() {
+        HBox titleRow = makeHbox();
+        Label titleLabel = makeLabel("Drug:");
+        titleRow.getChildren().addAll(titleLabel);
+        HBox costRow = makeHbox();
+        Label costLabel = makeLabel("Cost:");
+        TextField costField = new TextField();
+        costRow.getChildren().addAll(costLabel, costField);
+        HBox nameRow = makeHbox();
+        Label nameLabel = makeLabel("Name:");
+        TextField nameField = new TextField();
+        nameRow.getChildren().addAll(nameLabel, nameField);
+        HBox healthTitleRow = makeHbox();
+        Label healthTitleLabel = makeLabel("Health:");
+        healthTitleRow.getChildren().addAll(healthTitleLabel);
+        HBox maxHealthRow = makeHbox();
+        Label maxHealthLabel = makeLabel("maximum:");
+        TextField maxHealthField = new TextField();
+        maxHealthRow.getChildren().addAll(maxHealthLabel, maxHealthField);
+        HBox currentHealthRow = makeHbox();
+        Label currentHealthLabel = makeLabel("current:");
+        TextField currentHealthField = new TextField();
+        currentHealthRow.getChildren().addAll(currentHealthLabel, currentHealthField);
+        HBox refillHealthRow = makeHbox();
+        Label refillHealthLabel = makeLabel("refill rate:");
+        TextField refillHealthField = new TextField();
+        refillHealthRow.getChildren().addAll(refillHealthLabel, refillHealthField);
+        HBox consumptionHealthRow = makeHbox();
+        Label consumptionHealthLabel = makeLabel("consumption rate:");
+        TextField consumptionHealthField = new TextField();
+        consumptionHealthRow.getChildren().addAll(consumptionHealthLabel, consumptionHealthField);
+        HBox energyTitleRow = makeHbox();
+        Label energyTitleLabel = makeLabel("Energy:");
+        energyTitleRow.getChildren().addAll(energyTitleLabel);
+        HBox maxEnergyRow = makeHbox();
+        Label maxEnergyLabel = makeLabel("maximum:");
+        TextField maxEnergyField = new TextField();
+        maxEnergyRow.getChildren().addAll(maxEnergyLabel, maxEnergyField);
+        HBox currentEnergyRow = makeHbox();
+        Label currentEnergyLabel = makeLabel("current:");
+        TextField currentEnergyField = new TextField();
+        currentEnergyRow.getChildren().addAll(currentEnergyLabel, currentEnergyField);
+        HBox refillEnergyRow = makeHbox();
+        Label refillEnergyLabel = makeLabel("refill rate:");
+        TextField refillEnergyField = new TextField();
+        refillEnergyRow.getChildren().addAll(refillEnergyLabel, refillEnergyField);
+        HBox consumptionEnergyRow = makeHbox();
+        Label consumptionEnergyLabel = makeLabel("consumption rate:");
+        TextField consumptionEnergyField = new TextField();
+        consumptionEnergyRow.getChildren().addAll(consumptionEnergyLabel, consumptionEnergyField);
+        HBox endRow = makeHbox();
+        Button addButton = makeButton();
+        addButton.setText("add");
+        addButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    int cost = Integer.parseInt(costField.getText());
+                    String name = nameField.getText();
+                    int maxHealth = Integer.parseInt(maxHealthField.getText());
+                    int curHealth = Integer.parseInt(currentHealthField.getText());
+                    int consHealth = Integer.parseInt(consumptionHealthField.getText());
+                    int refHealth = Integer.parseInt(refillHealthField.getText());
+                    int maxEnergy = Integer.parseInt(maxEnergyField.getText());
+                    int curEnergy = Integer.parseInt(currentEnergyField.getText());
+                    int consEnergy = Integer.parseInt(consumptionEnergyField.getText());
+                    int refEnergy = Integer.parseInt(refillEnergyField.getText());
+                    xmlWriter.addDrug(cost, name, maxHealth, curHealth, consHealth, refHealth,
+                            maxEnergy, curEnergy, consEnergy, refEnergy);
+                    Toast.makeText(primaryStage, "Added!", 500, 500, 500);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(primaryStage, "please write a number", 500, 500, 500);
+                }
+            }
+        });
+        endRow.getChildren().addAll(addButton);
+        layout.setSpacing(20);
+        layout.getChildren().addAll(titleRow, costRow, nameRow, healthTitleRow,
+                maxHealthRow, currentHealthRow, consumptionHealthRow, refillHealthRow, energyTitleRow,
+                maxEnergyRow, currentEnergyRow, consumptionEnergyRow, refillEnergyRow, endRow);
     }
 
     private void makeSceneForPlayer() {
