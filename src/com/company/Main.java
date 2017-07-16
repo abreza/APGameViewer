@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 
 public class Main {
@@ -18,13 +19,19 @@ public class Main {
 
     public static void main(String[] args) {
         Main.args = args;
-        try {
-            initFirst();
-            initCreateMultiPlayer();
-//            initAdd();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            initFirst();
+//            Scanner scanner = new Scanner(System.in);
+//            if(scanner.nextInt() == 1){
+//                initCreateMultiPlayer();
+//            }
+//            else {
+//                initAdd();
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         new Thread(() -> {
             try {
                 GameState.run();

@@ -43,19 +43,11 @@
             </ScrollPane>
             <HBox prefHeight="28.0" prefWidth="511.0">
                <children>
-                  <ImageView fx:id="emoji" fitHeight="28.0" fitWidth="35.0" onMouseClicked="#emojis" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
-                     <image>
-                        <Image url="@smile.png" />
-                     </image></ImageView>
-                  <TextField fx:id="txtField" prefHeight="26.0" prefWidth="283.0" />
+                  <TextField fx:id="txtField" prefHeight="27.0" prefWidth="331.0" />
                   <Button fx:id="send" mnemonicParsing="false" onAction="#send" prefHeight="27.0" prefWidth="62.0" text="send" />
                   <ImageView fx:id="vioce" fitHeight="27.0" fitWidth="27.0" onMouseClicked="#receiveVoice" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../voice.png" />
-                     </image></ImageView>
-                  <ImageView fx:id="gif" fitHeight="27.0" fitWidth="28.0" onMouseClicked="#chooseGif" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@gif.png" />
+                        <Image url="@voice.png" />
                      </image></ImageView>
                   <ImageView fx:id="image" fitHeight="28.0" fitWidth="31.0" onMouseClicked="#choosePhoto" pickOnBounds="true" preserveRatio="true">
                      <image>
