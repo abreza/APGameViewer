@@ -2,12 +2,13 @@ package com.company;
 
 import org.newdawn.slick.Image;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by reza on 7/10/17.
- */
 public class Animal extends ObjectView {
     public List<Image> up;
     public List<Image> down;
@@ -20,8 +21,8 @@ public class Animal extends ObjectView {
     public int Animation_SPEED = 10;
     public enum Direction{LEFT, RIGHT, UP, DOWN}
     public Direction direction = Direction.RIGHT;
-    public Animal(Position position, Image image, String name, Type type, List<Image> up, List<Image> down, List<Image> left, List<Image> right) {
-        super(position, image, name, type);
+    public Animal(Position position, Image image, String name, Type type, List<Image> up, List<Image> down, List<Image> left, List<Image> right, String sound) {
+        super(position, image, name, type, sound);
         this.up = up;
         this.down = down;
         this.left = left;

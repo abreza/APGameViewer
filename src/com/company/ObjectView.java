@@ -1,6 +1,16 @@
 package com.company;
 
+import javafx.application.Platform;
 import org.newdawn.slick.Image;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 
 public class ObjectView {
@@ -13,7 +23,47 @@ public class ObjectView {
     private Type type;
     private String name;
     private String imagePath = null;
+    private String sound;
+    public Thread thread;
 
+    private boolean first = false;
+    public void soundPlayStart(){
+            thread = new Thread(() -> {
+                try {
+                    if(sound != null) {
+                        while (true) {
+                            Thread.sleep(1200);
+                            try {
+                                InputStream in = new FileInputStream(new File((this.getClass().getResource("animalSounds/" + sound + ".wav")).toURI()));
+                                AudioStream audioStream = new AudioStream(in);
+                                AudioPlayer.player.start(audioStream);
+                            } catch (Exception e) {
+                                System.err.println(e.getMessage());
+                            }
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            first = true;
+
+        thread.start();
+    }
+    public void soundPlayStop(){
+        if(thread != null)
+            thread.stop();
+    }
+
+    public ObjectView(Position position, Image image, String name, Type type, String sound) {
+        this.door = new Position(position.x + (position.width / 2 - 10), position.y + position.height, 1, 1);
+        this.type = type;
+        this.name = name;
+        this.position = position;
+        this.dynamicPosition = new Position(0, 0, position.width, position.height);
+        this.image = image;
+        this.sound = sound;
+    }
     public ObjectView(Position position, Image image, String name, Type type) {
         this.door = new Position(position.x + (position.width / 2 - 10), position.y + position.height, 1, 1);
         this.type = type;
@@ -21,6 +71,7 @@ public class ObjectView {
         this.position = position;
         this.dynamicPosition = new Position(0, 0, position.width, position.height);
         this.image = image;
+        this.sound = sound;
     }
 
     public ObjectView(Position position,  Type type, String name, String imagePath) {

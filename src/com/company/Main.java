@@ -18,19 +18,19 @@ public class Main {
 
     public static void main(String[] args) {
         Main.args = args;
-//        try {
-//            initFirst();
+        try {
+            initFirst();
 //            Scanner scanner = new Scanner(System.in);
 //            if(scanner.nextInt() == 1){
-//                initCreateMultiPlayer();
+                initCreateMultiPlayer();
 //            }
 //            else {
 //                initAdd();
 //            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             try {
                 GameState.run();
@@ -159,7 +159,7 @@ public class Main {
                             }
                             Animal player = new Animal(new Position(Integer.parseInt(message[i + 1]), Integer.parseInt(message[2]), GameState.player.getPosition().height,
                                     GameState.player.getPosition().width), image, "player" + message[i], GameState.player.getType(),
-                                    GameState.player.up, GameState.player.down, GameState.player.left, GameState.player.right);
+                                    GameState.player.up, GameState.player.down, GameState.player.left, GameState.player.right, "player");
                             players.put(player, 1);
                             GameState.player.currentObjectViews.add(player);
                             ((MapViewer)GameState.gameState.getCurrentState()).getObjectViews().add(player);

@@ -102,6 +102,8 @@ public class MapViewer extends BasicGameState {
         }
         objectsToRemove = new HashMap<>();
         GameState.player.move();
+//        if((GameState.player.moveY == 0 && GameState.player.moveX == 0) && steps % 10 == 0)
+//            GameState.player.soundPause();
         graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
     }
 
@@ -537,13 +539,18 @@ public class MapViewer extends BasicGameState {
 
 
     void goTo(BuildingObjectView building) {
+        if(GameState.gameState.getCurrentStateID() == 2){
+            for (ObjectView objectView : GameState.player.currentObjectViews) {
+                objectView.soundPlayStop();
+            }
+        }
+
         try {
             if (building.getStateId() != 2 && building.getStateId() != 1)
                 send("goto " + building.getName() + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         GameState.gameState.enterState(building.getStateId());
         GameState.player.currentObjectViews = ((MapViewer) GameState.gameState.getState(building.getStateId())).objectViews;
         STATE_ID = building.getStateId();
@@ -551,6 +558,12 @@ public class MapViewer extends BasicGameState {
         GameState.player.getPosition().y = building.getFirstPlayerY();
         GameState.firstX = building.getFirstX();
         GameState.firstY = building.getFirstY();
+
+        if (building.getStateId() == 2){
+            for (ObjectView objectView : GameState.player.currentObjectViews) {
+                objectView.soundPlayStart();
+            }
+        }
         if (building.getStateId() == 4)
             setJungleResources();
         if (building.getStateId() == 5)

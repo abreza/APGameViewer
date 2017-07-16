@@ -60,7 +60,7 @@ public class GameState extends StateBasedGame{
         right.add(new Image("/resource/person/person_right_1.png").getScaledCopy(40, 50));
         right.add(new Image("/resource/person/person_right_2.png").getScaledCopy(40, 50));
         player = new Animal(new Position(GameState.width / 8,GameState.height / 8,40,50), null, "0",
-                ObjectView.Type.PLAYER, up , down, left, right);
+                ObjectView.Type.PLAYER, up , down, left, right, "player");
         player.setImage(right.get(0).getScaledCopy(player.getPosition().width, player.getPosition().height));
 
         this.getState(0).init(gameContainer, this);
@@ -194,15 +194,15 @@ public class GameState extends StateBasedGame{
         cowDown.add(new Image("/resource/cow/cd3.png"));
 
         animals.add(new Animal(new Position(32 - 15, 130, 2 * 32, 3 * 32), new Image("/resource/cow/cu0.png"), Names.COW_EMPTY.name(),
-                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight, "cow"));
         animals.add(new Animal(new Position(6 * 32 - 15, 130, 2 * 32, 3 * 32), new Image("/resource/cow/cu0.png"), Names.COW_EMPTY.name(),
-                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight, "cow"));
         animals.add(new Animal(new Position(11 * 32 - 15, 130, 2 * 32, 3 * 32), new Image("/resource/cow/cu0.png"), Names.COW_EMPTY.name(),
-                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight, "cow"));
         animals.add(new Animal(new Position(3 * 32 - 15, 6 * 32, 2 * 32, 3 * 32), new Image("/resource/cow/cd0.png"), Names.COW_EMPTY.name(),
-                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight, "cow"));
         animals.add(new Animal(new Position(9 * 32 - 15, 6 * 32, 2 * 32, 3 * 32), new Image("/resource/cow/cd0.png"), Names.COW_EMPTY.name(),
-                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight));
+                ObjectView.Type.ANIMAL, cowUp, cowDown, cowLeft, cowRight, "cow"));
 
         List<Image> sheepUp = new ArrayList<>();
         sheepUp.add(new Image("/resource/sheep/shu0.png"));
@@ -226,15 +226,15 @@ public class GameState extends StateBasedGame{
         sheepDown.add(new Image("/resource/sheep/shd3.png"));
 
         animals.add(new Animal(new Position(15 * 32 - 15, 130, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shu0.png"), Names.SHEEP_EMPTY.name(),
-                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight, "sheep"));
         animals.add(new Animal(new Position(20 * 32 - 15, 130, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shu0.png"), Names.SHEEP_EMPTY.name(),
-                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight, "sheep"));
         animals.add(new Animal(new Position(25 * 32 - 15, 130, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shu0.png"), Names.SHEEP_EMPTY.name(),
-                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight, "sheep"));
         animals.add(new Animal(new Position(19 * 32 - 15, 7 * 32, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shd0.png"), Names.SHEEP_EMPTY.name(),
-                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight, "sheep"));
         animals.add(new Animal(new Position(24 * 32 - 15, 7 * 32, 3 * 16, 4 * 16 - 10), new Image("/resource/sheep/shd0.png"), Names.SHEEP_EMPTY.name(),
-                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight));
+                ObjectView.Type.ANIMAL, sheepUp, sheepDown, sheepLeft, sheepRight, "sheep"));
 
         List<Image> chickenUp = new ArrayList<>();
         chickenUp.add(new Image("/resource/chicken/chu0.png"));
@@ -257,25 +257,25 @@ public class GameState extends StateBasedGame{
         chickenDown.add(new Image("/resource/chicken/chd2.png"));
         chickenDown.add(new Image("/resource/chicken/chd3.png"));
         animals.add(new Animal(new Position(32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(3 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(5 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(7 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(9 * 32 - 15, 17 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(3 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(5 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(7 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
         animals.add(new Animal(new Position(9 * 32 - 15, 26 * 32 - 15, 32, 25), new Image("/resource/chicken/chu0.png"), Names.CHICKEN_EMPTY.name(),
-                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight));
+                ObjectView.Type.ANIMAL, chickenUp, chickenDown, chickenLeft, chickenRight, "chicken"));
 
 
         ObjectView obj = new ObjectView(new Position(32 - 15, 0 - 15, 3 * 32, 4 * 32), null, Names.ANIMAL_FOOD.name(), ObjectView.Type.ITEM);
@@ -395,7 +395,6 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(16 * 32 - 15, 19 * 32 - 15, 32, 9 * 32), null, Names.WALL.name(), ObjectView.Type.ITEM));
 
 
-//        objectViews.addAll(animals);
         mapViews.get(2).setObjectViews(objectViews);
         for (Animal animal : animals) {
             animal.currentObjectViews = new ArrayList<>(objectViews);
@@ -471,5 +470,6 @@ public class GameState extends StateBasedGame{
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(3 * 32, 32);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 150);
         mapViews.get(5).setObjectViews(objectViews);
+
     }
 }
