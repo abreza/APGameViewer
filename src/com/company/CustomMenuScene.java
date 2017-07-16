@@ -28,7 +28,7 @@ public class CustomMenuScene {
     }
 
     enum Type {
-        PLANT, TREE, TREE_FIELDS, COOK, PLAYER, DRUG
+        PLANT, TREE, TREE_FIELDS, COOK, PLAYER, DRUG, MACHINE, MISSION
     }
 
     enum CookIngredient {
@@ -60,7 +60,7 @@ public class CustomMenuScene {
         HBox firstRow = makeHbox();
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(Type.PLANT.name(),
                 Type.TREE.name(), Type.TREE_FIELDS.name(), Type.COOK.name(), Type.PLAYER.name(),
-                Type.DRUG.name()));
+                Type.DRUG.name(), Type.MACHINE.name(), Type.MISSION.name()));
         Label nameLabel = makeLabel("custom name: ");
         TextField nameField = new TextField();
         Button saveButton = makeButton("Save");
@@ -109,6 +109,12 @@ public class CustomMenuScene {
                     case DRUG:
                         makeSceneForDrug();
                         break;
+                    case MACHINE:
+                        makeSceneForMachine();
+                        break;
+                    case MISSION:
+                        makeSceneForMission();
+                        break;
                 }
             }
         });
@@ -125,6 +131,176 @@ public class CustomMenuScene {
                 primaryStage.setScene(new FirstScene(primaryStage).makeScene());
             }
         });
+    }
+
+    private void makeSceneForMission() {
+        VBox layout = new VBox();
+        layout.alignmentProperty().setValue(Pos.TOP_CENTER);
+        layout.setSpacing(30);
+        layout.setBackground(new Background(new BackgroundImage(
+                new Image(this.getClass().getClassLoader().getResource("wooden-texture.jpg").toString()),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, new BackgroundSize(
+                FirstScene.WIDTH, FirstScene.HEIGHT, false, false, true, true)
+        )));
+        final int[] inputsNumber = {0}, outputsNumber = {0};
+        ArrayList<ChoiceBox> choiceBoxes = new ArrayList<>();
+        ArrayList<TextField> numberFields = new ArrayList<>();
+        ArrayList<String> inputs = new ArrayList<>();
+        for (int i = 0; i < CookIngredient.values().length; i++) {
+            inputs.add(CookIngredient.values()[i].name());
+        }
+        inputs.addAll(xmlWriter.getPlantProducts());
+        HBox titleRow = makeHbox();
+        Label titleLabel = makeLabel("Mission:");
+        titleRow.getChildren().addAll(titleLabel);
+        HBox addInputRow = makeHbox();
+        Button addInputButton = makeButton("Add input");
+        addInputButton.setOnMouseClicked(event -> {
+            inputsNumber[0]++;
+            HBox inputRow = makeHbox();
+            Label inputLabel = makeLabel("input" + inputsNumber[0] + ":");
+            ChoiceBox inputChoice = new ChoiceBox(FXCollections.observableArrayList(inputs));
+            choiceBoxes.add(inputChoice);
+            Label numberLabel = makeLabel("Number:");
+            TextField numberField = new TextField();
+            numberFields.add(numberField);
+            inputRow.getChildren().addAll(inputLabel, inputChoice, numberLabel, numberField);
+            layout.getChildren().add(inputsNumber[0], inputRow);
+        });
+        addInputRow.getChildren().addAll(addInputButton);
+        HBox nameRow = makeHbox();
+        Label nameLabel = makeLabel("name:");
+        TextField nameField = new TextField();
+        nameRow.getChildren().addAll(nameLabel, nameField);
+        HBox feeRow = makeHbox();
+        Label feeLabel = makeLabel("feeContract:");
+        TextField feeField = new TextField();
+        feeRow.getChildren().addAll(feeLabel, feeField);
+        HBox timeRow = makeHbox();
+        Label timeLabel = makeLabel("timesNeeded:");
+        TextField timeField = new TextField();
+        timeRow.getChildren().addAll(timeLabel, timeField);
+        HBox endRow = makeHbox();
+        Button addButton = makeButton();
+        addButton.setText("add");
+        addButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    HashMap<String, Integer> inputNames = new HashMap<>();
+                    for (int i = 0; i < choiceBoxes.size(); i++) {
+                        if (i + 1 <= inputsNumber[0])
+                            inputNames.put(choiceBoxes.get(i).getSelectionModel().getSelectedItem().toString(),
+                                    Integer.parseInt(numberFields.get(i).getText()));
+                    }
+                    String name = nameField.getText();
+                    int fee = Integer.parseInt(feeField.getText());
+                    int time = Integer.parseInt(timeField.getText());
+                    xmlWriter.addMission(inputNames, name, fee, time);
+                    Toast.makeText(primaryStage, "Added!", 500, 500, 500);
+                }catch (NumberFormatException e){
+                    Toast.makeText(primaryStage, "please write a number", 500, 500, 500);
+                }
+            }
+        });
+        endRow.getChildren().addAll(addButton);
+        ScrollPane scrollPane = new ScrollPane();
+        layout.getChildren().addAll(titleRow, addInputRow, nameRow
+                , feeRow, timeRow, endRow);
+        scrollPane.setContent(layout);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.layout.getChildren().addAll(scrollPane);
+    }
+
+    private void makeSceneForMachine() {
+        VBox layout = new VBox();
+        layout.alignmentProperty().setValue(Pos.TOP_CENTER);
+        layout.setSpacing(30);
+        layout.setBackground(new Background(new BackgroundImage(
+                new Image(this.getClass().getClassLoader().getResource("wooden-texture.jpg").toString()),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, new BackgroundSize(
+                FirstScene.WIDTH, FirstScene.HEIGHT, false, false, true, true)
+        )));
+        final int[] inputsNumber = {0}, outputsNumber = {0};
+        ArrayList<ChoiceBox> choiceBoxes = new ArrayList<>();
+        ArrayList<String> inputs = new ArrayList<>(), outpus = new ArrayList<>();
+        for (int i = 0; i < CookIngredient.values().length; i++) {
+            inputs.add(CookIngredient.values()[i].name());
+            outpus.add(CookIngredient.values()[i].name());
+        }
+        inputs.addAll(xmlWriter.getPlantProducts());
+        outpus.addAll(xmlWriter.getPlantProducts());
+        HBox titleRow = makeHbox();
+        Label titleLabel = makeLabel("Machine:");
+        titleRow.getChildren().addAll(titleLabel);
+        HBox addInputRow = makeHbox();
+        Button addInputButton = makeButton("Add input");
+        addInputButton.setOnMouseClicked(event -> {
+            inputsNumber[0]++;
+            HBox inputRow = makeHbox();
+            Label inputLabel = makeLabel("input" + inputsNumber[0] + ":");
+            ChoiceBox inputChoice = new ChoiceBox(FXCollections.observableArrayList(inputs));
+            choiceBoxes.add(inputChoice);
+            inputRow.getChildren().addAll(inputLabel, inputChoice);
+            layout.getChildren().add(inputsNumber[0], inputRow);
+        });
+        addInputRow.getChildren().addAll(addInputButton);
+        HBox addOutputRow = makeHbox();
+        Button addOutputButton = makeButton("Add Output");
+        addOutputButton.setOnMouseClicked(event -> {
+            outputsNumber[0]++;
+            HBox outputRow = makeHbox();
+            Label outputLabel = makeLabel("Output" + outputsNumber[0] + ":");
+            ChoiceBox outputChoice = new ChoiceBox(FXCollections.observableArrayList(outpus));
+            choiceBoxes.add(outputChoice);
+            outputRow.getChildren().addAll(outputLabel, outputChoice);
+            layout.getChildren().add(layout.getChildren().size() - 4, outputRow);
+        });
+        addOutputRow.getChildren().addAll(addOutputButton);
+        HBox nameRow = makeHbox();
+        Label nameLabel = makeLabel("name:");
+        TextField nameField = new TextField();
+        nameRow.getChildren().addAll(nameLabel, nameField);
+        HBox costRow = makeHbox();
+        Label costLabel = makeLabel("Cost:");
+        TextField costField = new TextField();
+        costRow.getChildren().addAll(costLabel, costField);
+        HBox endRow = makeHbox();
+        Button addButton = makeButton();
+        addButton.setText("add");
+        addButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    ArrayList<String> inputNames = new ArrayList<>();
+                    ArrayList<String> outputNames = new ArrayList<>();
+                    for (int i = 0; i < choiceBoxes.size(); i++) {
+                        if (i + 1 <= inputsNumber[0]) {
+                            inputNames.add(choiceBoxes.get(i).getSelectionModel().getSelectedItem().toString());
+                        } else {
+                            outputNames.add(choiceBoxes.get(i).getSelectionModel().getSelectedItem().toString());
+                        }
+                    }
+                    String name = nameField.getText();
+                    int cost = Integer.parseInt(costField.getText());
+                    xmlWriter.addMachine(inputNames, outputNames, name, cost);
+                    Toast.makeText(primaryStage, "Added!", 500, 500, 500);
+                }catch (NumberFormatException e){
+                    Toast.makeText(primaryStage, "please write a number", 500, 500, 500);
+                }
+            }
+        });
+        endRow.getChildren().addAll(addButton);
+        ScrollPane scrollPane = new ScrollPane();
+        layout.getChildren().addAll(titleRow, addInputRow, addOutputRow, nameRow
+                , costRow, endRow);
+        scrollPane.setContent(layout);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.layout.getChildren().addAll(scrollPane);
     }
 
     private void makeSceneForDrug() {
@@ -375,8 +551,6 @@ public class CustomMenuScene {
                     String name = nameField.getText();
                     int energy = Integer.parseInt(energyField.getText());
                     int health = Integer.parseInt(healthField.getText());
-                    System.out.println(ingredientNames);
-                    System.out.println(cookingToolNames);
                     xmlWriter.addCook(ingredientNames, cookingToolNames, name, energy, health);
                     Toast.makeText(primaryStage, "Added!", 500, 500, 500);
                 }catch (NumberFormatException e){

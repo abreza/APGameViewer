@@ -259,4 +259,50 @@ public class MyXmlWriter {
         refEnergyEl.appendChild(doc.createTextNode(Integer.toString(refEnergy)));
         drugElement.appendChild(refEnergyEl);
     }
+
+    public void addMachine(ArrayList<String> inputNames, ArrayList<String> outputNames, String name, int cost) {
+        Element machineElement = doc.createElement("Machine");
+        root.appendChild(machineElement);
+        for (String inputName :
+                inputNames) {
+            Element inputEl = doc.createElement("input");
+            inputEl.appendChild(doc.createTextNode(inputName));
+            machineElement.appendChild(inputEl);
+        }
+        for (String outputName :
+                outputNames) {
+            Element outputEl = doc.createElement("output");
+            outputEl.appendChild(doc.createTextNode(outputName));
+            machineElement.appendChild(outputEl);
+        }
+        Element nameEl = doc.createElement("name");
+        nameEl.appendChild(doc.createTextNode(name));
+        machineElement.appendChild(nameEl);
+        Element costEl = doc.createElement("cost");
+        costEl.appendChild(doc.createTextNode(Integer.toString(cost)));
+        machineElement.appendChild(costEl);
+    }
+
+    public void addMission(HashMap<String, Integer> inputNames, String name, int fee, int time) {
+        Element missionElement = doc.createElement("Mission");
+        root.appendChild(missionElement);
+        for (String inputName :
+                inputNames.keySet()) {
+            Element inputEl = doc.createElement("input");
+            inputEl.appendChild(doc.createTextNode(inputName));
+            Attr numberAtr = doc.createAttribute("number");
+            numberAtr.setValue(Integer.toString(inputNames.get(inputName)));
+            inputEl.setAttributeNode(numberAtr);
+            missionElement.appendChild(inputEl);
+        }
+        Element nameEl = doc.createElement("name");
+        nameEl.appendChild(doc.createTextNode(name));
+        missionElement.appendChild(nameEl);
+        Element feeEl = doc.createElement("fee");
+        feeEl.appendChild(doc.createTextNode(Integer.toString(fee)));
+        missionElement.appendChild(feeEl);
+        Element timeEl = doc.createElement("time");
+        timeEl.appendChild(doc.createTextNode(Integer.toString(time)));
+        missionElement.appendChild(timeEl);
+    }
 }

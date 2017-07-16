@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="TileA4" tilewidth="32" tileheight="32" tilecount="240" columns="16">
   <image source="Terrain_Sprites/MapStuff/TileA4.png" width="512" height="480"/>
  </tileset>
@@ -51,7 +51,7 @@
  </layer>
  <layer name="Objects" width="30" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2UTQ4BURCEe96hcAacAWdA/P8vcIbhBgQ3ILgBB1KbF73ppN+bESH9JZWprqR6JrNoou/RcURdqOfCstiep495AA1dWBbb84wwj6GJC8tie54p5hk0d2FZbM8w/hnprki5pq/pSndFyjV9TVe6K1Ku6Wu60l3R3ptfuVULp3sahmHkRSEhKkKl5J0t4VfQOpF7WSljdwWqsnek8Btoy7Id/D7H76hhVx1qsJ0H+CN0YtkZ/sLmrPe5iV0tqM12XuFv0J1lD/jnB/+7hhc1EGpyEA4AAA==
+   H4sIAAAAAAAAC+2USwqAQAxDZ3oqT+b/v/DcdjO4CqRFELUPgtPg2yal56glpUbTiq3zeoVO714ziK3zeoVR70kzi63zeoVF71Wzia3zekHwZdCuoJ7xGRftCuoZn3HRrqCe8RkX7Qq7N2/Zql24bxAEwd1U+XofGf/3V/60zycnPPoXEA4AAA==
   </data>
  </layer>
 </map>

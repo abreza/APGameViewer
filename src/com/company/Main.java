@@ -18,13 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
         Main.args = args;
-        try {
-            initFirst();
-            initCreateMultiPlayer();
-//            initAdd();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+////            initFirst();
+////            initCreateMultiPlayer();
+////            initAdd();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         new Thread(() -> {
             try {
                 GameState.run();
