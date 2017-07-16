@@ -19,9 +19,15 @@ public class Main {
     public static void main(String[] args) {
         Main.args = args;
 //        try {
-////            initFirst();
-////            initCreateMultiPlayer();
-////            initAdd();
+//            initFirst();
+//            Scanner scanner = new Scanner(System.in);
+//            if(scanner.nextInt() == 1){
+//                initCreateMultiPlayer();
+//            }
+//            else {
+//                initAdd();
+//            }
+//
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }

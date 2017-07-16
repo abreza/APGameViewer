@@ -627,19 +627,19 @@ public class MapViewer extends BasicGameState {
                 DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
                 while (true) {
                     String Message = UDPRead(incoming);
-                    if (Message == "up") {
+                    if (Message.equals("up")) {
                         GameState.player.moveY -= PLAYER_SPEED;
                     }
-                    if (Message == "down") {
+                    if (Message.equals("down")) {
                         GameState.player.moveY += PLAYER_SPEED;
                     }
-                    if (Message == "left") {
+                    if (Message.equals("left")) {
                         GameState.player.moveX -= PLAYER_SPEED;
                     }
-                    if (Message == "right") {
+                    if (Message.equals("right")) {
                         GameState.player.moveX += PLAYER_SPEED;
                     }
-                    if (Message == "ok") {
+                    if (Message.equals("ok")) {
                         ObjectView intersectedView =
                                 getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
                         if (intersectedView != null) {
