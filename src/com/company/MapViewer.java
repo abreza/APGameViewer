@@ -23,6 +23,7 @@ public class MapViewer extends BasicGameState {
     public static int PLAYER_SPEED = 1;
     public static int STATE_ID = 1;
     public TiledMap map;
+    private int barnMachinesNum = 0;
     private boolean inRequest = false;
     private String TMXName;
     private List<ObjectView> objectViews;
@@ -205,6 +206,8 @@ public class MapViewer extends BasicGameState {
                 send("inspect " + "chickens" + "\n");
             if (intersectedView.getName().startsWith("sheep") && !intersectedView.getName().endsWith("empty"))
                 send("inspect " + "sheeps" + "\n");
+            if (intersectedView.getName().toLowerCase().endsWith("_machine"))
+                send("inspect " + "machines" + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -408,6 +411,12 @@ public class MapViewer extends BasicGameState {
 //                }catch (ConcurrentModificationException e){
                 objectsToRemove.put(intersectedView, STATE_ID);
 //                }
+            }
+            if (serverMessages.get(0).toLowerCase().endsWith("machine built!") && STATE_ID == 0){
+                barnMachinesNum++;
+                GameState.mapViews.get(2).objectViews.add(new ObjectView
+                        (new Position(13 * 32 + 4 * barnMachinesNum * 32 - 15, 24 * 32 - 15, 3 * 32, 4 * 32), ObjectView.Type.BUILDING_ITEM,
+                                serverMessages.get(0).split(" ")[0], "resource/machine/" + barnMachinesNum + ".png"));
             }
         } else {
             String[] messages = new String[serverMessages.size() - 1];
