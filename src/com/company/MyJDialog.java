@@ -26,6 +26,10 @@ public class MyJDialog extends JDialog {
         setLocation(p.x, p.y);
         this.mapViewer = viewer;
 
+        String newMessage = "<html>";
+        newMessage += message.replace("<br>", "<br>");
+        newMessage += "</html>";
+        message = newMessage;
         JPanel messagePane = new JPanel();
         JLabel messageLabel = new JLabel(message);
         messageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -150,9 +154,9 @@ public class MyJDialog extends JDialog {
                     jButtons.get(0).requestFocus();
                 }
                 focusedButtonId++;
-                if (focusedButtonId == jButtons.size() - 1){
+                if (focusedButtonId == jButtons.size() - 1) {
                     jButtons.get(focusedButtonId).requestFocus();
-                }else if (change) {
+                } else if (change) {
                     if (!buttonsInPaneId.contains(focusedButtonId)) {
                         for (int i = 0; i < buttonsInPaneId.size() - 1; i++) {
                             buttonsInPaneId.set(i, buttonsInPaneId.get(i + 1));

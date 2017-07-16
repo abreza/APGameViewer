@@ -86,6 +86,16 @@ public class ChatRoom extends Application{
         launch(args);
     }
 
+    public static void myStart(){
+        try {
+            new ChatRoom().start(new Stage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) throws IOException, URISyntaxException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("chatRoom.fxml"));

@@ -80,7 +80,7 @@ public class MultiPlayerMenuScene {
                     e.printStackTrace();
                 }
                 Main.main(FirstMenu.args);
-                Platform.exit();
+                primaryStage.hide();
             }
         });
 
@@ -93,7 +93,7 @@ public class MultiPlayerMenuScene {
                     e.printStackTrace();
                 }
                 Main.main(FirstMenu.args);
-                Platform.exit();
+                primaryStage.hide();
             }
         });
     }

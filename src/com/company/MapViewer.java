@@ -2,6 +2,8 @@ package com.company;
 
 
 import com.company.Chat.ChatRoom;
+import javafx.animation.*;
+import javafx.application.Platform;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,6 +25,7 @@ public class MapViewer extends BasicGameState {
     public static int PLAYER_SPEED = 1;
     public static int STATE_ID = 1;
     public TiledMap map;
+    private int lastX = -1, lastY = -1;
     private int barnMachinesNum = 0;
     private boolean inRequest = false;
     private String TMXName;
@@ -75,13 +78,12 @@ public class MapViewer extends BasicGameState {
         Main.positions();
         for (ObjectView objectView : objectViews) {
             if (objectView.getImage() != null) {
-                if(objectView.getType() != ObjectView.Type.PLAYER){
+                if (objectView.getType() != ObjectView.Type.PLAYER) {
                     graphics.drawImage(objectView.getImage().
                                     getScaledCopy(objectView.getPosition().width, objectView.getPosition().height),
                             objectView.getPosition().x + 20,
                             objectView.getPosition().y + 35);
-                }
-                else{
+                } else {
                     graphics.drawImage(objectView.getImage().
                                     getScaledCopy(GameState.player.getPosition().width, GameState.player.getPosition().height),
                             objectView.getPosition().x - GameState.firstX + 18,
@@ -131,17 +133,64 @@ public class MapViewer extends BasicGameState {
                 }
             }
         }
+        if (GameState.player.getPosition().x == lastX && GameState.player.getPosition().y == lastY) {
+            lastX = -1;
+            lastY = -1;
+        }
+        if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+            int mouseX = input.getMouseX() + GameState.firstX;
+            int mouseY = input.getMouseY() + GameState.firstY;
+            for (ObjectView objectView : objectViews) {
+                if (Animal.pointIntersect(mouseX, mouseY, objectView.getPosition())) {
+                    intersectedView = objectView;
+                    if (intersectedView != null) {
+                        System.out.println(intersectedView.getName());
+                        inRequest = true;
+                        if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
+                            sendAndGetResponse("goto " + intersectedView.getName() + "\n");
+                        else {
+                            checkForBarn(intersectedView);
+                            checkForGarden(intersectedView);
+                            checkForField(intersectedView);
+                            checkForForest(intersectedView);
+                            sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
+                        }
+                    }
+                }
+            }
+            lastX = input.getMouseX();
+            lastY = input.getMouseY();
+            System.out.println("mouse: " + lastX + " " + lastY);
+            System.out.println("player: " + GameState.player.getPosition().x + " " + GameState.player.getPosition().y);
+        }
         if (input.isKeyDown(Input.KEY_UP)) {
+            lastY = -1;
+            lastX = -1;
             GameState.player.moveY -= PLAYER_SPEED;
-        }
-        if (input.isKeyDown(Input.KEY_DOWN)) {
+        } else if (input.isKeyDown(Input.KEY_DOWN)) {
+            lastY = -1;
+            lastX = -1;
             GameState.player.moveY += PLAYER_SPEED;
-        }
-        if (input.isKeyDown(Input.KEY_LEFT)) {
+        } else if (input.isKeyDown(Input.KEY_LEFT)) {
+            lastY = -1;
+            lastX = -1;
             GameState.player.moveX -= PLAYER_SPEED;
-        }
-        if (input.isKeyDown(Input.KEY_RIGHT)) {
+        } else if (input.isKeyDown(Input.KEY_RIGHT)) {
+            lastY = -1;
+            lastX = -1;
             GameState.player.moveX += PLAYER_SPEED;
+        } else if (lastX != -1 && lastY != -1) {
+            int vx = 0, vy = 0;
+            if (GameState.player.getPosition().x < lastX)
+                vx = PLAYER_SPEED;
+            else if (GameState.player.getPosition().x > lastX)
+                vx = -PLAYER_SPEED;
+            if (GameState.player.getPosition().y < lastY)
+                vy = PLAYER_SPEED;
+            else if (GameState.player.getPosition().y > lastY)
+                vy = -PLAYER_SPEED;
+            GameState.player.moveX += vx;
+            GameState.player.moveY += vy;
         }
         if (input.isKeyPressed(Input.KEY_TAB)) {
             try {
@@ -150,12 +199,23 @@ public class MapViewer extends BasicGameState {
                 e.printStackTrace();
             }
         }
-        if (input.isKeyPressed(Input.KEY_ESCAPE)){
+        if (input.isKeyPressed(Input.KEY_ESCAPE)) {
             PauseDialog dialog = new PauseDialog(new JFrame(), "Pause", "game paused", this, gameContainer);
             dialog.setSize(500, 300);
         }
-        if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)){
-            ChatRoom.main(FirstMenu.args);
+        if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
+            new Thread(() -> {
+                System.out.println("hi");
+                Platform.runLater(() -> {
+                    try {
+                        new ChatRoom().start(FirstMenu.primaryStage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }).start();
         }
     }
 
@@ -307,9 +367,9 @@ public class MapViewer extends BasicGameState {
             JSONArray age = (JSONArray) fieldJson.get("age");
             for (ObjectView objectView :
                     GameState.mapViews.get(1).objectViews) {
-                if (objectView.getName().toLowerCase().startsWith("tree")){
+                if (objectView.getName().toLowerCase().startsWith("tree")) {
                     int index = objectView.getName().charAt(objectView.getName().length() - 1) - '0';
-                    if ((boolean) isBought.get(index)){
+                    if ((boolean) isBought.get(index)) {
                         if ((boolean) hasFruit.get(index))
                             objectView.setImagePath("/resource/tree/" + ((String) trees.get(index)).toLowerCase() + ".png");
                         else
@@ -412,7 +472,7 @@ public class MapViewer extends BasicGameState {
                 objectsToRemove.put(intersectedView, STATE_ID);
 //                }
             }
-            if (serverMessages.get(0).toLowerCase().endsWith("machine built!") && STATE_ID == 0){
+            if (serverMessages.get(0).toLowerCase().endsWith("machine built!") && STATE_ID == 0) {
                 barnMachinesNum++;
                 GameState.mapViews.get(2).objectViews.add(new ObjectView
                         (new Position(13 * 32 + 4 * barnMachinesNum * 32 - 15, 24 * 32 - 15, 3 * 32, 4 * 32), ObjectView.Type.BUILDING_ITEM,
