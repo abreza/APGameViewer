@@ -9,13 +9,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -24,6 +27,7 @@ import java.util.TimerTask;
 
 public class CustomSelectScene {
 
+    private final int[] id = {1};
     private Stage primaryStage;
     private VBox layout;
     private Scene scene;
@@ -37,14 +41,9 @@ public class CustomSelectScene {
     public Scene makeScene() {
         layout = new VBox();
         layout.alignmentProperty().setValue(Pos.TOP_CENTER);
-        layout.setSpacing(20);
+        layout.setSpacing(40);
 
         Button button1 = makeButton();
-
-        ArrayList<Label> labels = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            labels.add(new Label());
-        }
 
         HBox first = makeHbox();
         Label selectCustomLabel = CustomMenuScene.makeLabel("Select Custom:");
@@ -58,14 +57,39 @@ public class CustomSelectScene {
         ChoiceBox customSelectCb = new ChoiceBox(FXCollections.observableArrayList(filesNames));
         customSelectCb.getSelectionModel().selectFirst();
         first.getChildren().addAll(selectCustomLabel, customSelectCb);
+            HBox selectPlayerRow = makeHbox();
+            Label selectPlayerLabel = CustomMenuScene.makeLabel("Select Player:");
+        ImageView playerImage = null;
+        try {
+            playerImage = new ImageView(new Image(
+                    this.getClass().getClassLoader().getResource("person/p1_down_0.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        Button nextButton = makeButton();
+            nextButton.setText("Next");
+        ImageView finalPlayerImage = playerImage;
+        nextButton.setOnMouseClicked(event -> {
+                id[0]++;
+                if (id[0] == 7)
+                    id[0] = 1;
+                try {
+                    finalPlayerImage.setImage(new Image(this.getClass()
+                            .getClassLoader().getResource("person/p" + id[0] + "_down_0.png").toURI().toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            });
+        selectPlayerRow.getChildren().addAll(selectPlayerLabel, nextButton, playerImage);
+        playerImage.setFitWidth(100);
+        playerImage.setFitHeight(100);
         HBox second = makeHbox();
         button1.setText("Go!");
         second.getChildren().addAll(button1);
         setListeners(button1, customSelectCb);
-        layout.getChildren().addAll(labels);
-        layout.getChildren().addAll(first, second);
+        layout.getChildren().addAll(new Label(), first, selectPlayerRow, second);
         layout.setBackground(new Background(new BackgroundImage(
-                new Image(this.getClass().getClassLoader().getResource("wallpaper-firstMenu.jpg").toString()),
+                new Image(this.getClass().getClassLoader().getResource("wooden-texture.jpg").toString()),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, new BackgroundSize(
                 FirstScene.WIDTH, FirstScene.HEIGHT, false, false, true, true)
@@ -104,6 +128,7 @@ public class CustomSelectScene {
                         }
                     }, 400);
                 }
+                Main.playerViewId = id[0];
                 Main.main(FirstMenu.args);
                 Platform.exit();
             }
