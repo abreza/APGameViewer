@@ -14,8 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -629,6 +632,13 @@ public class CustomMenuScene {
         Label costLabel = makeLabel("cost:");
         TextField costField = new TextField();
         costRow.getChildren().addAll(costLabel, costField);
+        HBox browseFileRow = makeHbox();
+        Button browseButton = makeButton("Browse Image");
+        final File[] imageFile = {null};
+        browseButton.setOnMouseClicked(event -> {
+            imageFile[0] = new FileChooser().showOpenDialog(primaryStage);
+        });
+        browseFileRow.getChildren().addAll(browseButton);
         HBox endRow = makeHbox();
         Button addButton = makeButton();
         addButton.setText("add");
@@ -645,14 +655,20 @@ public class CustomMenuScene {
                     xmlWriter.addPlantProduct(productCost, productName, productEnergy, productHealth, productSeason);
                     int treeCost = Integer.parseInt(costField.getText());
                     xmlWriter.addTree(productName, treeCost);
+                    if (imageFile[0] != null){
+                        copyFileUsingStream(imageFile[0], new File(System.getProperty("user.dir") +
+                                "/resource/tree/" + productName + "_TREE.png"));
+                    }
                     Toast.makeText(primaryStage, "Added!", 500, 500, 500);
                 }catch (NumberFormatException e){
                     Toast.makeText(primaryStage, "please write a number", 500, 500, 500);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                }
+            }
         });
         endRow.getChildren().addAll(addButton);
-        layout.getChildren().addAll(titleRow, costRow, endRow);
+        layout.getChildren().addAll(titleRow, costRow, browseFileRow, endRow);
 
     }
 
@@ -672,6 +688,13 @@ public class CustomMenuScene {
         Label maxAgeLabel = makeLabel("maxAge:");
         TextField maxAgeField = new TextField();
         maxAgeRow.getChildren().addAll(maxAgeLabel, maxAgeField);
+        HBox browseFileRow = makeHbox();
+        Button browseButton = makeButton("Browse Image");
+        final File[] imageFile = {null};
+        browseButton.setOnMouseClicked(event -> {
+            imageFile[0] = new FileChooser().showOpenDialog(primaryStage);
+        });
+        browseFileRow.getChildren().addAll(browseButton);
         HBox endRow = makeHbox();
         Button addButton = makeButton();
         addButton.setText("add");
@@ -691,14 +714,40 @@ public class CustomMenuScene {
                     int plantAge = Integer.parseInt(ageField.getText());
                     int plantMaxAge = Integer.parseInt(maxAgeField.getText());
                     xmlWriter.addPlant(productName, plantCost, plantAge, plantMaxAge);
+                    if (imageFile[0] != null){
+                        copyFileUsingStream(imageFile[0], new File(System.getProperty("user.dir") +
+                                "/resource/crete/" + productName + "_PLANT.png"));
+                    }
                     Toast.makeText(primaryStage, "Added!", 500, 500, 500);
                 }catch (NumberFormatException e){
                     Toast.makeText(primaryStage, "please write a number", 500, 500, 500);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
         endRow.getChildren().addAll(addButton);
-        layout.getChildren().addAll(titleRow, costRow, ageRow, maxAgeRow, endRow);
+        layout.getChildren().addAll(titleRow, costRow, ageRow, maxAgeRow, browseFileRow, endRow);
+    }
+
+    private static void copyFileUsingStream(File source, File dest) throws IOException {
+        if (!dest.exists()){
+            dest.createNewFile();
+        }
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            is.close();
+            os.close();
+        }
     }
 
     private ArrayList<Node> makeSceneForPlantProduct() {
