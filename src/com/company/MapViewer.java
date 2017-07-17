@@ -102,8 +102,7 @@ public class MapViewer extends BasicGameState {
         }
         objectsToRemove = new HashMap<>();
         GameState.player.move();
-//        if((GameState.player.moveY == 0 && GameState.player.moveX == 0) && steps % 10 == 0)
-//            GameState.player.soundPause();
+        graphics.drawImage(Main.playerAttr.getScaledCopy(80, 80), 600, 10);
         graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
     }
 

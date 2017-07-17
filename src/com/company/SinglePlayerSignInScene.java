@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import org.newdawn.slick.SlickException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,6 +74,8 @@ public class SinglePlayerSignInScene {
                 try {
                     Main.initFirst();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SlickException e) {
                     e.printStackTrace();
                 }
                 primaryStage.setScene(new SinglePlayerMenuScene(primaryStage).makeScene());

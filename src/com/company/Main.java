@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 
 public class Main {
@@ -15,22 +16,25 @@ public class Main {
     public static int playerId;
     public static int gameID;
     public static String[] args;
-
+    public static int playerViewId = 1;
+    public static Image playerAttr;
     public static void main(String[] args) {
         Main.args = args;
-        try {
-            initFirst();
+//        try {
+//            initFirst();
 //            Scanner scanner = new Scanner(System.in);
 //            if(scanner.nextInt() == 1){
-                initCreateMultiPlayer();
+//                initCreateMultiPlayer();
 //            }
 //            else {
 //                initAdd();
 //            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (SlickException e) {
+//            e.printStackTrace();
+//        }
         new Thread(() -> {
             try {
                 GameState.run();
@@ -40,7 +44,7 @@ public class Main {
         }).start();
     }
 
-    public static void initFirst() throws IOException {
+    public static void initFirst() throws IOException, SlickException {
         Socket socket = new Socket("localhost", 1378);
         PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

@@ -43,22 +43,23 @@ public class GameState extends StateBasedGame{
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
 
+        Main.playerAttr = new Image("/resource/playerAttr.png");
         List<Image> up = new ArrayList<>();
-        up.add(new Image("/resource/person/person_up_0.png").getScaledCopy(40, 50));
-        up.add(new Image("/resource/person/person_up_1.png").getScaledCopy(40, 50));
-        up.add(new Image("/resource/person/person_up_2.png").getScaledCopy(40, 50));
+        up.add(new Image("/resource/person/p"+ Main.playerViewId + "_up_0.png").getScaledCopy(40, 50));
+        up.add(new Image("/resource/person/p"+ Main.playerViewId + "_up_1.png").getScaledCopy(40, 50));
+        up.add(new Image("/resource/person/p"+ Main.playerViewId + "_up_2.png").getScaledCopy(40, 50));
         List<Image> down = new ArrayList<>();
-        down.add(new Image("/resource/person/person_down_0.png").getScaledCopy(40, 50));
-        down.add(new Image("/resource/person/person_down_1.png").getScaledCopy(40, 50));
-        down.add(new Image("/resource/person/person_down_2.png").getScaledCopy(40, 50));
+        down.add(new Image("/resource/person/p" + Main.playerViewId + "_down_0.png").getScaledCopy(40, 50));
+        down.add(new Image("/resource/person/p" + Main.playerViewId + "_down_1.png").getScaledCopy(40, 50));
+        down.add(new Image("/resource/person/p" + Main.playerViewId + "_down_2.png").getScaledCopy(40, 50));
         List<Image> left = new ArrayList<>();
-        left.add(new Image("/resource/person/person_left_0.png").getScaledCopy(40, 50));
-        left.add(new Image("/resource/person/person_left_1.png").getScaledCopy(40, 50));
-        left.add(new Image("/resource/person/person_left_2.png").getScaledCopy(40, 50));
+        left.add(new Image("/resource/person/p" + Main.playerViewId + "_left_0.png").getScaledCopy(40, 50));
+        left.add(new Image("/resource/person/p" + Main.playerViewId + "_left_1.png").getScaledCopy(40, 50));
+        left.add(new Image("/resource/person/p" + Main.playerViewId + "_left_2.png").getScaledCopy(40, 50));
         List<Image> right = new ArrayList<>();
-        right.add(new Image("/resource/person/person_right_0.png").getScaledCopy(40, 50));
-        right.add(new Image("/resource/person/person_right_1.png").getScaledCopy(40, 50));
-        right.add(new Image("/resource/person/person_right_2.png").getScaledCopy(40, 50));
+        right.add(new Image("/resource/person/p" + Main.playerViewId + "_right_0.png").getScaledCopy(40, 50));
+        right.add(new Image("/resource/person/p" + Main.playerViewId + "_right_1.png").getScaledCopy(40, 50));
+        right.add(new Image("/resource/person/p" + Main.playerViewId + "_right_2.png").getScaledCopy(40, 50));
         player = new Animal(new Position(GameState.width / 8,GameState.height / 8,40,50), null, "0",
                 ObjectView.Type.PLAYER, up , down, left, right, "player");
         player.setImage(right.get(0).getScaledCopy(player.getPosition().width, player.getPosition().height));
