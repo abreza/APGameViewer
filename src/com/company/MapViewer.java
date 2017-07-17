@@ -27,7 +27,7 @@ public class MapViewer extends BasicGameState {
     public TiledMap map;
     private int lastX = -1, lastY = -1;
     private int barnMachinesNum = 0;
-    private boolean inRequest = false;
+    public static boolean inRequest;
     private String TMXName;
     private List<ObjectView> objectViews;
     private List<Animal> animals;
@@ -58,6 +58,7 @@ public class MapViewer extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         map = new TiledMap("resource/" + TMXName + ".tmx");
+        inRequest = false;
         if (TMXName.equalsIgnoreCase("map-farm")) {
             getResourceTimer = new Timer();
             getResourceTimer.schedule(new TimerTask() {
@@ -122,7 +123,6 @@ public class MapViewer extends BasicGameState {
             intersectedView = getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
             if (intersectedView != null) {
                 System.out.println(intersectedView.getName());
-                inRequest = true;
                 if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
                     sendAndGetResponse("goto " + intersectedView.getName() + "\n");
                 else {
@@ -146,7 +146,6 @@ public class MapViewer extends BasicGameState {
                     intersectedView = objectView;
                     if (intersectedView != null) {
                         System.out.println(intersectedView.getName());
-                        inRequest = true;
                         if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
                             sendAndGetResponse("goto " + intersectedView.getName() + "\n");
                         else {
@@ -311,7 +310,6 @@ public class MapViewer extends BasicGameState {
                     setGreenHouseResources(serverMessages);
                 } else
                     showMenu(serverMessages);
-                inRequest = false;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -453,16 +451,23 @@ public class MapViewer extends BasicGameState {
     }
 
     private void showNumberMenu(List<String> serverMessages) {
+        MapViewer.inRequest = true;
         NumberDialog dialog = new NumberDialog(new JFrame(), "number question", serverMessages.get(1), this);
         dialog.setSize(500, 300);
     }
 
     private void showYesNoMenu(List<String> serverMessages) {
+        MapViewer.inRequest = true;
         YesNoDialog dialog = new YesNoDialog(new JFrame(), "yes no question", serverMessages.get(1), this);
         dialog.setSize(500, 300);
     }
 
+    public void changeInRequest(){
+        MapViewer.inRequest = !MapViewer.inRequest;
+    }
+
     private void showMenu(List<String> serverMessages) {
+        MapViewer.inRequest = true;
         if (serverMessages.size() == 1) {
             MyJDialog dialog = new MyJDialog(new JFrame(), "Message", serverMessages.get(0), this);
             dialog.setSize(500, 300);

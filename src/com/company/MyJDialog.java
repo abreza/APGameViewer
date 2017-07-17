@@ -237,6 +237,7 @@ public class MyJDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
             dispose();
+            mapViewer.changeInRequest();
             if (button != null)
                 mapViewer.sendAndGetResponse("inspect " + button.getText() + "\n");
             else {
@@ -250,6 +251,7 @@ public class MyJDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
             dispose();
+            MapViewer.inRequest = false;
             mapViewer.sendAndGetResponse("back\n");
         }
     }

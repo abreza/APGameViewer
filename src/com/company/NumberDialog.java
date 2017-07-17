@@ -16,6 +16,7 @@ public class NumberDialog extends MyJDialog {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
                 dispose();
+                MapViewer.inRequest = false;
                 mapViewer.sendAndGetResponse("Number/" + numberField.getText() + "\n");
             }
         });
