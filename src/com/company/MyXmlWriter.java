@@ -182,7 +182,7 @@ public class MyXmlWriter {
     public void addPlayer(int money, int capacity, int maxHealth, int curHealth, int consHealth,
                           int refHealth, int maxEnergy, int curEnergy, int consEnergy, int refEnergy) {
         removeLastPlayer();
-        Element playerElement = doc.createElement("Player");
+        Element playerElement = doc.createElement("com.company.Player");
         root.appendChild(playerElement);
         Element moneyEl = doc.createElement("money");
         moneyEl.appendChild(doc.createTextNode(Integer.toString(money)));
@@ -218,7 +218,7 @@ public class MyXmlWriter {
     }
 
     private void removeLastPlayer(){
-        NodeList playerList = doc.getElementsByTagName("Player");
+        NodeList playerList = doc.getElementsByTagName("com.company.Player");
         if (playerList.getLength() == 0)
             return;
         Element playerElement = (Element) playerList.item(0);

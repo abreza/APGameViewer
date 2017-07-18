@@ -27,6 +27,9 @@ public class Animal extends ObjectView {
         this.down = down;
         this.left = left;
         this.right = right;
+        if(sound.equals("dog")){
+            sound = null;
+        }
     }
 
     public void eat(){

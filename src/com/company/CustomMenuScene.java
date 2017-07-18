@@ -390,7 +390,7 @@ public class CustomMenuScene {
 
     private void makeSceneForPlayer() {
         HBox titleRow = makeHbox();
-        Label titleLabel = makeLabel("Player:");
+        Label titleLabel = makeLabel("com.company.Player:");
         titleRow.getChildren().addAll(titleLabel);
         HBox moneyRow = makeHbox();
         Label moneyLabel = makeLabel("money:");

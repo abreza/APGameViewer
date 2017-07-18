@@ -7,7 +7,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 
 public class Main {
@@ -89,6 +88,7 @@ public class Main {
 
     public static void positions() {
         try {
+            Thread.sleep(1);
             Socket socket = new Socket("localhost", 4033 + gameID);
             PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
             if (GameState.player.direction == Animal.Direction.UP){
@@ -115,9 +115,9 @@ public class Main {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String msg = in.readLine();
             String[] message = msg.split(" ");
-            for (int i = 0; i < message.length; i += 5) {
+            for (int i = 0; i < message.length; i += 8) {
                 if(message[i].equals("empty")){
-                    i -= 4;
+                    i -= 7;
                     continue;
                 }
 //                System.out.println(i + " " + message[i] + " " + message[i + 1] + " " + message[i + 2] + " " + message[i + 3] + " " + message[i + 4]);
@@ -187,6 +187,8 @@ public class Main {
             }
             socket.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

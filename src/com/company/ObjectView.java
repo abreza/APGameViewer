@@ -32,11 +32,9 @@ public class ObjectView {
                 try {
                     if(sound != null) {
                         while (true) {
-                            Thread.sleep(1200);
+                            Thread.sleep(2000);
                             try {
-                                InputStream in = new FileInputStream(new File((this.getClass().getResource("animalSounds/" + sound + ".wav")).toURI()));
-                                AudioStream audioStream = new AudioStream(in);
-                                AudioPlayer.player.start(audioStream);
+                                AudioPlayer.player.start(new AudioStream(new FileInputStream(new File((this.getClass().getResource("animalSounds/" + sound + ".wav")).toURI()))));
                             } catch (Exception e) {
                                 System.err.println(e.getMessage());
                             }

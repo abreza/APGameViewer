@@ -43,6 +43,7 @@ public class MapViewer extends BasicGameState {
     private static Socket androidSocket;
     private static PrintWriter out;
     private static boolean first = false;
+    private static Image r;
 
 
     public MapViewer(String TMXName, int id) {
@@ -57,6 +58,7 @@ public class MapViewer extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        r = new Image("/resource/r.png");
         map = new TiledMap("resource/" + TMXName + ".tmx");
         inRequest = false;
         if (TMXName.equalsIgnoreCase("map-farm")) {
@@ -103,7 +105,10 @@ public class MapViewer extends BasicGameState {
         }
         objectsToRemove = new HashMap<>();
         GameState.player.move();
-        graphics.drawImage(Main.playerAttr.getScaledCopy(80, 80), 600, 10);
+        graphics.drawImage(Main.playerAttr.getScaledCopy(100, 100), 600, 10);
+        graphics.drawImage(r.getScaledCopy(130, 10), 590, 20);
+        graphics.drawImage(r.getScaledCopy(130, 10), 590, 42);
+        graphics.drawImage(r.getScaledCopy(130, 10), 590, 65);
         graphics.drawImage(GameState.player.getImage(), GameState.player.getPosition().x, GameState.player.getPosition().y);
     }
 
@@ -635,47 +640,38 @@ public class MapViewer extends BasicGameState {
         return new BufferedReader(new InputStreamReader(androidSocket.getInputStream())).readLine();
     }
 
-    public void androidUpdate() {
-        new Thread(() -> {
-            try {
-                TCPServerSocket = new ServerSocket(1378);
-                UDPServerSocket = new DatagramSocket(1378);
-                byte[] buffer = new byte[65536];
+    public static Thread androidUpdate = new Thread(() -> {
+        try {
+            TCPServerSocket = new ServerSocket(1377);
+            UDPServerSocket = new DatagramSocket(1377);
+            byte[] buffer = new byte[65536];
+            while (true){
+                androidSocket = TCPServerSocket.accept();
                 DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
-                while (true) {
-                    String Message = UDPRead(incoming);
-                    if (Message.equals("up")) {
-                        GameState.player.moveY -= PLAYER_SPEED;
-                    }
-                    if (Message.equals("down")) {
-                        GameState.player.moveY += PLAYER_SPEED;
-                    }
-                    if (Message.equals("left")) {
-                        GameState.player.moveX -= PLAYER_SPEED;
-                    }
-                    if (Message.equals("right")) {
-                        GameState.player.moveX += PLAYER_SPEED;
-                    }
-                    if (Message.equals("ok")) {
-                        ObjectView intersectedView =
-                                getIntersectedView(((MapViewer) GameState.gameState.getCurrentState()).objectViews);
-                        if (intersectedView != null) {
-                            if (STATE_ID == 0 || intersectedView.getName().equalsIgnoreCase(Names.HOME.name()))
-                                sendAndGetResponse("goto " + intersectedView.getName() + "\n");
-                            else {
-                                checkForBarn(intersectedView);
-                                checkForGarden(intersectedView);
-                                sendAndGetResponse("inspect " + intersectedView.getName() + "\n");
-                            }
-                        }
-                    }
-                    socket.close();
+                String Message = TCPRead();
+                if (Message.endsWith("up")) {
+                    GameState.player.moveY -= 20 * PLAYER_SPEED;
                 }
-            } catch (IOException ioe) {
+                if (Message.endsWith("down")) {
+                    GameState.player.moveY += 20 * PLAYER_SPEED;
+                }
+                if (Message.endsWith("left")) {
+                    GameState.player.moveX -= 20 * PLAYER_SPEED;
+                }
+                if (Message.endsWith("right")) {
+                    GameState.player.moveX += 20 * PLAYER_SPEED;
+                }
+                if (Message.equals("ok")) {
 
+                }
+                androidSocket.close();
             }
-        }).start();
-    }
+        } catch (IOException ioe) {
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    });
 
 
     public List<Animal> getAnimals() {

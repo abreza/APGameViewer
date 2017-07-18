@@ -1,5 +1,7 @@
 package com.company;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -7,7 +9,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import javax.naming.Name;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class GameState extends StateBasedGame{
@@ -453,6 +459,73 @@ public class GameState extends StateBasedGame{
         objectViews.add(new ObjectView(new Position(17 * 32 , 29 * 32 - 45, 13 * 32, 2), null, Names.WALL.name(), ObjectView.Type.ITEM));
         mapViews.get(3).setObjectViews(objectViews);
 
+
+
+        List<Image> dugUp = new ArrayList<>();
+        dugUp.add(new Image("/resource/dog/du0.png"));
+        dugUp.add(new Image("/resource/dog/du1.png"));
+        dugUp.add(new Image("/resource/dog/du2.png"));
+        dugUp.add(new Image("/resource/dog/du3.png"));
+        List<Image> dugLeft = new ArrayList<>();
+        dugLeft.add(new Image("/resource/dog/dl0.png"));
+        dugLeft.add(new Image("/resource/dog/dl1.png"));
+        dugLeft.add(new Image("/resource/dog/dl2.png"));
+        dugLeft.add(new Image("/resource/dog/dl3.png"));
+        List<Image> dugRight = new ArrayList<>();
+        dugRight.add(new Image("/resource/dog/dr0.png"));
+        dugRight.add(new Image("/resource/dog/dr1.png"));
+        dugRight.add(new Image("/resource/dog/dr2.png"));
+        dugRight.add(new Image("/resource/dog/dr3.png"));
+        List<Image> dugDown = new ArrayList<>();
+        dugDown.add(new Image("/resource/dog/dd0.png"));
+        dugDown.add(new Image("/resource/dog/dd1.png"));
+        dugDown.add(new Image("/resource/dog/dd2.png"));
+        dugDown.add(new Image("/resource/dog/dd3.png"));
+        List<Animal> animals2 = new ArrayList<>();
+        animals2.add(new Animal(new Position(32 - 15, 130, 2 * 32, 3 * 20), dugUp.get(0), Names.COW_EMPTY.name(),
+                ObjectView.Type.ANIMAL, dugUp, dugDown, dugLeft, dugRight, "dog"));
+        animals2.add(new Animal(new Position(6 * 32 - 15, 130, 2 * 32, 3 * 20), dugUp.get(0), Names.COW_EMPTY.name(),
+                ObjectView.Type.ANIMAL, dugUp, dugDown, dugLeft, dugRight, "dog"));
+
+
+        for (Animal animal : animals2) {
+            animal.currentObjectViews = new ArrayList<>(animals2);
+            animal.currentObjectViews.remove(animal);
+        }
+        for (Animal animal:animals2) {
+            animal.Animation_SPEED = 50;
+        }
+        new Thread(() -> {
+            while (true){
+                for (Animal animal:animals2) {
+                    animal.move();
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+        new Thread(() -> {
+            int flag;
+            while (true){
+                for (Animal animal:animals2) {
+                    if(getCurrentStateID() == 4){
+                        if(Math.abs(player.getPosition().x - animal.getPosition().x) > 100)
+                            animal.moveX = (player.getPosition().x - animal.getPosition().x) / 10 + (int)(Math.random() * 10);
+                        if(Math.abs(player.getPosition().y - animal.getPosition().y) > 100)
+                            animal.moveY = (player.getPosition().y - animal.getPosition().y) / 10 + (int)(Math.random() * 10);
+                    }
+                }
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
         objectViews = new ArrayList<>();
         objectViews.add(new BuildingObjectView(new Position(31 * 32, 0, 7 * 32, 32), null,
                 new Position(31 * 32, 0, 7 * 32, 32), Names.FARM.name(), ObjectView.Type.BUILDING, 1));
@@ -463,6 +536,8 @@ public class GameState extends StateBasedGame{
                 new Position(32, -15, 5 * 32, 3 * 32), Names.CAVE.name(), ObjectView.Type.BUILDING, 5));
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setPlayerXAndY(330, 110);
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 100);
+        mapViews.get(4).setAnimals(animals2);
+        objectViews.addAll(animals2);
         mapViews.get(4).setObjectViews(objectViews);
 
         objectViews = new ArrayList<>();
@@ -472,5 +547,7 @@ public class GameState extends StateBasedGame{
         ((BuildingObjectView) objectViews.get(objectViews.size() - 1)).setFirstXAndY(0, 150);
         mapViews.get(5).setObjectViews(objectViews);
 
+
+        MapViewer.androidUpdate.start();
     }
 }

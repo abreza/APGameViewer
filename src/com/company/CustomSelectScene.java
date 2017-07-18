@@ -58,7 +58,7 @@ public class CustomSelectScene {
         customSelectCb.getSelectionModel().selectFirst();
         first.getChildren().addAll(selectCustomLabel, customSelectCb);
             HBox selectPlayerRow = makeHbox();
-            Label selectPlayerLabel = CustomMenuScene.makeLabel("Select Player:");
+            Label selectPlayerLabel = CustomMenuScene.makeLabel("Select com.company.Player:");
         ImageView playerImage = null;
         try {
             playerImage = new ImageView(new Image(
